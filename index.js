@@ -26,18 +26,16 @@ const reviewRoutes = require("./routes/reviews");
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect(
-    process.env.DB_URL || "mongodb://localhost:27017/yelp-camp"
-  );
+  await mongoose.connect(process.env.DB_URL);
 }
 
 const app = express();
 
 const store = MongoStore.create({
-  mongoUrl: process.env.DB_URL || "mongodb://localhost:27017/yelp-camp",
+  mongoUrl: process.env.DB_URL,
   touchAfter: 24 * 60 * 60, // 24 hours in seconds
   crypto: {
-    secret: process.env.SECRET || "thisshouldbeabettersecret",
+    secret: process.env.SECRET,
   },
 });
 
@@ -48,7 +46,7 @@ store.on("error", function (err) {
 const sessionConfig = {
   store,
   name: "session",
-  secret: process.env.SECRET || "thisshouldbeabettersecret",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
