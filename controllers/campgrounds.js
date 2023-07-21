@@ -5,6 +5,8 @@ const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mbxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mbxToken });
 
+const { getCurrentDate, getFormattedDate } = require("../utils/getDate");
+
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find({});
 
@@ -31,6 +33,7 @@ module.exports.createCampground = async (req, res) => {
   })); // array of images
   campground.geometry = geoData.body.features[0].geometry; // geocoding geometry
   campground.author = req.user._id; // from isLoggedIn
+  campground.lastUpdateAt = getCurrentDate();
 
   await campground.save();
 
@@ -49,7 +52,9 @@ module.exports.showCampground = async (req, res) => {
     return res.redirect("/campgrounds");
   }
 
-  res.render("campgrounds/show", { campground });
+  const lastUpdateDate = getFormattedDate(campground.lastUpdateAt);
+
+  res.render("campgrounds/show", { campground, lastUpdateDate });
 };
 
 module.exports.renderEditForm = async (req, res) => {
@@ -85,6 +90,8 @@ module.exports.updateCampground = async (req, res) => {
       $pull: { images: { filename: { $in: req.body.deleteImages } } }, // delete selected images
     });
   }
+
+  campground.lastUpdateAt = getCurrentDate();
 
   await campground.save();
 
