@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const cities = require("./cities");
 const { places, descriptors } = require("./seedHelper");
 const Campground = require("../models/campground");
+const { getCurrentDate } = require("../utils/getDate");
 
 main().catch((err) => console.log(err));
 
@@ -14,9 +15,10 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 const seedDB = async () => {
   await Campground.deleteMany({});
 
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 50; i++) {
     const randomNum = Math.floor(Math.random() * 1000);
     const randomPrice = Math.floor(Math.random() * 20) + 10;
+    const creationDate = getCurrentDate();
 
     const camp = new Campground({
       title: `${sample(descriptors)} ${sample(places)}`,
@@ -40,6 +42,7 @@ const seedDB = async () => {
       author: "6492df50719e6da0f4cafedd",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, eius excepturi rerum autem molestias temporibus ratione omnis corporis ullam in hic laborum! Atque eaque repellendus dolore fugit, porro soluta maiores!",
+      lastUpdateAt: creationDate,
     });
 
     await camp.save();
