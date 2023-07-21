@@ -32,6 +32,7 @@ const campgroundSchema = new Schema(
     },
     author: { type: Schema.Types.ObjectId, ref: "User" },
     reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    lastUpdateAt: String,
   },
   campgroundSchemaOptions
 );
