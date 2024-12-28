@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set NODE_ENV=development & start http://localhost:8080 & nodemon index.js"
+    "start": "cross-env NODE_ENV=development start http://localhost:8080 & nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +30,8 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0",
     "sanitize-html": "^2.11.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
