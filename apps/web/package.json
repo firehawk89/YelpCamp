@@ -1,7 +1,10 @@
 {
   "name": "web",
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "description": "A YelpCamp project web app",
+  "author": "firehawk89",
   "type": "module",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
