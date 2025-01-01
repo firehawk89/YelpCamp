@@ -1,0 +1,9 @@
+{
+  "name": "@repo/tailwind-config",
+  "version": "0.0.1",
+  "description": "A TailwindCSS config for the YelpCamp project apps",
+  "private": true,
+  "author": "firehawk89",
+  "license": "MIT",
+  "main": "tailwind.config.js"
+}
