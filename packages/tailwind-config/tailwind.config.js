@@ -7,7 +7,11 @@ export default {
     '../../packages/ui/src/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        primary: ['var(--font-primary)']
+      }
+    },
     container: { center: true, padding: { DEFAULT: '1.25rem', md: '2rem' } }
   }
 };
