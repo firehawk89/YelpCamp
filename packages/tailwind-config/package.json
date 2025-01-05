@@ -1,9 +1,15 @@
 {
   "name": "@repo/tailwind-config",
   "version": "0.0.1",
-  "description": "A TailwindCSS config for the YelpCamp project apps",
   "private": true,
+  "description": "A TailwindCSS config for the YelpCamp project apps.",
   "author": "firehawk89",
   "license": "MIT",
-  "main": "tailwind.config.js"
+  "exports": {
+    ".": "./tailwind.config.js",
+    "./styles": "./globals.css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
 }
