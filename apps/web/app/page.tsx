@@ -13,13 +13,13 @@ export default function Home() {
         sizes="100vw"
         fill
       />
-      <div className="flex flex-col items-center gap-4 text-white text-center">
+      <div className="flex flex-col items-center gap-3 text-white text-center">
         <h1 className="text-3xl font-medium font-secondary">Welcome to YelpCamp!</h1>
         <p className="text-xl">
           Jump right in and explore our many campgrounds. <br />
           Feel free to share some of your own and comment on others!
         </p>
-        <Link className={cn(buttonVariants(), 'mt-3')} href="/campgrounds">
+        <Link className={cn(buttonVariants({ variant: 'accent' }), 'mt-3')} href="/campgrounds">
           Go to Campgrounds
         </Link>
       </div>
