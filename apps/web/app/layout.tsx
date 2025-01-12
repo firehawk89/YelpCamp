@@ -1,17 +1,11 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import './globals.css';
+
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 import { ReactNode } from 'react';
+import '@repo/tailwind-config/styles';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans'
-});
-
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono'
-});
+import { noto_sans } from './fonts';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -25,7 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`relative bg-zinc-100 ${noto_sans.variable} font-primary`}>
+        <div className="min-h-dvh container flex flex-col">
+          <Header />
+          <main className="flex-1 flex flex-col">{children}</main>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }
