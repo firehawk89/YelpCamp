@@ -6,14 +6,20 @@ export type ReviewDocument = HydratedDocument<Review>;
 
 @Schema()
 export class Review {
-  @Prop()
+  @Prop({ required: false })
   body: string;
 
-  @Prop()
+  @Prop({ required: true })
   rating: number;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  author: User;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Campground', required: true })
+  campgroundId: string;
+
+  //   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  //   author: User;
+
+  @Prop({ required: true, default: Date.now() })
+  createdAt: string;
 }
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);
