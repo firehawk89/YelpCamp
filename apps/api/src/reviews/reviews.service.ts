@@ -1,12 +1,17 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { isValidObjectId, Model } from 'mongoose';
+import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { getUpdatedRating } from 'src/helpers/rating';
+import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
 
 @Injectable()
 export class ReviewsService {
-  constructor(@InjectModel(Review.name) private reviewModel: Model<Review>) {}
+  constructor(
+    @InjectModel(Review.name) private reviewModel: Model<Review>,
+    @InjectModel(Campground.name) private campgroundModel: Model<Campground>
+  ) {}
 
   async create(createReviewDto: CreateReviewDTO): Promise<Review> {
     try {
@@ -65,10 +70,34 @@ export class ReviewsService {
         throw new NotFoundException("Review doesn't exist");
       }
 
+      await this.decreaseCampgroundRating(foundReview.campgroundId, foundReview.rating);
+
       return this.reviewModel.findByIdAndDelete(id).exec();
     } catch (error) {
       console.error(error);
       throw error;
+    }
+  }
+
+  private async decreaseCampgroundRating(campgroundId: mongoose.Types.ObjectId, reviewRating: number) {
+    try {
+      const reviewCampground = await this.campgroundModel.findById(campgroundId);
+
+      const campgroundRating = isFinite(reviewCampground.rating) ? reviewCampground.rating : 0;
+      const reviewsCount = reviewCampground.reviewsCount || 0;
+      const newReviewsCount = reviewsCount - 1;
+
+      const newRating = getUpdatedRating(-reviewRating, campgroundRating, reviewsCount, newReviewsCount);
+
+      await this.campgroundModel
+        .findByIdAndUpdate(reviewCampground._id, {
+          rating: newRating,
+          reviewsCount: newReviewsCount
+        })
+        .exec();
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Failed to update campground rating');
     }
   }
 }
