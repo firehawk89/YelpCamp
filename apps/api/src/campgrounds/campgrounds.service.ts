@@ -1,9 +1,16 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
 
@@ -121,10 +128,33 @@ export class CampgroundsService {
       }
 
       const newReview = new this.reviewModel({ ...createReviewDto, campgroundId });
+
+      await this.increaseCampgroundRating(campgroundId, campground, createReviewDto.rating);
+
       return newReview.save();
     } catch (error) {
       console.error(error);
       throw error;
+    }
+  }
+
+  private async increaseCampgroundRating(campgroundId: string, campground: Campground, reviewRating: number) {
+    try {
+      const campgroundRating = isFinite(campground.rating) ? campground.rating : 0;
+      const reviewsCount = campground.reviewsCount ?? 0;
+      const newReviewsCount = reviewsCount + 1;
+
+      const newRating = getUpdatedRating(reviewRating, campgroundRating, reviewsCount, newReviewsCount);
+
+      await this.campgroundModel
+        .findByIdAndUpdate(campgroundId, {
+          rating: newRating,
+          reviewsCount: newReviewsCount
+        })
+        .exec();
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Failed to update campground rating');
     }
   }
 }
