@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class CreateCampgroundDTO {
   @IsNotEmpty({ message: 'Title is required' })
@@ -12,7 +12,7 @@ export class CreateCampgroundDTO {
 
   @IsOptional()
   @IsString({ message: 'Description should be a string' })
-  description: string;
+  description?: string;
 
   @IsNotEmpty({ message: 'Location is required' })
   @IsString({ message: 'Location should be a string' })

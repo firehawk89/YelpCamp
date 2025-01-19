@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-vali
 export class CreateReviewDTO {
   @IsOptional()
   @IsString({ message: 'Review text must be a string' })
-  body: string;
+  body?: string;
 
   @IsNotEmpty({ message: 'Rating is required' })
   @Min(1, { message: 'Rating must be at least 1' })
