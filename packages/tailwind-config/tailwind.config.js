@@ -10,6 +10,12 @@ export default {
     extend: {
       fontFamily: {
         primary: ['var(--font-primary)']
+      },
+      colors: {
+        accent: '#f97316',
+        info: '#3b82f6',
+        success: '#16a34a',
+        error: '#dc2626'
       }
     },
     container: { center: true, padding: { DEFAULT: '1.25rem', md: '2rem' } }
