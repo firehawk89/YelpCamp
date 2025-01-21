@@ -1,13 +1,13 @@
+import { cn } from '@/utils/misc';
 import { ButtonHTMLAttributes, FC } from 'react';
 import { VariantProps } from 'tailwind-variants';
-import { cn } from '@/utils/misc';
 import { tv } from 'tailwind-variants';
 
 export const buttonVariants = tv({
   base: 'flex items-center rounded-lg active:scale-95 transition-all',
   variants: {
     variant: {
-      default: 'bg-gray text-white hover:bg-opacity-85',
+      default: 'bg-neutral-700 text-white hover:bg-opacity-85',
       outline: 'bg-transparent border border-gray text-gray hover:bg-gray hover:text-white',
       accent: 'bg-accent text-white hover:bg-opacity-85',
       info: 'bg-info text-white hover:bg-opacity-85',

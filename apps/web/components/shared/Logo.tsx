@@ -11,7 +11,7 @@ const Logo: FC<AnchorHTMLAttributes<HTMLAnchorElement>> = ({ className, ...props
   return (
     <Link
       className={cn(
-        'text-2xl font-extrabold hover:text-orange-500 transition-colors',
+        'text-3xl font-extrabold text-orange-500 hover:text-opacity-75 transition-colors',
         isHomePage(pathname) && 'text-white',
         className
       )}

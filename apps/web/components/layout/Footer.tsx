@@ -3,7 +3,9 @@ const Footer = () => {
 
   return (
     <footer className="py-5 text-zinc-500 text-center">
-      <p>&copy; {currentYear} YelpCamp</p>
+      <div className="container">
+        <p>&copy; {currentYear} YelpCamp</p>
+      </div>
     </footer>
   );
 };
