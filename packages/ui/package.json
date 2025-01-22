@@ -5,7 +5,8 @@
   "private": true,
   "exports": {
     "./button": "./src/Button.tsx",
-    "./card": "./src//Card.tsx"
+    "./card": "./src/Card.tsx",
+    "./input": "./src/Input.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
