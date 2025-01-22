@@ -1,5 +1,5 @@
 import { cn } from '@/utils/misc';
-import { ButtonHTMLAttributes, FC } from 'react';
+import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import { VariantProps } from 'tailwind-variants';
 import { tv } from 'tailwind-variants';
 
@@ -16,7 +16,8 @@ export const buttonVariants = tv({
     },
     size: {
       default: 'px-3 py-1.5',
-      sm: 'px-2 py-1 text-sm'
+      sm: 'px-2 py-1 text-sm',
+      icon: 'p-2'
     },
     color: {
       default: 'text-white',
@@ -62,11 +63,13 @@ export const buttonVariants = tv({
 
 interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  icon?: ReactNode;
+}
 
-const Button: FC<ButtonProps> = ({ children, variant, size, color, className, ...props }) => (
-  <button className={cn(buttonVariants({ variant, size, color }), className)} {...props}>
-    {children}
+const Button: FC<ButtonProps> = ({ children, variant, size, color, icon, className, ...props }) => (
+  <button className={cn(buttonVariants({ variant, size: !!icon ? 'icon' : size, color }), className)} {...props}>
+    {icon} {children}
   </button>
 );
 

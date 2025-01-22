@@ -21,13 +21,13 @@ export const USER_UNAUTHENTICATED_ROUTES: Route[] = [
   {
     path: '/login',
     label: 'Sign In',
-    icon: <UserIcon className="size-5" />,
+    icon: <UserIcon />,
     linkStyles: buttonVariants({ variant: 'outline', color: 'info', size: 'sm' })
   },
   {
     path: '/register',
     label: 'Sign Up',
-    icon: <UserPlusIcon className="size-5" />,
+    icon: <UserPlusIcon />,
     linkStyles: buttonVariants({ variant: 'outline', color: 'success', size: 'sm' })
   }
 ];
@@ -36,8 +36,8 @@ export const USER_AUTHENTICATED_ROUTES: Route[] = [
   {
     path: '/logout',
     label: 'Log Out',
-    icon: <LogOutIcon className="size-5" />,
-    linkStyles: buttonVariants({ variant: 'outline', color: 'error', size: 'sm' })
+    icon: <LogOutIcon />,
+    linkStyles: buttonVariants({ variant: 'outline', color: 'destructive', size: 'sm' })
   }
 ];
 
