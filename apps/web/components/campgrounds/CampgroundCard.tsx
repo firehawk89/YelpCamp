@@ -1,12 +1,11 @@
 import { buttonVariants } from '@repo/ui/button';
 import Card, { CardProps } from '@repo/ui/card';
+import { HeartIcon, StarIcon } from '@repo/ui/icons';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Link from 'next/link';
 import { FC } from 'react';
 import { Campground } from 'types/campground';
 
-import HeartIcon from '../icons/HeartIcon';
-import StarIcon from '../icons/StarIcon';
 import ImagePlaceholder from '../shared/ImagePlaceholder';
 
 interface CampgroundCardProps extends CardProps {
@@ -16,8 +15,9 @@ interface CampgroundCardProps extends CardProps {
 
 const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
   return (
-    <Card {...props}>
+    <Card component="article" {...props}>
       <ImagePlaceholder className="flex-shrink-0 basis-1/3" />
+
       <div className="flex-grow flex gap-4">
         <div className="flex-1 flex flex-col gap-2">
           <h2 className="text-2xl">{campground.title}</h2>
@@ -45,7 +45,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
         </div>
 
         <div className="flex flex-col gap-4 justify-between items-end">
-          <HeartIcon className="size-8 text-error hover:scale-110 active:scale-100 transition-all" />
+          <HeartIcon className="cursor-pointer size-8 text-error hover:scale-110 active:scale-100 transition-all" />
 
           <div className="flex flex-col gap-2.5">
             <p className="flex flex-col items-end">

@@ -1,11 +1,8 @@
 import { cn } from '@/utils/misc';
 import { FC } from 'react';
+import { IconProps } from '.';
 
-interface Props {
-  className?: string;
-}
-
-const UserPlusIcon: FC<Props> = ({ className }) => (
+export const UserPlusIcon: FC<IconProps> = ({ className, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -13,6 +10,7 @@ const UserPlusIcon: FC<Props> = ({ className }) => (
     strokeWidth={1.5}
     stroke="currentColor"
     className={cn('size-5', className)}
+    {...props}
   >
     <path
       strokeLinecap="round"
@@ -21,5 +19,3 @@ const UserPlusIcon: FC<Props> = ({ className }) => (
     />
   </svg>
 );
-
-export default UserPlusIcon;

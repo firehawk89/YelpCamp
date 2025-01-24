@@ -1,7 +1,5 @@
-import LogOutIcon from '@/components/icons/LogOutIcon';
-import UserIcon from '@/components/icons/UserIcon';
-import UserPlusIcon from '@/components/icons/UserPlusIcon';
 import { buttonVariants } from '@repo/ui/button';
+import { LogOutIcon, UserIcon, UserPlusIcon } from '@repo/ui/icons';
 import { Url } from 'next/dist/shared/lib/router/router';
 import { ReactElement } from 'react';
 

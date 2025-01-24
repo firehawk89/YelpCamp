@@ -1,11 +1,8 @@
 import { cn } from '@/utils/misc';
 import { FC } from 'react';
+import { IconProps } from '.';
 
-interface Props {
-  className?: string;
-}
-
-const SearchIcon: FC<Props> = ({ className }) => (
+export const LogOutIcon: FC<IconProps> = ({ className, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -13,13 +10,12 @@ const SearchIcon: FC<Props> = ({ className }) => (
     strokeWidth={1.5}
     stroke="currentColor"
     className={cn('size-5', className)}
+    {...props}
   >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
     />
   </svg>
 );
-
-export default SearchIcon;

@@ -1,7 +1,6 @@
 import { cn } from '@/utils/misc';
+import { ImageIcon } from '@repo/ui/icons';
 import { FC, HTMLAttributes } from 'react';
-
-import ImageIcon from '../icons/ImageIcon';
 
 const ImagePlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
   return (

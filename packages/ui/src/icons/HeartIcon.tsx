@@ -1,11 +1,8 @@
 import { cn } from '@/utils/misc';
 import { FC } from 'react';
+import { IconProps } from '.';
 
-interface Props {
-  className?: string;
-}
-
-const LogOutIcon: FC<Props> = ({ className }) => (
+export const HeartIcon: FC<IconProps> = ({ className, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -13,13 +10,12 @@ const LogOutIcon: FC<Props> = ({ className }) => (
     strokeWidth={1.5}
     stroke="currentColor"
     className={cn('size-5', className)}
+    {...props}
   >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
+      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
     />
   </svg>
 );
-
-export default LogOutIcon;
