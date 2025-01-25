@@ -7,6 +7,7 @@
     "./button": "./src/Button.tsx",
     "./card": "./src/Card.tsx",
     "./input": "./src/Input.tsx",
+    "./alert": "./src/Alert.tsx",
     "./icons": "./src/icons/index.tsx"
   },
   "scripts": {
