@@ -36,8 +36,9 @@ export class CampgroundsService {
     }
   }
 
-  async getAll(): Promise<Campground[]> {
-    return this.campgroundModel.find().exec();
+  async getAll(search?: string): Promise<Campground[]> {
+    const filters = search ? { title: { $regex: search, $options: 'i' } } : undefined;
+    return this.campgroundModel.find(filters).exec();
   }
 
   async getById(id: string): Promise<Campground> {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CampgroundsService } from './campgrounds.service';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
@@ -9,8 +9,8 @@ export class CampgroundsController {
   constructor(private readonly campgroundsService: CampgroundsService) {}
 
   @Get()
-  getAllCampgrounds() {
-    return this.campgroundsService.getAll();
+  getAllCampgrounds(@Query('search') search?: string) {
+    return this.campgroundsService.getAll(search);
   }
 
   @Post()

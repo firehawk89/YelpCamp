@@ -1,16 +1,25 @@
-import CampgroundCard from '@/components/campgrounds/CampgroundCard';
+import CampgroundsList from '@/components/campgrounds/CamgroundsList';
+import CampgroundsFilterBar from '@/components/campgrounds/FilterBar';
 import { fetchCampgrounds } from '@/utils/api/campgrounds';
 
-export default async function Campgrounds() {
-  const { data: campgrounds, error } = await fetchCampgrounds();
+interface CampgroundsPageProps {
+  searchParams?: {
+    search?: string;
+  };
+}
+
+export default async function Campgrounds({ searchParams }: CampgroundsPageProps) {
+  const { search } = (await searchParams) ?? {};
+  const { data: campgrounds, error } = await fetchCampgrounds({ search });
 
   if (error) {
     throw new Error(error);
   }
 
   return (
-    <div className="flex flex-col gap-7">
-      {campgrounds?.map((campground) => <CampgroundCard key={campground._id} campground={campground} />)}
+    <div className="flex gap-5">
+      <CampgroundsFilterBar className="basis-1/4 flex-shrink-0" />
+      <CampgroundsList className="flex-1" campgrounds={campgrounds} />
     </div>
   );
 }

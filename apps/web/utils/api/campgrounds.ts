@@ -3,11 +3,19 @@
 import { Campground } from 'types/campground';
 
 import { API_ROUTES, ApiResponse } from '.';
+import { SEARCH_PARAM } from '../constants';
+import { getSearchParamsString } from '../misc';
 
-export const fetchCampgrounds = async (): ApiResponse<Campground[]> => {
+type FetchCampgroundsParams = {
+  search?: string;
+};
+
+export const fetchCampgrounds = async ({ search }: FetchCampgroundsParams): ApiResponse<Campground[]> => {
   try {
-    const response = await fetch(API_ROUTES.CAMPGROUNDS);
+    const params = { [SEARCH_PARAM]: search };
+    const searchParamsString = getSearchParamsString(params);
 
+    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}${searchParamsString ? `?${searchParamsString}` : ''}`);
     if (!response.ok) {
       return { error: 'Failed to fetch campgrounds' };
     }
