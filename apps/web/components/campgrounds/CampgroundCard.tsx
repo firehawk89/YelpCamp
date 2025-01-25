@@ -45,7 +45,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
         </div>
 
         <div className="flex flex-col gap-4 justify-between items-end">
-          <HeartIcon className="cursor-pointer size-8 text-error hover:scale-110 active:scale-100 transition-all" />
+          <HeartIcon className="cursor-pointer size-8 text-danger hover:scale-110 active:scale-100 transition-all" />
 
           <div className="flex flex-col gap-2.5">
             <p className="flex flex-col items-end">

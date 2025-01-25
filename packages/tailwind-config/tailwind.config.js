@@ -14,8 +14,9 @@ export default {
       colors: {
         accent: '#f97316',
         info: '#3b82f6',
-        success: '#16a34a',
-        error: '#dc2626'
+        warning: '#f4bb1b',
+        danger: '#f13637',
+        success: '#3dc13c'
       }
     },
     container: { center: true, padding: { DEFAULT: '1.25rem', md: '2rem' } }
