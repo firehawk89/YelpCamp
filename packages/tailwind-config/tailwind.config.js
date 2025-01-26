@@ -19,6 +19,9 @@ export default {
         success: '#3dc13c'
       }
     },
-    container: { center: true, padding: { DEFAULT: '1.25rem', md: '2rem' } }
+    container: {
+      center: true,
+      padding: { DEFAULT: '1.25rem', md: '2rem' }
+    }
   }
 };

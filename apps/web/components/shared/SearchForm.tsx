@@ -25,6 +25,10 @@ const SearchForm: FC<SearchFormProps> = ({ className, label, ...props }) => {
     const formData = new FormData(e.currentTarget);
     const search = formData.get(SEARCH_PARAM);
 
+    if (search === defaultValue) {
+      return;
+    }
+
     const params = { [SEARCH_PARAM]: search };
     const searchParamsString = getSearchParamsString(params);
 

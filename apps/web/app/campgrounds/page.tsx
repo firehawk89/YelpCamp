@@ -18,7 +18,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
 
   return (
     <div className="flex gap-5">
-      <CampgroundsFilterBar className="basis-1/4 flex-shrink-0" />
+      <CampgroundsFilterBar className="xl:basis-1/4 flex-shrink-0" />
       <CampgroundsList className="flex-1" campgrounds={campgrounds} />
     </div>
   );
