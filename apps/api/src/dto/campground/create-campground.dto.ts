@@ -1,9 +1,13 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateCampgroundDTO {
   @IsNotEmpty({ message: 'Title is required' })
   @IsString({ message: 'Title must be a string' })
   title: string;
+
+  @IsOptional()
+  @IsString({ message: 'Slug should be a string' })
+  slug?: string;
 
   @IsNotEmpty({ message: 'Price is required' })
   @Min(0, { message: 'Price must be greater than 0' })

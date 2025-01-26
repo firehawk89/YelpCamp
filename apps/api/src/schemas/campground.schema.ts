@@ -13,6 +13,9 @@ export class Campground {
   //   @Prop({ type: [ImageSchema] })
   //   images: Image[];
 
+  @Prop({ required: true, unique: true })
+  slug: string;
+
   @Prop({ required: true, min: 0 })
   price: number;
 

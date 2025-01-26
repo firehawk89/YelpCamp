@@ -6,6 +6,10 @@ export class UpdateCampgroundDTO {
   title?: string;
 
   @IsOptional()
+  @IsString({ message: 'Slug should be a string' })
+  slug?: string;
+
+  @IsOptional()
   @Min(0, { message: 'Price must be greater than 0' })
   @IsNumber({ maxDecimalPlaces: 2 }, { message: 'Price must be a decimal' })
   price?: number;

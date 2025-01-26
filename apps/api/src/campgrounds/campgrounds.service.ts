@@ -10,6 +10,7 @@ import { isValidObjectId, Model } from 'mongoose';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { generateSlug } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
@@ -26,6 +27,11 @@ export class CampgroundsService {
       const foundCampground = await this.campgroundModel.findOne({ title: createCampgroundDto.title }).exec();
       if (foundCampground) {
         throw new ConflictException('Campground already exists');
+      }
+
+      if (!createCampgroundDto.slug) {
+        const slug = generateSlug(createCampgroundDto.title);
+        createCampgroundDto.slug = slug;
       }
 
       const newCampground = new this.campgroundModel(createCampgroundDto);

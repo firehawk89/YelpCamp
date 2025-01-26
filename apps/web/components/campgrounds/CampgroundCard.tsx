@@ -20,7 +20,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
 
       <div className="flex-grow flex gap-4">
         <div className="flex-1 flex flex-col gap-2">
-          <Link href={`/campgrounds/${campground._id}`}>
+          <Link href={`/campgrounds/${campground.slug}`}>
             <h2 className="text-2xl">{campground.title}</h2>
           </Link>
 
@@ -60,7 +60,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
               <span className="text-neutral-500">per night</span>
             </p>
 
-            <Link className={buttonVariants({ variant: 'accent' })} href={`/campgrounds/${campground._id}`}>
+            <Link className={buttonVariants({ variant: 'accent' })} href={`/campgrounds/${campground.slug}`}>
               View Details
             </Link>
           </div>
