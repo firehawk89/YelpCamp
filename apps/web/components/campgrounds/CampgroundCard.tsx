@@ -1,6 +1,6 @@
 import { buttonVariants } from '@repo/ui/button';
 import Card, { CardProps } from '@repo/ui/card';
-import { HeartIcon, StarIcon } from '@repo/ui/icons';
+import { HeartIcon, MapPinIcon, StarIcon } from '@repo/ui/icons';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -20,7 +20,14 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
 
       <div className="flex-grow flex gap-4">
         <div className="flex-1 flex flex-col gap-2">
-          <h2 className="text-2xl">{campground.title}</h2>
+          <Link href={`/campgrounds/${campground._id}`}>
+            <h2 className="text-2xl">{campground.title}</h2>
+          </Link>
+
+          <div className="flex items-center gap-1 text-neutral-500">
+            <MapPinIcon />
+            <span> {campground.location}</span>
+          </div>
 
           <div className="flex items-center gap-2">
             <p className="flex items-center gap-1">
