@@ -10,3 +10,8 @@ export interface Campground {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CampgroundsFilterDto {
+  search?: string;
+  page?: string;
+}

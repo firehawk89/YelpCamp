@@ -1,16 +1,17 @@
 import CampgroundsList from '@/components/campgrounds/CamgroundsList';
 import CampgroundsFilterBar from '@/components/campgrounds/FilterBar';
 import { fetchCampgrounds } from '@/utils/api/campgrounds';
+import { CampgroundsFilterDto } from 'types/campground';
 
 interface CampgroundsPageProps {
-  searchParams?: {
-    search?: string;
-  };
+  searchParams?: CampgroundsFilterDto;
 }
 
 export default async function Campgrounds({ searchParams }: CampgroundsPageProps) {
-  const { search } = (await searchParams) ?? {};
-  const { data: campgrounds, error } = await fetchCampgrounds({ search });
+  const filter = (await searchParams) ?? {};
+
+  const { result, error } = await fetchCampgrounds(filter);
+  const { data: campgrounds, metadata: campgroundsMetadata } = result ?? {};
 
   if (error) {
     throw new Error(error);
@@ -19,7 +20,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
   return (
     <div className="flex gap-5">
       <CampgroundsFilterBar className="xl:basis-1/4 flex-shrink-0" />
-      <CampgroundsList className="flex-1" campgrounds={campgrounds} />
+      <CampgroundsList className="flex-1" campgrounds={campgrounds} paginationData={campgroundsMetadata} />
     </div>
   );
 }
