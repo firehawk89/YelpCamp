@@ -3,15 +3,15 @@ import { ElementType, FC, HTMLAttributes } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
 export const cardVariants = tv({
-  base: 'flex gap-4 rounded-lg bg-white shadow',
+  base: 'flex rounded-lg bg-white shadow overflow-hidden',
   variants: {
     orientation: {
       horizontal: 'flex-row',
       vertical: 'flex-col'
     },
     size: {
-      default: 'p-4',
-      compact: 'p-0'
+      default: 'p-4 gap-4',
+      compact: 'p-0 gap-0'
     }
   },
   defaultVariants: {

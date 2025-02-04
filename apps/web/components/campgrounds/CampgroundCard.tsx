@@ -15,10 +15,10 @@ interface CampgroundCardProps extends CardProps {
 
 const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
   return (
-    <Card component="article" {...props}>
+    <Card component="article" size="compact" {...props}>
       <ImagePlaceholder className="flex-shrink-0 basis-1/3" />
 
-      <div className="flex-grow flex gap-4">
+      <div className="flex-grow flex gap-4 p-4">
         <div className="flex-1 flex flex-col gap-2">
           <Link href={`/campgrounds/${campground.slug}`}>
             <h2 className="text-2xl">{campground.title}</h2>

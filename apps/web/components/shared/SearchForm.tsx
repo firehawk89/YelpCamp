@@ -1,11 +1,12 @@
 'use client';
 
-import { SEARCH_PARAM } from '@/utils/constants';
-import { cn, getSearchParamsString } from '@/utils/misc';
+import { PAGE_PARAM, SEARCH_PARAM } from '@/utils/constants';
+import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
 import Input from '@repo/ui/input';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import useCustomSearchParams from 'hooks/useCustomSearchParams';
+import { usePathname, useRouter } from 'next/navigation';
 import { FC, FormEvent, FormHTMLAttributes } from 'react';
 
 export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
@@ -15,7 +16,8 @@ export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
 const SearchForm: FC<SearchFormProps> = ({ className, label, ...props }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+
+  const { searchParams, getUpdatedSearchParamsString } = useCustomSearchParams();
 
   const defaultValue = searchParams.get(SEARCH_PARAM) || '';
 
@@ -30,9 +32,12 @@ const SearchForm: FC<SearchFormProps> = ({ className, label, ...props }) => {
     }
 
     const params = { [SEARCH_PARAM]: search };
-    const searchParamsString = getSearchParamsString(params);
+    if (searchParams.has(PAGE_PARAM)) {
+      params[PAGE_PARAM] = '1';
+    }
+    const newSearchParamsString = getUpdatedSearchParamsString(params);
 
-    router.push(pathname + (searchParamsString ? `?${searchParamsString}` : ''));
+    router.replace(pathname + (newSearchParamsString ? `?${newSearchParamsString}` : ''));
   };
 
   return (
