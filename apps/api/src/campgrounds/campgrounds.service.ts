@@ -6,14 +6,16 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { isValidObjectId, Model } from 'mongoose';
+import { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { CAMPGROUNDS_PAGE_LIMIT, CAMPGROUNDS_SORT_FIELD, DEFAULT_PAGE } from 'src/helpers/constants';
 import { generateSlug } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
+import { CampgroundsFilterDto, PaginatedResponse } from 'src/types/api';
 
 @Injectable()
 export class CampgroundsService {
@@ -42,9 +44,45 @@ export class CampgroundsService {
     }
   }
 
-  async getAll(search?: string): Promise<Campground[]> {
-    const filters = search ? { title: { $regex: search, $options: 'i' } } : undefined;
-    return this.campgroundModel.find(filters).exec();
+  async getAll(filter?: CampgroundsFilterDto): Promise<PaginatedResponse<Campground>> {
+    const { search, page } = filter ?? {};
+
+    const pageNumber = +page;
+    const validPage = isNaN(pageNumber) || pageNumber < 1 ? DEFAULT_PAGE : pageNumber;
+    const skip = (validPage - 1) * CAMPGROUNDS_PAGE_LIMIT;
+
+    const totalCount = await this.campgroundModel.countDocuments().exec();
+
+    const pipeline: PipelineStage[] = [];
+
+    if (search) {
+      pipeline.push({
+        $match: { title: { $regex: search, $options: 'i' } }
+      });
+    }
+
+    pipeline.push({
+      $facet: {
+        metadata: [
+          { $count: 'count' },
+          {
+            $addFields: {
+              totalCount,
+              page: validPage,
+              totalPages: { $ceil: { $divide: ['$count', CAMPGROUNDS_PAGE_LIMIT] } },
+              limit: CAMPGROUNDS_PAGE_LIMIT,
+              offset: skip
+            }
+          }
+        ],
+        data: [{ $skip: skip }, { $limit: CAMPGROUNDS_PAGE_LIMIT }, { $sort: { [CAMPGROUNDS_SORT_FIELD]: -1 } }]
+      }
+    });
+
+    const [result] = await this.campgroundModel.aggregate<PaginatedResponse<Campground>>(pipeline).exec();
+    result.metadata = { ...result.metadata[0], count: result.data.length };
+
+    return result;
   }
 
   async getById(id: string): Promise<Campground> {
