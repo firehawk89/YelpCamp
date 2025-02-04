@@ -13,3 +13,4 @@ export { WarningIcon } from './WarningIcon';
 export { DangerIcon } from './DangerIcon';
 export { CloseIcon } from './CloseIcon';
 export { MapPinIcon } from './MapPinIcon';
+export { ChevronIcon } from './ChevronIcon';

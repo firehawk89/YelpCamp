@@ -4,7 +4,7 @@ import { VariantProps } from 'tailwind-variants';
 import { tv } from 'tailwind-variants';
 
 export const buttonVariants = tv({
-  base: 'flex items-center rounded-lg active:scale-95 transition-all',
+  base: 'flex items-center rounded-lg active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all',
   variants: {
     variant: {
       default: 'bg-neutral-500 hover:bg-opacity-85',
@@ -62,7 +62,7 @@ export const buttonVariants = tv({
   ]
 });
 
-interface ButtonProps
+export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
     VariantProps<typeof buttonVariants> {
   icon?: ReactNode;
