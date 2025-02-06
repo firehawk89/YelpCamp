@@ -1,6 +1,6 @@
-import { Noto_Sans } from 'next/font/google';
+import { Nunito } from 'next/font/google';
 
-export const noto_sans = Noto_Sans({
+export const nunito = Nunito({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-primary'

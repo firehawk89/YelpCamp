@@ -21,7 +21,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
       <div className="flex-grow flex gap-4 p-4">
         <div className="flex-1 flex flex-col gap-2">
           <Link href={`/campgrounds/${campground.slug}`}>
-            <h2 className="text-2xl">{campground.title}</h2>
+            <h2 className="text-2xl font-medium">{campground.title}</h2>
           </Link>
 
           <div className="flex items-center gap-1 text-neutral-500">
@@ -44,7 +44,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
             </p>
 
             <span className="px-2 py-1 text-sm bg-orange-100 text-neutral-600 rounded-lg">
-              {campground.reviewsCount} reviews
+              {campground.reviewsCount ?? 0} reviews
             </span>
           </div>
 
@@ -56,7 +56,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
 
           <div className="flex flex-col gap-2.5">
             <p className="flex flex-col items-end">
-              <span className="text-black text-xl">{campground.price} $</span>
+              <span className="text-black text-xl font-semibold">{campground.price} $</span>
               <span className="text-neutral-500">per night</span>
             </p>
 

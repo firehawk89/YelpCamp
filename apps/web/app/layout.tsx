@@ -6,7 +6,7 @@ import HeaderContent from '@/components/layout/Header/HeaderContent';
 import '@repo/tailwind-config/styles';
 import { ReactNode } from 'react';
 
-import { noto_sans } from './fonts';
+import { nunito } from './fonts';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`relative bg-neutral-100 ${noto_sans.variable} font-primary`}>
+      <body className={`relative bg-neutral-100 ${nunito.variable} font-primary`}>
         <div className="min-h-dvh flex flex-col">
           <Header>
             <HeaderContent />
