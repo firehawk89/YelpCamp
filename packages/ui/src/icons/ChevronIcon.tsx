@@ -14,7 +14,7 @@ export const ChevronIcon: FC<ChevronIconProps> = ({ className, direction = 'righ
     up: 'rotate-90',
     right: 'rotate-0',
     down: 'rotate-270',
-    left: 'rotate-180'
+    left: 'rotate-180',
   };
 
   return (

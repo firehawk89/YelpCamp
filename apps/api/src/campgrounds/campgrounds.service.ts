@@ -3,7 +3,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, PipelineStage } from 'mongoose';
@@ -58,7 +58,7 @@ export class CampgroundsService {
 
     if (search) {
       pipeline.push({
-        $match: { title: { $regex: search, $options: 'i' } }
+        $match: { title: { $regex: search, $options: 'i' } },
       });
     }
 
@@ -72,12 +72,12 @@ export class CampgroundsService {
               page: validPage,
               totalPages: { $ceil: { $divide: ['$count', CAMPGROUNDS_PAGE_LIMIT] } },
               limit: CAMPGROUNDS_PAGE_LIMIT,
-              offset: skip
-            }
-          }
+              offset: skip,
+            },
+          },
         ],
-        data: [{ $skip: skip }, { $limit: CAMPGROUNDS_PAGE_LIMIT }, { $sort: { [CAMPGROUNDS_SORT_FIELD]: -1 } }]
-      }
+        data: [{ $skip: skip }, { $limit: CAMPGROUNDS_PAGE_LIMIT }, { $sort: { [CAMPGROUNDS_SORT_FIELD]: -1 } }],
+      },
     });
 
     const [result] = await this.campgroundModel.aggregate<PaginatedResponse<Campground>>(pipeline).exec();
@@ -195,7 +195,7 @@ export class CampgroundsService {
       await this.campgroundModel
         .findByIdAndUpdate(campgroundId, {
           rating: newRating,
-          reviewsCount: newReviewsCount
+          reviewsCount: newReviewsCount,
         })
         .exec();
     } catch (error) {

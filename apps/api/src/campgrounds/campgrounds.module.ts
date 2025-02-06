@@ -10,10 +10,10 @@ import { CampgroundsService } from './campgrounds.service';
   imports: [
     MongooseModule.forFeature([
       { name: Campground.name, schema: CampgroundSchema },
-      { name: Review.name, schema: ReviewSchema }
-    ])
+      { name: Review.name, schema: ReviewSchema },
+    ]),
   ],
   providers: [CampgroundsService],
-  controllers: [CampgroundsController]
+  controllers: [CampgroundsController],
 })
 export class CampgroundsModule {}

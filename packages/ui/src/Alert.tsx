@@ -11,51 +11,51 @@ export const alertVariants = tv({
   variants: {
     variant: {
       default: 'bg-white',
-      filled: '!text-white'
+      filled: '!text-white',
     },
     color: {
       info: 'text-info border-info',
       warning: 'text-warning border-warning',
       danger: 'text-danger border-danger',
-      success: 'text-success border-success'
+      success: 'text-success border-success',
     },
     size: {
-      default: 'px-5 py-3'
-    }
+      default: 'px-5 py-3',
+    },
   },
   defaultVariants: {
     variant: 'default',
     color: 'info',
-    size: 'default'
+    size: 'default',
   },
   compoundVariants: [
     {
       variant: 'filled',
       color: 'info',
-      className: 'bg-info'
+      className: 'bg-info',
     },
     {
       variant: 'filled',
       color: 'warning',
-      className: 'bg-warning'
+      className: 'bg-warning',
     },
     {
       variant: 'filled',
       color: 'danger',
-      className: 'bg-danger'
+      className: 'bg-danger',
     },
     {
       variant: 'filled',
       color: 'success',
-      className: 'bg-success'
-    }
-  ]
+      className: 'bg-success',
+    },
+  ],
 });
 
 export const AlertIconMap: Record<string, ReactElement> = {
   info: <InfoIcon />,
   warning: <WarningIcon />,
-  danger: <DangerIcon />
+  danger: <DangerIcon />,
 };
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>, VariantProps<typeof alertVariants> {}

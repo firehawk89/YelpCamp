@@ -10,7 +10,7 @@ export const fetchCampgrounds = async ({ search, page }: CampgroundsFilterDto): 
   try {
     const searchParamsString = getSearchParamsString({
       [SEARCH_PARAM]: search,
-      [PAGE_PARAM]: page
+      [PAGE_PARAM]: page,
     });
 
     const response = await fetch(`${API_ROUTES.CAMPGROUNDS}${searchParamsString ? `?${searchParamsString}` : ''}`);

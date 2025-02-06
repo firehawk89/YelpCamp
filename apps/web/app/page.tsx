@@ -5,16 +5,16 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex-1 flex flex-col justify-center items-center">
+    <div className="flex flex-1 flex-col items-center justify-center">
       <Image
-        className="absolute -z-10 inset-0 object-cover object-center brightness-75"
+        className="absolute inset-0 -z-10 object-cover object-center brightness-75"
         src="/landing-page-camp-background.avif"
         alt="Camp"
         sizes="100vw"
         fill
       />
-      <div className="flex flex-col items-center gap-3 text-white text-center">
-        <h1 className="text-3xl font-medium font-secondary">Welcome to YelpCamp!</h1>
+      <div className="flex flex-col items-center gap-3 text-center text-white">
+        <h1 className="font-secondary text-3xl font-medium">Welcome to YelpCamp!</h1>
         <p className="text-xl">
           Jump right in and explore our many campgrounds. <br />
           Feel free to share some of your own and comment on others!

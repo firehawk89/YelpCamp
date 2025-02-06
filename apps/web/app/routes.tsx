@@ -12,7 +12,7 @@ type Route = {
 
 export const MAIN_ROUTES: Route[] = [
   { path: '/', label: 'Home' },
-  { path: '/campgrounds', label: 'Campgrounds' }
+  { path: '/campgrounds', label: 'Campgrounds' },
 ];
 
 export const USER_UNAUTHENTICATED_ROUTES: Route[] = [
@@ -20,14 +20,14 @@ export const USER_UNAUTHENTICATED_ROUTES: Route[] = [
     path: '/login',
     label: 'Sign In',
     icon: <UserIcon />,
-    linkStyles: buttonVariants({ variant: 'outline', color: 'info', size: 'sm' })
+    linkStyles: buttonVariants({ variant: 'outline', color: 'info', size: 'sm' }),
   },
   {
     path: '/register',
     label: 'Sign Up',
     icon: <UserPlusIcon />,
-    linkStyles: buttonVariants({ variant: 'outline', color: 'success', size: 'sm' })
-  }
+    linkStyles: buttonVariants({ variant: 'outline', color: 'success', size: 'sm' }),
+  },
 ];
 
 export const USER_AUTHENTICATED_ROUTES: Route[] = [
@@ -35,8 +35,8 @@ export const USER_AUTHENTICATED_ROUTES: Route[] = [
     path: '/logout',
     label: 'Log Out',
     icon: <LogOutIcon />,
-    linkStyles: buttonVariants({ variant: 'outline', color: 'destructive', size: 'sm' })
-  }
+    linkStyles: buttonVariants({ variant: 'outline', color: 'destructive', size: 'sm' }),
+  },
 ];
 
 export const AUTH_ROUTES = [...USER_UNAUTHENTICATED_ROUTES, ...USER_AUTHENTICATED_ROUTES];

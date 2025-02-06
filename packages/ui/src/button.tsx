@@ -12,12 +12,12 @@ export const buttonVariants = tv({
       accent: 'bg-accent hover:bg-opacity-85',
       info: 'bg-info hover:bg-opacity-85',
       success: 'bg-success hover:bg-opacity-85',
-      destructive: 'bg-danger hover:bg-opacity-85'
+      destructive: 'bg-danger hover:bg-opacity-85',
     },
     size: {
       default: 'px-3 py-1.5',
       sm: 'px-2 py-1 text-sm',
-      icon: 'p-2'
+      icon: 'p-2',
     },
     color: {
       default: 'text-white',
@@ -25,41 +25,41 @@ export const buttonVariants = tv({
       info: 'text-info',
       warning: 'text-warning',
       destructive: 'text-danger',
-      success: 'text-success'
-    }
+      success: 'text-success',
+    },
   },
   defaultVariants: {
     variant: 'default',
     size: 'default',
-    color: 'default'
+    color: 'default',
   },
   compoundVariants: [
     {
       variant: 'outline',
       color: 'default',
-      className: 'text-neutral-500 hover:text-white'
+      className: 'text-neutral-500 hover:text-white',
     },
     {
       variant: 'outline',
       color: 'accent',
-      className: 'border-accent hover:bg-accent hover:text-white'
+      className: 'border-accent hover:bg-accent hover:text-white',
     },
     {
       variant: 'outline',
       color: 'info',
-      className: 'border-info hover:bg-info hover:text-white'
+      className: 'border-info hover:bg-info hover:text-white',
     },
     {
       variant: 'outline',
       color: 'success',
-      className: 'border-success hover:bg-success hover:text-white'
+      className: 'border-success hover:bg-success hover:text-white',
     },
     {
       variant: 'outline',
       color: 'destructive',
-      className: 'border-danger hover:bg-danger hover:text-white'
-    }
-  ]
+      className: 'border-danger hover:bg-danger hover:text-white',
+    },
+  ],
 });
 
 export interface ButtonProps

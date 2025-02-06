@@ -92,7 +92,7 @@ export class ReviewsService {
       await this.campgroundModel
         .findByIdAndUpdate(reviewCampground._id, {
           rating: newRating,
-          reviewsCount: newReviewsCount
+          reviewsCount: newReviewsCount,
         })
         .exec();
     } catch (error) {

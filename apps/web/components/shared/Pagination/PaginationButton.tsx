@@ -23,7 +23,7 @@ const PaginationButton: FC<PaginationButtonProps> = ({
   return (
     <Button
       className={cn(
-        'cursor-pointer w-10 h-10 justify-center transition-none',
+        'h-10 w-10 cursor-pointer justify-center transition-none',
         isActive && 'pointer-events-none',
         className
       )}

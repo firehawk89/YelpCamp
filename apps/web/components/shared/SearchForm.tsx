@@ -41,7 +41,7 @@ const SearchForm: FC<SearchFormProps> = ({ className, label, ...props }) => {
   };
 
   return (
-    <form className={cn('w-full flex flex-col gap-2', className)} onSubmit={handleSearch} {...props}>
+    <form className={cn('flex w-full flex-col gap-2', className)} onSubmit={handleSearch} {...props}>
       <label className={cn('font-medium', !label && 'sr-only')} htmlFor={SEARCH_PARAM}>
         {label ? label : 'Search'}
       </label>

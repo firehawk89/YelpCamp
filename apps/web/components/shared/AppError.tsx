@@ -10,7 +10,7 @@ export enum ErrorType {
   Unauthorized = 401,
   Forbidden = 403,
   NotFound = 404,
-  InternalServerError = 500
+  InternalServerError = 500,
 }
 
 interface AppErrorProps extends HTMLAttributes<HTMLDivElement> {
@@ -25,13 +25,13 @@ const AppError: FC<AppErrorProps> = ({
   code = ErrorType.InternalServerError,
   title,
   message,
-  onTryAgain
+  onTryAgain,
 }) => {
   return (
-    <div className={cn('flex-1 flex flex-col justify-center items-center gap-6 text-center', className)}>
+    <div className={cn('flex flex-1 flex-col items-center justify-center gap-6 text-center', className)}>
       <div className="text-center">
-        {code && <span className="text-[5rem] md:text-[8rem] leading-none">{code}</span>}
-        <h1 className="text-xl md:text-3xl font-medium">{title}</h1>
+        {code && <span className="text-[5rem] leading-none md:text-[8rem]">{code}</span>}
+        <h1 className="text-xl font-medium md:text-3xl">{title}</h1>
       </div>
       <div className="flex flex-col items-center gap-6">
         <p className="md:text-lg">{message}</p>

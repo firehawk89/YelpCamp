@@ -1,7 +1,7 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const API_ROUTES: Record<string, string> = {
-  CAMPGROUNDS: `${API_URL}/campgrounds`
+  CAMPGROUNDS: `${API_URL}/campgrounds`,
 };
 
 export const SEARCH_PARAM: string = 'search';

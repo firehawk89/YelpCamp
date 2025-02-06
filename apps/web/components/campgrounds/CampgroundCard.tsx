@@ -18,8 +18,8 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
     <Card component="article" size="compact" {...props}>
       <ImagePlaceholder className="flex-shrink-0 basis-1/3" />
 
-      <div className="flex-grow flex gap-4 p-4">
-        <div className="flex-1 flex flex-col gap-2">
+      <div className="flex flex-grow gap-4 p-4">
+        <div className="flex flex-1 flex-col gap-2">
           <Link href={`/campgrounds/${campground.slug}`}>
             <h2 className="text-2xl font-medium">{campground.title}</h2>
           </Link>
@@ -43,7 +43,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
               )}
             </p>
 
-            <span className="px-2 py-1 text-sm bg-orange-100 text-neutral-600 rounded-lg">
+            <span className="rounded-lg bg-orange-100 px-2 py-1 text-sm text-neutral-600">
               {campground.reviewsCount ?? 0} reviews
             </span>
           </div>
@@ -51,12 +51,12 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
           <p className="text-neutral-500">{campground.description}</p>
         </div>
 
-        <div className="flex flex-col gap-4 justify-between items-end">
-          <HeartIcon className="cursor-pointer size-8 text-danger hover:scale-110 active:scale-100 transition-all" />
+        <div className="flex flex-col items-end justify-between gap-4">
+          <HeartIcon className="text-danger size-8 cursor-pointer transition-all hover:scale-110 active:scale-100" />
 
           <div className="flex flex-col gap-2.5">
             <p className="flex flex-col items-end">
-              <span className="text-black text-xl font-semibold">{campground.price} $</span>
+              <span className="text-xl font-semibold text-black">{campground.price} $</span>
               <span className="text-neutral-500">per night</span>
             </p>
 

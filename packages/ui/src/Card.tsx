@@ -7,17 +7,17 @@ export const cardVariants = tv({
   variants: {
     orientation: {
       horizontal: 'flex-row',
-      vertical: 'flex-col'
+      vertical: 'flex-col',
     },
     size: {
       default: 'p-4 gap-4',
-      compact: 'p-0 gap-0'
-    }
+      compact: 'p-0 gap-0',
+    },
   },
   defaultVariants: {
     orientation: 'horizontal',
-    size: 'default'
-  }
+    size: 'default',
+  },
 });
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {

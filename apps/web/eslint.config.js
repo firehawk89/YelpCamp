@@ -5,7 +5,7 @@ export default [
   ...nextJsConfig,
   {
     rules: {
-      'react/no-unescaped-entities': 'off'
-    }
-  }
+      'react/no-unescaped-entities': 'off',
+    },
+  },
 ];
