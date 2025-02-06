@@ -1,6 +1,6 @@
 import { SVGProps } from 'react';
 
-export interface IconProps extends SVGProps<SVGSVGElement> {}
+export type IconProps = SVGProps<SVGSVGElement>;
 
 export { HeartIcon } from './HeartIcon';
 export { ImageIcon } from './ImageIcon';

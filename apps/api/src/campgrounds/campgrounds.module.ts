@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CampgroundsService } from './campgrounds.service';
-import { CampgroundsController } from './campgrounds.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Campground, CampgroundSchema } from 'src/schemas/campground.schema';
 import { Review, ReviewSchema } from 'src/schemas/review.schema';
+
+import { CampgroundsController } from './campgrounds.controller';
+import { CampgroundsService } from './campgrounds.service';
 
 @Module({
   imports: [

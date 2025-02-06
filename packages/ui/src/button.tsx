@@ -69,7 +69,7 @@ export interface ButtonProps
 }
 
 const Button: FC<ButtonProps> = ({ children, variant, size, color, icon, className, ...props }) => (
-  <button className={cn(buttonVariants({ variant, size: !!icon ? 'icon' : size, color }), className)} {...props}>
+  <button className={cn(buttonVariants({ variant, size: icon ? 'icon' : size, color }), className)} {...props}>
     {icon} {children}
   </button>
 );

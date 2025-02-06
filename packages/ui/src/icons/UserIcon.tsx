@@ -1,10 +1,7 @@
 import { cn } from '@/utils/misc';
 import { FC } from 'react';
-import { IconProps } from '.';
 
-interface Props {
-  className?: string;
-}
+import { IconProps } from '.';
 
 export const UserIcon: FC<IconProps> = ({ className, ...props }) => (
   <svg

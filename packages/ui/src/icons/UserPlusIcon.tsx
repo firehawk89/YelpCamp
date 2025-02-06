@@ -1,5 +1,6 @@
 import { cn } from '@/utils/misc';
 import { FC } from 'react';
+
 import { IconProps } from '.';
 
 export const UserPlusIcon: FC<IconProps> = ({ className, ...props }) => (

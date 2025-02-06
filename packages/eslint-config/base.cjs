@@ -1,16 +1,16 @@
-import js from '@eslint/js';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import turboPlugin from 'eslint-plugin-turbo';
-import tseslint from 'typescript-eslint';
-import onlyWarn from 'eslint-plugin-only-warn';
-import perfectionist from 'eslint-plugin-perfectionist';
+const js = require('@eslint/js');
+const eslintConfigPrettier = require('eslint-config-prettier');
+const turboPlugin = require('eslint-plugin-turbo');
+const tseslint = require('typescript-eslint');
+const onlyWarn = require('eslint-plugin-only-warn');
+const perfectionist = require('eslint-plugin-perfectionist');
 
 /**
  * A shared ESLint configuration for the repository.
  *
  * @type {import("eslint").Linter.Config}
- * */
-export const config = [
+ */
+module.exports = [
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
@@ -20,6 +20,7 @@ export const config = [
       perfectionist
     },
     rules: {
+      '@typescript-eslint/no-required-imports': 'off',
       'turbo/no-undeclared-env-vars': 'warn',
       'perfectionist/sort-imports': [
         'error',

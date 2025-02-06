@@ -1,5 +1,6 @@
 import { cn } from '@/utils/misc';
 import { FC } from 'react';
+
 import { IconProps } from '.';
 
 export const HeartIcon: FC<IconProps> = ({ className, ...props }) => (

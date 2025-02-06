@@ -1,6 +1,7 @@
-import { FC } from 'react';
-import { IconProps } from '.';
 import { cn } from '@/utils/misc';
+import { FC } from 'react';
+
+import { IconProps } from '.';
 
 type ChevronDirection = 'up' | 'down' | 'left' | 'right';
 
@@ -30,4 +31,3 @@ export const ChevronIcon: FC<ChevronIconProps> = ({ className, direction = 'righ
     </svg>
   );
 };
-

@@ -1,6 +1,7 @@
-import { FC } from 'react';
-import { IconProps } from '.';
 import { cn } from '@/utils/misc';
+import { FC } from 'react';
+
+import { IconProps } from '.';
 
 export const MapPinIcon: FC<IconProps> = ({ className, ...props }) => (
   <svg

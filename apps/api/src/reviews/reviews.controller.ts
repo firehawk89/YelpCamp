@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
-import { ReviewsService } from './reviews.service';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+
+import { ReviewsService } from './reviews.service';
 
 @Controller('reviews')
 export class ReviewsController {

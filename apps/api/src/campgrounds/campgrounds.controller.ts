@@ -1,9 +1,11 @@
+import type { CampgroundsFilterDto } from 'src/types/api';
+
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { CampgroundsService } from './campgrounds.service';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
-import type { CampgroundsFilterDto } from 'src/types/api';
+
+import { CampgroundsService } from './campgrounds.service';
 
 @Controller('campgrounds')
 export class CampgroundsController {
