@@ -11,8 +11,3 @@ export interface PaginatedResponse<T> {
   metadata: PaginationMetadata;
   data: T[];
 }
-
-export interface CampgroundsFilterDto {
-  search?: string;
-  page?: string;
-}

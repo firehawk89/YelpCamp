@@ -1,6 +1,5 @@
-import type { CampgroundsFilterDto } from 'src/types/api';
-
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
@@ -12,7 +11,7 @@ export class CampgroundsController {
   constructor(private readonly campgroundsService: CampgroundsService) {}
 
   @Get()
-  getAllCampgrounds(@Query() filter?: CampgroundsFilterDto) {
+  getAllCampgrounds(@Query() filter?: CampgroundsFilterDTO) {
     return this.campgroundsService.getAll(filter);
   }
 

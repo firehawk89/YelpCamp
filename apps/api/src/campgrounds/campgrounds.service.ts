@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, PipelineStage } from 'mongoose';
+import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
@@ -15,7 +16,7 @@ import { generateSlug } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
-import { CampgroundsFilterDto, PaginatedResponse } from 'src/types/api';
+import { PaginatedResponse } from 'src/types/api';
 
 @Injectable()
 export class CampgroundsService {
@@ -44,7 +45,7 @@ export class CampgroundsService {
     }
   }
 
-  async getAll(filter?: CampgroundsFilterDto): Promise<PaginatedResponse<Campground>> {
+  async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<Campground>> {
     const { search, page } = filter ?? {};
 
     const pageNumber = +page;
