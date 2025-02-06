@@ -13,6 +13,8 @@ interface CampgroundsListProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const CampgroundsList: FC<CampgroundsListProps> = ({ campgrounds, paginationData, className, ...props }) => {
+  const shouldDisplayPagination = !!paginationData?.totalPages && paginationData?.totalPages > 1;
+
   if (!campgrounds?.length) {
     return (
       <Alert className="w-full text-center" color="info">
@@ -24,7 +26,7 @@ const CampgroundsList: FC<CampgroundsListProps> = ({ campgrounds, paginationData
   return (
     <section className={cn('flex flex-col gap-7', className)} {...props}>
       {campgrounds?.map((campground) => <CampgroundCard key={campground._id} campground={campground} />)}
-      <Pagination page={paginationData?.page} totalPages={paginationData?.totalPages ?? 1} />
+      {shouldDisplayPagination && <Pagination page={paginationData?.page} totalPages={paginationData?.totalPages} />}
     </section>
   );
 };
