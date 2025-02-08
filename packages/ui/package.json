@@ -9,7 +9,8 @@
     "./card": "./src/Card.tsx",
     "./input": "./src/Input.tsx",
     "./alert": "./src/Alert.tsx",
-    "./select": "./src/Select.tsx"
+    "./select": "./src/Select.tsx",
+    "./divider": "./src/Divider.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
