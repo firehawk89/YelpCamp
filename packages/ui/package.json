@@ -4,11 +4,12 @@
   "type": "module",
   "private": true,
   "exports": {
+    "./icons": "./src/icons/index.tsx",
     "./button": "./src/Button.tsx",
     "./card": "./src/Card.tsx",
     "./input": "./src/Input.tsx",
     "./alert": "./src/Alert.tsx",
-    "./icons": "./src/icons/index.tsx"
+    "./select": "./src/Select.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
