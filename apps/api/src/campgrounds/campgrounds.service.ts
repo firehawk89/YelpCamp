@@ -11,7 +11,7 @@ import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto'
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
-import { CAMPGROUNDS_PAGE_LIMIT, CAMPGROUNDS_SORT_FIELD, DEFAULT_PAGE } from 'src/helpers/constants';
+import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_PAGE, DEFAULT_SORT_ORDER } from 'src/helpers/constants';
 import { generateSlug } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
@@ -46,11 +46,11 @@ export class CampgroundsService {
   }
 
   async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<Campground>> {
-    const { search, page } = filter ?? {};
+    const { search, page, sortBy = DEFAULT_SORT_FIELD, sortOrder = DEFAULT_SORT_ORDER } = filter ?? {};
 
     const pageNumber = +page;
     const validPage = isNaN(pageNumber) || pageNumber < 1 ? DEFAULT_PAGE : pageNumber;
-    const skip = (validPage - 1) * CAMPGROUNDS_PAGE_LIMIT;
+    const skip = (validPage - 1) * DEFAULT_PAGE_LIMIT;
 
     const totalCount = await this.campgroundModel.countDocuments().exec();
 
@@ -62,23 +62,28 @@ export class CampgroundsService {
       });
     }
 
-    pipeline.push({
-      $facet: {
-        metadata: [
-          { $count: 'count' },
-          {
-            $addFields: {
-              totalCount,
-              page: validPage,
-              totalPages: { $ceil: { $divide: ['$count', CAMPGROUNDS_PAGE_LIMIT] } },
-              limit: CAMPGROUNDS_PAGE_LIMIT,
-              offset: skip,
-            },
-          },
-        ],
-        data: [{ $skip: skip }, { $limit: CAMPGROUNDS_PAGE_LIMIT }, { $sort: { [CAMPGROUNDS_SORT_FIELD]: -1 } }],
+    pipeline.push(
+      {
+        $sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
       },
-    });
+      {
+        $facet: {
+          metadata: [
+            { $count: 'count' },
+            {
+              $addFields: {
+                totalCount,
+                page: validPage,
+                totalPages: { $ceil: { $divide: ['$count', DEFAULT_PAGE_LIMIT] } },
+                limit: DEFAULT_PAGE_LIMIT,
+                offset: skip,
+              },
+            },
+          ],
+          data: [{ $skip: skip }, { $limit: DEFAULT_PAGE_LIMIT }],
+        },
+      }
+    );
 
     const [result] = await this.campgroundModel.aggregate<PaginatedResponse<Campground>>(pipeline).exec();
     result.metadata = { ...result.metadata[0], count: result.data.length };

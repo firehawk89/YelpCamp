@@ -1,4 +1,7 @@
-export const DEFAULT_PAGE = 1;
+import { SortOrder } from 'src/types/api';
 
-export const CAMPGROUNDS_SORT_FIELD = 'createdAt';
-export const CAMPGROUNDS_PAGE_LIMIT = 10;
+export const DEFAULT_PAGE: number = 1;
+export const DEFAULT_PAGE_LIMIT: number = 4;
+
+export const DEFAULT_SORT_FIELD = 'createdAt';
+export const DEFAULT_SORT_ORDER: SortOrder = 'desc';
