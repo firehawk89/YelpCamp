@@ -4,7 +4,7 @@ import { FC, HTMLAttributes, useEffect, useRef, useState } from 'react';
 import Card from './Card';
 import { ChevronIcon } from './icons';
 
-export type SelectOption = { value: string; label: string };
+export type SelectOption<T = string> = { value: T; label: string };
 
 export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   options: SelectOption[];

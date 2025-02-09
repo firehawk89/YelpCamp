@@ -1,6 +1,6 @@
 'use client';
 
-import { PAGE_PARAM, SEARCH_PARAM } from '@/utils/constants';
+import { DEFAULT_PAGE, PAGE_PARAM, SEARCH_PARAM } from '@/utils/constants';
 import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
@@ -33,7 +33,7 @@ const SearchForm: FC<SearchFormProps> = ({ className, label, ...props }) => {
 
     const params = { [SEARCH_PARAM]: search };
     if (searchParams.has(PAGE_PARAM)) {
-      params[PAGE_PARAM] = '1';
+      params[PAGE_PARAM] = DEFAULT_PAGE.toString();
     }
     const newSearchParamsString = getUpdatedSearchParamsString(params);
 

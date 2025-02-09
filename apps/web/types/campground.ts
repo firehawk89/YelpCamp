@@ -1,3 +1,5 @@
+import { SortOptions } from './api';
+
 export interface Campground {
   _id: string;
   title: string;
@@ -11,7 +13,7 @@ export interface Campground {
   updatedAt: string;
 }
 
-export interface CampgroundsFilterDto {
+export interface CampgroundsFilterDto extends SortOptions {
   search?: string;
   page?: string;
 }

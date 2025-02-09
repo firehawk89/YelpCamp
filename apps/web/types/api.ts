@@ -1,3 +1,8 @@
+export type ApiResponse<T> = Promise<{
+  result?: T;
+  error?: string;
+}>;
+
 export interface PaginationMetadata {
   count: number;
   totalCount: number;
@@ -12,9 +17,11 @@ export interface PaginatedResponse<T> {
   data: T[];
 }
 
-export type ApiResponse<T> = Promise<{
-  result?: T;
-  error?: string;
-}>;
-
 export type PaginatedApiResponse<T> = ApiResponse<PaginatedResponse<T>>;
+
+export type SortOrder = 'asc' | 'desc';
+
+export type SortOptions = {
+  sortBy?: string;
+  sortOrder?: SortOrder;
+};

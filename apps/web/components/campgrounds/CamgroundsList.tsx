@@ -6,6 +6,7 @@ import { Campground } from 'types/campground';
 
 import Pagination from '../shared/Pagination';
 import CampgroundCard from './CampgroundCard';
+import CampgroundsSortBar from './SortBar';
 
 interface CampgroundsListProps extends HTMLAttributes<HTMLDivElement> {
   campgrounds?: Campground[];
@@ -24,9 +25,16 @@ const CampgroundsList: FC<CampgroundsListProps> = ({ campgrounds, paginationData
   }
 
   return (
-    <section className={cn('flex flex-col gap-7', className)} {...props}>
-      {campgrounds?.map((campground) => <CampgroundCard key={campground._id} campground={campground} />)}
-      {shouldDisplayPagination && <Pagination page={paginationData?.page} totalPages={paginationData?.totalPages} />}
+    <section className={cn('flex flex-col gap-3', className)} {...props}>
+      <CampgroundsSortBar />
+
+      <div className="flex flex-col gap-7">
+        {campgrounds?.map((campground) => <CampgroundCard key={campground._id} campground={campground} />)}
+      </div>
+
+      {shouldDisplayPagination && (
+        <Pagination className="mt-5" page={paginationData?.page} totalPages={paginationData?.totalPages} />
+      )}
     </section>
   );
 };
