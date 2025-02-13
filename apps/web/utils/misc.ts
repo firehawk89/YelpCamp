@@ -3,8 +3,6 @@ import { twMerge } from 'tailwind-merge';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-export const isHomePage = (pathname: string) => pathname === '/';
-
 export const getSearchParamsString = (params: Record<string, unknown>, existingParams?: string | URLSearchParams) => {
   const searchParams = new URLSearchParams(existingParams);
 

@@ -9,7 +9,10 @@ interface HeaderAuthLinkProps extends PropsWithChildren, LinkProps {
 
 const HeaderLink: FC<HeaderAuthLinkProps> = ({ icon, children, className, ...props }) => (
   <Link
-    className={cn('flex items-center gap-1 text-lg font-medium transition-colors hover:text-orange-500', className)}
+    className={cn(
+      'flex w-fit items-center gap-1 text-lg font-medium transition-colors hover:text-orange-500',
+      className
+    )}
     {...props}
   >
     {icon} {children}

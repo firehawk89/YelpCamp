@@ -22,9 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`relative bg-neutral-100 ${nunito.variable} font-primary`}>
         <div className="flex min-h-dvh flex-col">
-          <Header>
-            <HeaderContent />
-          </Header>
+          <Header />
           <main className="container flex flex-1 flex-col py-10">{children}</main>
           <Footer />
         </div>

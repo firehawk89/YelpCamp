@@ -1,15 +1,45 @@
-'use client';
-
-import { cn, isHomePage } from '@/utils/misc';
-import { usePathname } from 'next/navigation';
+import Logo from '@/components/shared/Logo';
+import { cn } from '@/utils/misc';
+import { MAIN_ROUTES, USER_AUTHENTICATED_ROUTES, USER_UNAUTHENTICATED_ROUTES } from 'app/routes';
 import { FC, HTMLAttributes } from 'react';
 
-const Header: FC<HTMLAttributes<HTMLDivElement>> = ({ children, className, ...props }) => {
-  const pathname = usePathname();
+import HeaderLink from './HeaderLink';
+import HeaderMenu from './HeaderMenu';
+import MobileMenu from './MobileMenu';
+
+const Header: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
+  const user = null;
+  const authRoutes = !user ? USER_UNAUTHENTICATED_ROUTES : USER_AUTHENTICATED_ROUTES;
 
   return (
-    <header className={cn('py-5', className, isHomePage(pathname) ? 'bg-transparent' : 'bg-white')} {...props}>
-      <div className="container">{children}</div>
+    <header className={cn('bg-white py-2.5 lg:py-5', className)} {...props}>
+      <div className="container">
+        <nav className={cn('flex items-center justify-between gap-3')}>
+          <Logo className="basis-1/3" />
+
+          <HeaderMenu className="max-lg:hidden">
+            {MAIN_ROUTES.map((route) => (
+              <li key={route.label}>
+                <HeaderLink className={route.linkStyles} href={route.path} icon={route.icon}>
+                  {route.label}
+                </HeaderLink>
+              </li>
+            ))}
+          </HeaderMenu>
+
+          <HeaderMenu className="basis-1/3 justify-end max-lg:hidden">
+            {authRoutes.map((route) => (
+              <li key={route.label}>
+                <HeaderLink className={route.linkStyles} href={route.path} icon={route.icon}>
+                  {route.label}
+                </HeaderLink>
+              </li>
+            ))}
+          </HeaderMenu>
+
+          <MobileMenu className="lg:hidden" />
+        </nav>
+      </div>
     </header>
   );
 };
