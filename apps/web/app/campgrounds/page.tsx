@@ -1,6 +1,7 @@
 import CampgroundsList from '@/components/campgrounds/CamgroundsList';
 import CampgroundsFilterBar from '@/components/campgrounds/FilterBar';
 import { fetchCampgrounds } from '@/utils/api/campgrounds';
+import Card from '@repo/ui/card';
 import { CampgroundsFilterDto } from 'types/campground';
 
 interface CampgroundsPageProps {
@@ -19,7 +20,10 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
 
   return (
     <div className="flex gap-5">
-      <CampgroundsFilterBar className="flex-shrink-0 xl:basis-1/4" />
+      <aside className="hidden flex-shrink-0 lg:block xl:basis-1/4">
+        <CampgroundsFilterBar />
+      </aside>
+
       <CampgroundsList className="flex-1" campgrounds={campgrounds} paginationData={campgroundsMetadata} />
     </div>
   );

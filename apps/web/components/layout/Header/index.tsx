@@ -37,7 +37,7 @@ const Header: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => 
             ))}
           </HeaderMenu>
 
-          <MobileMenu className="lg:hidden" />
+          <MobileMenu overlayClassName="lg:hidden" />
         </nav>
       </div>
     </header>

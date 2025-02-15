@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import HeaderContent from '@/components/layout/Header/HeaderContent';
 import '@repo/tailwind-config/styles';
 import { ReactNode } from 'react';
 

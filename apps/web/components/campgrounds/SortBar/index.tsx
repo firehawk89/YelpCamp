@@ -9,6 +9,7 @@ import useCustomSearchParams from 'hooks/useCustomSearchParams';
 import { usePathname, useRouter } from 'next/navigation';
 import { FC } from 'react';
 
+import CampgroundsMobileFilterBar from '../FilterBar/MobileFilterBar';
 import { DEFAULT_SORT_BY_OPTION, DEFAULT_SORT_ORDER_OPTION, SORT_BY_OPTIONS, SORT_ORDER_OPTIONS } from './helpers';
 import SortControls from './SortControls';
 
@@ -37,21 +38,25 @@ const CampgroundsSortBar: FC<CardProps> = ({ className, ...props }) => {
 
   return (
     <div className={cn('flex items-center gap-4', className)} {...props}>
-      <SortControls
-        label="Sort by"
-        options={SORT_BY_OPTIONS}
-        selectedOption={selectedSortByOption}
-        handleSort={(sortOption) => handleSort(sortOption, SORT_BY_PARAM)}
-      />
+      <div className="flex h-full gap-x-4 gap-y-2 max-sm:flex-col sm:items-center sm:py-2 lg:py-0">
+        <SortControls
+          label="Sort by"
+          options={SORT_BY_OPTIONS}
+          selectedOption={selectedSortByOption}
+          handleSort={(sortOption) => handleSort(sortOption, SORT_BY_PARAM)}
+        />
 
-      <Divider orientation="vertical" />
+        <Divider className="max-sm:hidden" orientation="vertical" />
 
-      <SortControls
-        label="Sort order"
-        options={SORT_ORDER_OPTIONS}
-        selectedOption={selectedSortOrderOption}
-        handleSort={(sortOption) => handleSort(sortOption, SORT_ORDER_PARAM)}
-      />
+        <SortControls
+          label="Sort order"
+          options={SORT_ORDER_OPTIONS}
+          selectedOption={selectedSortOrderOption}
+          handleSort={(sortOption) => handleSort(sortOption, SORT_ORDER_PARAM)}
+        />
+      </div>
+
+      <CampgroundsMobileFilterBar buttonClassName="ml-auto" overlayClassName="lg:hidden" />
     </div>
   );
 };

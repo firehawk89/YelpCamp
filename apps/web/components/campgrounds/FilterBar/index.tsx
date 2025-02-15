@@ -5,7 +5,7 @@ import { FC } from 'react';
 
 const CampgroundsFilterBar: FC<CardProps> = ({ className, ...props }) => {
   return (
-    <Card component="aside" className={cn(className)} {...props}>
+    <Card className={cn('flex-col', className)} {...props}>
       <SearchForm label="Search by name" />
     </Card>
   );
