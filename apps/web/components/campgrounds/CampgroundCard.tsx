@@ -1,4 +1,5 @@
-import { buttonVariants } from '@repo/ui/button';
+import { cn } from '@/utils/misc';
+import Button, { buttonVariants } from '@repo/ui/button';
 import Card, { CardProps } from '@repo/ui/card';
 import { HeartIcon, MapPinIcon, StarIcon } from '@repo/ui/icons';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
@@ -15,10 +16,10 @@ interface CampgroundCardProps extends CardProps {
 
 const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
   return (
-    <Card component="article" size="compact" {...props}>
+    <Card className="relative max-sm:flex-col" component="article" size="compact" {...props}>
       <ImagePlaceholder className="flex-shrink-0 basis-1/3" />
 
-      <div className="flex flex-grow gap-4 p-4">
+      <div className="flex flex-grow gap-4 p-4 max-sm:flex-col">
         <div className="flex flex-1 flex-col gap-2">
           <Link href={`/campgrounds/${campground.slug}`}>
             <h2 className="text-2xl font-medium">{campground.title}</h2>
@@ -29,7 +30,7 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
             <span> {campground.location}</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <p className="flex items-center gap-1">
               <StarIcon className="fill-accent text-accent" />
 
@@ -48,19 +49,27 @@ const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
             </span>
           </div>
 
-          <p className="text-neutral-500">{campground.description}</p>
+          {campground.description && <p className="text-neutral-500">{campground.description}</p>}
         </div>
 
-        <div className="flex flex-col items-end justify-between gap-4">
-          <HeartIcon className="text-danger size-8 cursor-pointer transition-all hover:scale-110 active:scale-100" />
+        <div className="flex flex-col justify-between gap-4 sm:items-end">
+          <Button
+            className="max-sm:absolute max-sm:right-4 max-sm:top-4 max-sm:z-[5]"
+            color="destructive"
+            size="icon"
+            icon={<HeartIcon className="size-7" />}
+          />
 
           <div className="flex flex-col gap-2.5">
-            <p className="flex flex-col items-end">
-              <span className="text-xl font-semibold text-black">{campground.price} $</span>
+            <p className="flex items-center max-sm:justify-center max-sm:gap-2 sm:flex-col sm:items-end">
+              <span className="text-lg font-semibold text-black">{campground.price} $</span>
               <span className="text-neutral-500">per night</span>
             </p>
 
-            <Link className={buttonVariants({ variant: 'accent' })} href={`/campgrounds/${campground.slug}`}>
+            <Link
+              className={cn('justify-center', buttonVariants({ variant: 'accent' }))}
+              href={`/campgrounds/${campground.slug}`}
+            >
               View Details
             </Link>
           </div>

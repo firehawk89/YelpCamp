@@ -7,20 +7,20 @@ export const buttonVariants = tv({
   base: 'flex items-center rounded-lg active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all',
   variants: {
     variant: {
-      default: 'bg-neutral-500 hover:bg-opacity-85',
+      default: 'bg-transparent hover:opacity-80',
       outline: 'bg-transparent border border-neutral-500 hover:bg-neutral-500',
-      accent: 'bg-accent hover:bg-opacity-85',
-      info: 'bg-info hover:bg-opacity-85',
-      success: 'bg-success hover:bg-opacity-85',
-      destructive: 'bg-danger hover:bg-opacity-85',
+      accent: 'bg-accent hover:bg-opacity-80',
+      info: 'bg-info hover:bg-opacity-80',
+      success: 'bg-success hover:bg-opacity-80',
+      destructive: 'bg-danger hover:bg-opacity-80',
     },
     size: {
       default: 'px-3 py-1.5',
       sm: 'px-2 py-1 text-sm',
-      icon: 'p-2',
+      icon: 'p-1.5',
     },
     color: {
-      default: 'text-white',
+      default: 'text-neutral-700',
       accent: 'text-accent',
       info: 'text-info',
       warning: 'text-warning',
@@ -35,9 +35,25 @@ export const buttonVariants = tv({
   },
   compoundVariants: [
     {
+      variant: 'accent',
+      className: 'text-white',
+    },
+    {
+      variant: 'info',
+      className: 'text-white',
+    },
+    {
+      variant: 'success',
+      className: 'text-white',
+    },
+    {
+      variant: 'destructive',
+      className: 'text-white',
+    },
+    {
       variant: 'outline',
       color: 'default',
-      className: 'text-neutral-500 hover:text-white',
+      className: 'hover:text-white',
     },
     {
       variant: 'outline',
