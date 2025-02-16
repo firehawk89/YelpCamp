@@ -4,7 +4,7 @@ import { DEFAULT_PAGE, MAX_SHOWN_PAGES, PAGE_PARAM } from '@/utils/constants';
 import { cn } from '@/utils/misc';
 import useCustomSearchParams from 'hooks/useCustomSearchParams';
 import { usePathname, useRouter } from 'next/navigation';
-import { FC, HTMLAttributes, useMemo, useCallback } from 'react';
+import { HTMLAttributes, useMemo, useCallback } from 'react';
 
 import PaginationButton from './PaginationButton';
 
@@ -14,7 +14,7 @@ interface PaginationProps extends HTMLAttributes<HTMLDivElement> {
   onPageChange?: (page: number) => void;
 }
 
-const Pagination: FC<PaginationProps> = ({ page, totalPages, onPageChange, className, ...props }) => {
+const Pagination = ({ page, totalPages, onPageChange, className, ...props }: PaginationProps) => {
   const router = useRouter();
   const pathname = usePathname();
 

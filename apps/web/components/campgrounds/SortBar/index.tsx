@@ -2,18 +2,17 @@
 
 import { DEFAULT_PAGE, PAGE_PARAM, SORT_BY_PARAM, SORT_ORDER_PARAM } from '@/utils/constants';
 import { cn } from '@/utils/misc';
-import { CardProps } from '@repo/ui/card';
 import Divider from '@repo/ui/divider';
 import { SelectOption } from '@repo/ui/select';
 import useCustomSearchParams from 'hooks/useCustomSearchParams';
 import { usePathname, useRouter } from 'next/navigation';
-import { FC } from 'react';
+import { HTMLAttributes } from 'react';
 
 import CampgroundsMobileFilterBar from '../FilterBar/MobileFilterBar';
 import { DEFAULT_SORT_BY_OPTION, DEFAULT_SORT_ORDER_OPTION, SORT_BY_OPTIONS, SORT_ORDER_OPTIONS } from './helpers';
 import SortControls from './SortControls';
 
-const CampgroundsSortBar: FC<CardProps> = ({ className, ...props }) => {
+const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
   const router = useRouter();
   const pathname = usePathname();
 

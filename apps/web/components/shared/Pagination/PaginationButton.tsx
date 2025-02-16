@@ -1,7 +1,6 @@
 import { cn } from '@/utils/misc';
 import Button, { ButtonProps } from '@repo/ui/button';
 import { ChevronIcon } from '@repo/ui/icons';
-import { FC } from 'react';
 
 type PaginationButtonType = 'prev' | 'next' | 'page';
 
@@ -10,13 +9,7 @@ interface PaginationButtonProps extends ButtonProps {
   isActive?: boolean;
 }
 
-const PaginationButton: FC<PaginationButtonProps> = ({
-  buttonType = 'page',
-  isActive,
-  className,
-  children,
-  ...props
-}) => {
+const PaginationButton = ({ buttonType = 'page', isActive, className, children, ...props }: PaginationButtonProps) => {
   const isPageButton = buttonType === 'page';
   const isPrevButton = buttonType === 'prev';
 

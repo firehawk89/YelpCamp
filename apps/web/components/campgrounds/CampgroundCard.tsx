@@ -4,7 +4,6 @@ import Card, { CardProps } from '@repo/ui/card';
 import { HeartIcon, MapPinIcon, StarIcon } from '@repo/ui/icons';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Link from 'next/link';
-import { FC } from 'react';
 import { Campground } from 'types/campground';
 
 import ImagePlaceholder from '../shared/ImagePlaceholder';
@@ -14,7 +13,7 @@ interface CampgroundCardProps extends CardProps {
   imageSrc?: string | StaticImport;
 }
 
-const CampgroundCard: FC<CampgroundCardProps> = ({ campground, ...props }) => {
+const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
   return (
     <Card className="relative max-sm:flex-col" component="article" size="compact" {...props}>
       <ImagePlaceholder className="flex-shrink-0 basis-1/3" />

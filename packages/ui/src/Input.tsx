@@ -1,5 +1,5 @@
 import { cn } from '@/utils/misc';
-import { FC, InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
 export const inputVariants = tv({
@@ -21,7 +21,7 @@ export const inputVariants = tv({
 
 interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>, VariantProps<typeof inputVariants> {}
 
-const Input: FC<InputProps> = ({ className, variant, size, ...props }) => (
+const Input = ({ className, variant, size, ...props }: InputProps) => (
   <input className={cn(inputVariants({ variant, size }), className)} {...props} />
 );
 

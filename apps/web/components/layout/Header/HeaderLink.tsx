@@ -1,13 +1,13 @@
 import { cn } from '@/utils/misc';
 import Link, { LinkProps } from 'next/link';
-import { FC, PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
 interface HeaderAuthLinkProps extends PropsWithChildren, LinkProps {
   className?: string;
   icon?: ReactNode;
 }
 
-const HeaderLink: FC<HeaderAuthLinkProps> = ({ icon, children, className, ...props }) => (
+const HeaderLink = ({ icon, children, className, ...props }: HeaderAuthLinkProps) => (
   <Link
     className={cn(
       'flex w-fit items-center gap-1 text-lg font-medium transition-colors hover:text-orange-500',

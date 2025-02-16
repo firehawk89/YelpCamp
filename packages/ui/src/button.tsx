@@ -1,5 +1,5 @@
 import { cn } from '@/utils/misc';
-import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { VariantProps } from 'tailwind-variants';
 import { tv } from 'tailwind-variants';
 
@@ -84,7 +84,7 @@ export interface ButtonProps
   icon?: ReactNode;
 }
 
-const Button: FC<ButtonProps> = ({ children, variant, size, color, icon, className, ...props }) => (
+const Button = ({ children, variant, size, color, icon, className, ...props }: ButtonProps) => (
   <button className={cn(buttonVariants({ variant, size: icon ? 'icon' : size, color }), className)} {...props}>
     {icon} {children}
   </button>

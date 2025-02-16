@@ -1,11 +1,11 @@
 import { cn } from '@/utils/misc';
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 interface DividerProps extends HTMLAttributes<HTMLDivElement> {
   orientation?: 'horizontal' | 'vertical';
 }
 
-const Divider: FC<DividerProps> = ({ orientation = 'horizontal', className, ...props }) => (
+const Divider = ({ orientation = 'horizontal', className, ...props }: DividerProps) => (
   <div
     className={cn(
       'shrink-0 bg-neutral-300',

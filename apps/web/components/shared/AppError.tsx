@@ -3,7 +3,7 @@
 import { cn } from '@/utils/misc';
 import Button, { buttonVariants } from '@repo/ui/button';
 import Link from 'next/link';
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 export enum ErrorType {
   BadRequest = 400,
@@ -20,13 +20,7 @@ interface AppErrorProps extends HTMLAttributes<HTMLDivElement> {
   onTryAgain?: () => void;
 }
 
-const AppError: FC<AppErrorProps> = ({
-  className,
-  code = ErrorType.InternalServerError,
-  title,
-  message,
-  onTryAgain,
-}) => {
+const AppError = ({ className, code = ErrorType.InternalServerError, title, message, onTryAgain }: AppErrorProps) => {
   return (
     <div className={cn('flex flex-1 flex-col items-center justify-center gap-6 text-center', className)}>
       <div className="text-center">

@@ -1,11 +1,11 @@
 import { cn } from '@/utils/misc';
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 interface HeaderMenuProps extends HTMLAttributes<HTMLElement> {
   orientation?: 'horizontal' | 'vertical';
 }
 
-const HeaderMenu: FC<HeaderMenuProps> = ({ orientation = 'horizontal', children, className, ...props }) => {
+const HeaderMenu = ({ orientation = 'horizontal', children, className, ...props }: HeaderMenuProps) => {
   return (
     <ul
       className={cn(

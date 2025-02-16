@@ -1,5 +1,4 @@
 import { cn } from '@/utils/misc';
-import { FC } from 'react';
 
 import { IconProps } from '.';
 
@@ -9,7 +8,7 @@ interface ChevronIconProps extends IconProps {
   direction?: ChevronDirection;
 }
 
-export const ChevronIcon: FC<ChevronIconProps> = ({ className, direction = 'right', ...props }) => {
+export const ChevronIcon = ({ className, direction = 'right', ...props }: ChevronIconProps) => {
   const directionClassMap: Record<ChevronDirection, string> = {
     up: 'rotate-90',
     right: 'rotate-0',

@@ -1,5 +1,5 @@
 import { cn } from '@/utils/misc';
-import { FC, HTMLAttributes, ReactElement } from 'react';
+import { HTMLAttributes, ReactElement } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
 import { DangerIcon } from './icons/DangerIcon';
@@ -60,7 +60,7 @@ export const AlertIconMap: Record<string, ReactElement> = {
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>, VariantProps<typeof alertVariants> {}
 
-const Alert: FC<AlertProps> = ({ children, className, variant, color, size, ...props }) => {
+const Alert = ({ children, className, variant, color, size, ...props }: AlertProps) => {
   const icon = AlertIconMap[color ?? 'info'];
 
   return (

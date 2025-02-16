@@ -1,13 +1,13 @@
 import Logo from '@/components/shared/Logo';
 import { cn } from '@/utils/misc';
 import { MAIN_ROUTES, USER_AUTHENTICATED_ROUTES, USER_UNAUTHENTICATED_ROUTES } from 'app/routes';
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 import HeaderLink from './HeaderLink';
 import HeaderMenu from './HeaderMenu';
 import MobileMenu from './MobileMenu';
 
-const Header: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
+const Header = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
   const user = null;
   const authRoutes = !user ? USER_UNAUTHENTICATED_ROUTES : USER_AUTHENTICATED_ROUTES;
 

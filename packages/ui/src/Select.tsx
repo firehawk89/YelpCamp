@@ -1,5 +1,5 @@
 import { cn } from '@/utils/misc';
-import { FC, HTMLAttributes, useEffect, useRef, useState } from 'react';
+import { HTMLAttributes, useEffect, useRef, useState } from 'react';
 
 import Card from './Card';
 import { ChevronIcon } from './icons';
@@ -12,7 +12,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCha
   onChange: (option: SelectOption) => void;
 }
 
-const Select: FC<SelectProps> = ({ options, selectedOption, className, onChange, ...props }) => {
+const Select = ({ options, selectedOption, className, onChange, ...props }: SelectProps) => {
   const selectRef = useRef<HTMLDivElement>(null);
   const [showOptions, setShowOptions] = useState(false);
 

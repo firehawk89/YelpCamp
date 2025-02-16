@@ -7,13 +7,13 @@ import { SearchIcon } from '@repo/ui/icons';
 import Input from '@repo/ui/input';
 import useCustomSearchParams from 'hooks/useCustomSearchParams';
 import { usePathname, useRouter } from 'next/navigation';
-import { FC, FormEvent, FormHTMLAttributes } from 'react';
+import { FormEvent, FormHTMLAttributes } from 'react';
 
 export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
   label?: string;
 }
 
-const SearchForm: FC<SearchFormProps> = ({ className, label, ...props }) => {
+const SearchForm = ({ className, label, ...props }: SearchFormProps) => {
   const router = useRouter();
   const pathname = usePathname();
 

@@ -1,6 +1,6 @@
 import { cn } from '@/utils/misc';
 import Alert from '@repo/ui/alert';
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import { PaginationMetadata } from 'types/api';
 import { Campground } from 'types/campground';
 
@@ -13,7 +13,7 @@ interface CampgroundsListProps extends HTMLAttributes<HTMLDivElement> {
   paginationData?: PaginationMetadata;
 }
 
-const CampgroundsList: FC<CampgroundsListProps> = ({ campgrounds, paginationData, className, ...props }) => {
+const CampgroundsList = ({ campgrounds, paginationData, className, ...props }: CampgroundsListProps) => {
   const shouldDisplayPagination = !!paginationData?.totalPages && paginationData?.totalPages > 1;
 
   if (!campgrounds?.length) {
