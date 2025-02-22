@@ -1,0 +1,71 @@
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
+import { Model } from 'mongoose';
+import { SignInDTO } from 'src/dto/auth/sign-in.dto';
+import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
+import { RefreshToken } from 'src/schemas/refresh-token.schema';
+import { User } from 'src/schemas/user.schema';
+import { UserTokens } from 'src/types/user';
+
+@Injectable()
+export class AuthService {
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(RefreshToken.name) private refreshTokenModel: Model<RefreshToken>,
+    private readonly jwtService: JwtService
+  ) {}
+
+  async signIn(signInDto: SignInDTO): Promise<UserTokens> {
+    try {
+      const foundUser = await this.userModel.findOne({ email: signInDto.email }).exec();
+      if (!foundUser) {
+        throw new ConflictException("User doesn't exist");
+      }
+
+      const isPasswordCorrect = await bcrypt.compare(signInDto.password, foundUser.password);
+      if (!isPasswordCorrect) {
+        throw new BadRequestException('Invalid password');
+      }
+
+      return this.generateUserTokens(foundUser._id.toString());
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async signUp(signUpDto: SignUpDTO): Promise<User> {
+    try {
+      const isUserExist = await this.userModel.findOne({ email: signUpDto.email }).exec();
+      if (isUserExist) {
+        throw new ConflictException('User already exists');
+      }
+
+      const hashedPassword = await bcrypt.hash(signUpDto.password, 10);
+
+      return this.userModel.create({ email: signUpDto.email, password: hashedPassword });
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async getAllRefreshTokens(): Promise<RefreshToken[]> {
+    return this.refreshTokenModel.find().exec();
+  }
+
+  private async generateUserTokens(userId: string): Promise<UserTokens> {
+    const accessToken = this.jwtService.sign({ userId });
+    const refreshToken = await this.generateRefreshToken(userId);
+    return { accessToken, refreshToken };
+  }
+
+  private async generateRefreshToken(userId: string): Promise<string> {
+    const refreshToken = randomUUID();
+    await this.refreshTokenModel.create({ token: refreshToken, userId });
+    return refreshToken;
+  }
+}
