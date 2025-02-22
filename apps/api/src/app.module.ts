@@ -1,14 +1,28 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CampgroundsModule } from './campgrounds/campgrounds.module';
-import { ReviewsModule } from './reviews/reviews.module';
+import config from './config';
+import { AuthModule } from './modules/auth/auth.module';
+import { CampgroundsModule } from './modules/campgrounds/campgrounds.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.DATABASE_URL), CampgroundsModule, ReviewsModule],
+  imports: [
+    ConfigModule.forRoot({ load: [config] }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({ uri: config.get<string>('database.url') }),
+      inject: [ConfigService],
+    }),
+    AuthModule,
+    UsersModule,
+    CampgroundsModule,
+    ReviewsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
