@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
@@ -53,8 +53,25 @@ export class AuthService {
     }
   }
 
-  async getAllRefreshTokens(): Promise<RefreshToken[]> {
-    return this.refreshTokenModel.find().exec();
+  async validateRefreshToken(refreshToken: string): Promise<UserTokens> {
+    try {
+      if (!refreshToken) {
+        throw new BadRequestException('Refresh token is required');
+      }
+
+      const foundRefreshToken = await this.refreshTokenModel
+        .findOneAndDelete({ token: refreshToken, expiryDate: { $gte: new Date() } })
+        .exec();
+
+      if (!foundRefreshToken) {
+        throw new ForbiddenException('Refresh token is expired or invalid');
+      }
+
+      return this.generateUserTokens(foundRefreshToken.userId.toString());
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   private async generateUserTokens(userId: string): Promise<UserTokens> {
