@@ -6,10 +6,11 @@ import { randomUUID } from 'crypto';
 import { Model } from 'mongoose';
 import { SignInDTO } from 'src/dto/auth/sign-in.dto';
 import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
+import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants';
 import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
 import { User } from 'src/schemas/user.schema';
-import { UserTokens } from 'src/types/user';
+import { SignInResponse, UserTokens } from 'src/types/user';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async signIn(signInDto: SignInDTO): Promise<UserTokens> {
+  async signIn(signInDto: SignInDTO): Promise<SignInResponse> {
     try {
       const foundUser = await this.userModel.findOne({ email: signInDto.email }).exec();
       if (!foundUser) {
@@ -31,7 +32,9 @@ export class AuthService {
         throw new BadRequestException('Invalid password');
       }
 
-      return this.generateUserTokens(foundUser._id.toString());
+      const userTokens = await this.generateUserTokens(foundUser._id.toString());
+
+      return { ...userTokens, userId: foundUser._id.toString() };
     } catch (error) {
       handleError(error, AuthService.name);
     }
@@ -80,7 +83,9 @@ export class AuthService {
 
   private async generateRefreshToken(userId: string): Promise<string> {
     const refreshToken = randomUUID();
-    await this.refreshTokenModel.create({ token: refreshToken, userId });
+    await this.refreshTokenModel
+      .updateOne({ userId }, { $set: { token: refreshToken, expiryDate: REFRESH_TOKEN_EXPIRY_DATE } }, { upsert: true })
+      .exec();
     return refreshToken;
   }
 }

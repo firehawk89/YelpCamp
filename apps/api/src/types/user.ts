@@ -16,4 +16,6 @@ export interface JwtPayload {
   exp: number;
 }
 
-export type RequestWithUser = Request & { user?: JwtPayload };
+export type RequestWithUser = Request & { user: JwtPayload };
+
+export type SignInResponse = UserTokens & { userId: string };
