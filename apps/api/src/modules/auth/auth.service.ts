@@ -6,6 +6,7 @@ import { randomUUID } from 'crypto';
 import { Model } from 'mongoose';
 import { SignInDTO } from 'src/dto/auth/sign-in.dto';
 import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
+import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
 import { User } from 'src/schemas/user.schema';
 import { UserTokens } from 'src/types/user';
@@ -32,8 +33,7 @@ export class AuthService {
 
       return this.generateUserTokens(foundUser._id.toString());
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, AuthService.name);
     }
   }
 
@@ -48,8 +48,7 @@ export class AuthService {
 
       return this.userModel.create({ email: signUpDto.email, password: hashedPassword });
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, AuthService.name);
     }
   }
 
@@ -69,8 +68,7 @@ export class AuthService {
 
       return this.generateUserTokens(foundRefreshToken.userId.toString());
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, AuthService.name);
     }
   }
 

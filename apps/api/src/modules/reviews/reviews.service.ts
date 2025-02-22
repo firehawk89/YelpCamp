@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
@@ -18,8 +19,7 @@ export class ReviewsService {
       const newReview = new this.reviewModel(createReviewDto);
       return newReview.save();
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, ReviewsService.name);
     }
   }
 
@@ -40,8 +40,7 @@ export class ReviewsService {
       }
       return review;
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, ReviewsService.name);
     }
   }
 
@@ -74,8 +73,7 @@ export class ReviewsService {
 
       return this.reviewModel.findByIdAndDelete(id).exec();
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, ReviewsService.name);
     }
   }
 
@@ -96,7 +94,7 @@ export class ReviewsService {
         })
         .exec();
     } catch (error) {
-      console.error(error);
+      handleError(error, ReviewsService.name, false);
       throw new InternalServerErrorException('Failed to update campground rating');
     }
   }

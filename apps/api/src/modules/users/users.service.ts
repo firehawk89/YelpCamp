@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { isEmail } from 'class-validator';
 import { isValidObjectId, Model } from 'mongoose';
+import { handleError } from 'src/helpers/misc';
 import { User } from 'src/schemas/user.schema';
 
 @Injectable()
@@ -12,8 +13,7 @@ export class UsersService {
     try {
       return 'user';
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, UsersService.name);
     }
   }
 
@@ -35,8 +35,7 @@ export class UsersService {
 
       return user;
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, UsersService.name);
     }
   }
 
@@ -54,8 +53,7 @@ export class UsersService {
 
       return user;
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, UsersService.name);
     }
   }
 
@@ -73,8 +71,7 @@ export class UsersService {
 
       return this.userModel.findByIdAndDelete(id).exec();
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, UsersService.name);
     }
   }
 }

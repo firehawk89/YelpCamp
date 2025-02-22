@@ -12,7 +12,7 @@ import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_PAGE, DEFAULT_SORT_ORDER } from 'src/helpers/constants';
-import { generateSlug } from 'src/helpers/misc';
+import { generateSlug, handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
@@ -40,55 +40,58 @@ export class CampgroundsService {
       const newCampground = new this.campgroundModel(createCampgroundDto);
       return newCampground.save();
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, CampgroundsService.name);
     }
   }
 
   async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<Campground>> {
-    const { search, page, sortBy = DEFAULT_SORT_FIELD, sortOrder = DEFAULT_SORT_ORDER } = filter ?? {};
+    try {
+      const { search, page, sortBy = DEFAULT_SORT_FIELD, sortOrder = DEFAULT_SORT_ORDER } = filter ?? {};
 
-    const pageNumber = +page;
-    const validPage = isNaN(pageNumber) || pageNumber < 1 ? DEFAULT_PAGE : pageNumber;
-    const skip = (validPage - 1) * DEFAULT_PAGE_LIMIT;
+      const pageNumber = +page;
+      const validPage = isNaN(pageNumber) || pageNumber < 1 ? DEFAULT_PAGE : pageNumber;
+      const skip = (validPage - 1) * DEFAULT_PAGE_LIMIT;
 
-    const totalCount = await this.campgroundModel.countDocuments().exec();
+      const totalCount = await this.campgroundModel.countDocuments().exec();
 
-    const pipeline: PipelineStage[] = [];
+      const pipeline: PipelineStage[] = [];
 
-    if (search) {
-      pipeline.push({
-        $match: { title: { $regex: search, $options: 'i' } },
-      });
-    }
-
-    pipeline.push(
-      {
-        $sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
-      },
-      {
-        $facet: {
-          metadata: [
-            { $count: 'count' },
-            {
-              $addFields: {
-                totalCount,
-                page: validPage,
-                totalPages: { $ceil: { $divide: ['$count', DEFAULT_PAGE_LIMIT] } },
-                limit: DEFAULT_PAGE_LIMIT,
-                offset: skip,
-              },
-            },
-          ],
-          data: [{ $skip: skip }, { $limit: DEFAULT_PAGE_LIMIT }],
-        },
+      if (search) {
+        pipeline.push({
+          $match: { title: { $regex: search, $options: 'i' } },
+        });
       }
-    );
 
-    const [result] = await this.campgroundModel.aggregate<PaginatedResponse<Campground>>(pipeline).exec();
-    result.metadata = { ...result.metadata[0], count: result.data.length };
+      pipeline.push(
+        {
+          $sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
+        },
+        {
+          $facet: {
+            metadata: [
+              { $count: 'count' },
+              {
+                $addFields: {
+                  totalCount,
+                  page: validPage,
+                  totalPages: { $ceil: { $divide: ['$count', DEFAULT_PAGE_LIMIT] } },
+                  limit: DEFAULT_PAGE_LIMIT,
+                  offset: skip,
+                },
+              },
+            ],
+            data: [{ $skip: skip }, { $limit: DEFAULT_PAGE_LIMIT }],
+          },
+        }
+      );
 
-    return result;
+      const [result] = await this.campgroundModel.aggregate<PaginatedResponse<Campground>>(pipeline).exec();
+      result.metadata = { ...result.metadata[0], count: result.data.length };
+
+      return result;
+    } catch (error) {
+      handleError(error, CampgroundsService.name);
+    }
   }
 
   async getById(id: string): Promise<Campground> {
@@ -105,8 +108,7 @@ export class CampgroundsService {
 
       return campground;
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, CampgroundsService.name);
     }
   }
 
@@ -127,8 +129,7 @@ export class CampgroundsService {
         .findByIdAndUpdate(id, { ...updateCampgroundDto, updatedAt: updatedAtDate }, { new: true })
         .exec();
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, CampgroundsService.name);
     }
   }
 
@@ -146,8 +147,7 @@ export class CampgroundsService {
 
       return this.campgroundModel.findByIdAndDelete(id).exec();
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, CampgroundsService.name);
     }
   }
 
@@ -161,8 +161,7 @@ export class CampgroundsService {
       const reviews = await this.reviewModel.find({ campgroundId }).exec();
       return reviews;
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, CampgroundsService.name);
     }
   }
 
@@ -184,8 +183,7 @@ export class CampgroundsService {
 
       return newReview.save();
     } catch (error) {
-      console.error(error);
-      throw error;
+      handleError(error, CampgroundsService.name);
     }
   }
 
@@ -204,7 +202,7 @@ export class CampgroundsService {
         })
         .exec();
     } catch (error) {
-      console.error(error);
+      handleError(error, CampgroundsService.name, false);
       throw new InternalServerErrorException('Failed to update campground rating');
     }
   }
