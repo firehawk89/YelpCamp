@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 
+import { AuthGuard } from '../auth/auth.guard';
 import { CampgroundsService } from './campgrounds.service';
 
+@UseGuards(AuthGuard)
 @Controller('campgrounds')
 export class CampgroundsController {
   constructor(private readonly campgroundsService: CampgroundsService) {}
