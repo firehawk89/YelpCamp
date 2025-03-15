@@ -4,7 +4,6 @@ import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { ReviewsService } from './reviews.service';
 
-@UseGuards(AuthGuard)
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
@@ -14,6 +13,7 @@ export class ReviewsController {
     return this.reviewsService.getAll();
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   createReview(@Body() createReviewDto: CreateReviewDTO) {
     return this.reviewsService.create(createReviewDto);
@@ -30,6 +30,7 @@ export class ReviewsController {
   //     return this.reviewsService.update(id, updateCampgroundDto);
   //   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   deleteReview(@Param('id') id: string) {
     return this.reviewsService.delete(id);

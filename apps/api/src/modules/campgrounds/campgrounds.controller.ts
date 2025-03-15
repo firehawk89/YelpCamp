@@ -7,7 +7,6 @@ import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { CampgroundsService } from './campgrounds.service';
 
-@UseGuards(AuthGuard)
 @Controller('campgrounds')
 export class CampgroundsController {
   constructor(private readonly campgroundsService: CampgroundsService) {}
@@ -17,6 +16,7 @@ export class CampgroundsController {
     return this.campgroundsService.getAll(filter);
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   createCampground(@Body() createCampgroundDto: CreateCampgroundDTO) {
     return this.campgroundsService.create(createCampgroundDto);
@@ -27,11 +27,13 @@ export class CampgroundsController {
     return this.campgroundsService.getById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   updateCampground(@Param('id') id: string, @Body() updateCampgroundDto: UpdateCampgroundDTO) {
     return this.campgroundsService.update(id, updateCampgroundDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   deleteCampground(@Param('id') id: string) {
     return this.campgroundsService.delete(id);
@@ -42,6 +44,7 @@ export class CampgroundsController {
     return this.campgroundsService.getReviews(campgroundId);
   }
 
+  @UseGuards(AuthGuard)
   @Post(':id/reviews')
   createReview(@Param('id') campgroundId: string, @Body() createReviewDto: CreateReviewDTO) {
     return this.campgroundsService.createReview(campgroundId, createReviewDto);
