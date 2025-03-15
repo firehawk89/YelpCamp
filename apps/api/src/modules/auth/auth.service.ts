@@ -10,22 +10,21 @@ import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants';
 import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
 import { User } from 'src/schemas/user.schema';
-import { SignInResponse, UserTokens } from 'src/types/user';
+import { UserTokens } from 'src/types/user';
+
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(RefreshToken.name) private refreshTokenModel: Model<RefreshToken>,
+    private readonly userService: UsersService,
     private readonly jwtService: JwtService
   ) {}
 
-  async signIn(signInDto: SignInDTO): Promise<SignInResponse> {
+  async signIn(signInDto: SignInDTO): Promise<UserTokens> {
     try {
-      const foundUser = await this.userModel.findOne({ email: signInDto.email }).exec();
-      if (!foundUser) {
-        throw new ConflictException("User doesn't exist");
-      }
+      const foundUser = await this.userService.getByEmail(signInDto.email);
 
       const isPasswordCorrect = await bcrypt.compare(signInDto.password, foundUser.password);
       if (!isPasswordCorrect) {
@@ -34,7 +33,7 @@ export class AuthService {
 
       const userTokens = await this.generateUserTokens(foundUser._id.toString());
 
-      return { ...userTokens, userId: foundUser._id.toString() };
+      return userTokens;
     } catch (error) {
       handleError(error, AuthService.name);
     }
@@ -42,14 +41,14 @@ export class AuthService {
 
   async signUp(signUpDto: SignUpDTO): Promise<User> {
     try {
-      const isUserExist = await this.userModel.findOne({ email: signUpDto.email }).exec();
-      if (isUserExist) {
+      const existingUser = await this.userService.getByEmail(signUpDto.email);
+      if (existingUser) {
         throw new ConflictException('User already exists');
       }
 
       const hashedPassword = await bcrypt.hash(signUpDto.password, 10);
 
-      return this.userModel.create({ email: signUpDto.email, password: hashedPassword });
+      return this.userService.create({ email: signUpDto.email, password: hashedPassword });
     } catch (error) {
       handleError(error, AuthService.name);
     }
