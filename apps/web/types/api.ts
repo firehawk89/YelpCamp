@@ -1,6 +1,6 @@
 export type ApiResponse<T> = Promise<{
   result?: T;
-  error?: string;
+  error?: string | string[];
 }>;
 
 export interface PaginationMetadata {
