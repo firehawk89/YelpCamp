@@ -4,7 +4,7 @@ import { VariantProps } from 'tailwind-variants';
 import { tv } from 'tailwind-variants';
 
 export const buttonVariants = tv({
-  base: 'flex items-center rounded-lg active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all',
+  base: 'flex items-center justify-center text-center rounded-lg active:scale-[0.98] disabled:opacity-75 disabled:pointer-events-none transition-all',
   variants: {
     variant: {
       default: 'bg-transparent hover:opacity-80',

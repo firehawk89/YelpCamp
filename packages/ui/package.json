@@ -8,6 +8,7 @@
     "./button": "./src/Button.tsx",
     "./card": "./src/Card.tsx",
     "./input": "./src/Input.tsx",
+    "./input-wrapper": "./src/InputWrapper.tsx",
     "./alert": "./src/Alert.tsx",
     "./select": "./src/Select.tsx",
     "./divider": "./src/Divider.tsx"
