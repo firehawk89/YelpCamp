@@ -17,13 +17,13 @@ export const MAIN_ROUTES: Route[] = [
 
 export const USER_UNAUTHENTICATED_ROUTES: Route[] = [
   {
-    path: '/login',
+    path: '/sign-in',
     label: 'Sign In',
     icon: <UserIcon />,
     linkStyles: buttonVariants({ variant: 'outline', color: 'info', size: 'sm' }),
   },
   {
-    path: '/register',
+    path: '/sign-up',
     label: 'Sign Up',
     icon: <UserPlusIcon />,
     linkStyles: buttonVariants({ variant: 'outline', color: 'success', size: 'sm' }),
@@ -32,7 +32,7 @@ export const USER_UNAUTHENTICATED_ROUTES: Route[] = [
 
 export const USER_AUTHENTICATED_ROUTES: Route[] = [
   {
-    path: '/logout',
+    path: '/log-out',
     label: 'Log Out',
     icon: <LogOutIcon />,
     linkStyles: buttonVariants({ variant: 'outline', color: 'destructive', size: 'sm' }),
