@@ -1,7 +1,6 @@
 import CampgroundsList from '@/components/campgrounds/CamgroundsList';
 import CampgroundsFilterBar from '@/components/campgrounds/FilterBar';
 import { fetchCampgrounds } from '@/utils/api/campgrounds';
-import Card from '@repo/ui/card';
 import { CampgroundsFilterDto } from 'types/campground';
 
 interface CampgroundsPageProps {
@@ -15,7 +14,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
   const { data: campgrounds, metadata: campgroundsMetadata } = result ?? {};
 
   if (error) {
-    throw new Error(error);
+    throw new Error(typeof error === 'string' ? error : error.join(', '));
   }
 
   return (

@@ -14,7 +14,7 @@ export default function Home() {
         fill
       />
       <div className="flex flex-col items-center gap-3 text-center text-white">
-        <h1 className="font-secondary text-3xl font-medium">Welcome to YelpCamp!</h1>
+        <h1 className="font-secondary text-3xl font-medium">Welcome to CampZone!</h1>
         <p className="text-xl">
           Jump right in and explore our many campgrounds. <br />
           Feel free to share some of your own and comment on others!
