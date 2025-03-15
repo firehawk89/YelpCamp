@@ -1,6 +1,7 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const API_ROUTES: Record<string, string> = {
+export const API_ROUTES = {
+  AUTH: `${API_URL}/auth`,
   CAMPGROUNDS: `${API_URL}/campgrounds`,
 };
 
@@ -11,3 +12,8 @@ export const SORT_ORDER_PARAM: string = 'sortOrder';
 
 export const MAX_SHOWN_PAGES: number = 3;
 export const DEFAULT_PAGE: number = 1;
+
+export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export const ACCESS_TOKEN_COOKIE_NAME = 'accessToken';
+export const REFRESH_TOKEN_COOKIE_NAME = 'refreshToken';
