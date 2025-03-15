@@ -1,0 +1,81 @@
+'use client';
+
+import { cn } from '@/utils/misc';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Alert from '@repo/ui/alert';
+import Button from '@repo/ui/button';
+import Card, { CardProps } from '@repo/ui/card';
+import Divider from '@repo/ui/divider';
+import Input from '@repo/ui/input';
+import InputWrapper from '@repo/ui/input-wrapper';
+import { useSignIn } from 'hooks/useSignIn';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { AuthFormFields, authFormSchema } from './helpers';
+
+const SignInForm = ({ className, ...props }: CardProps) => {
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<AuthFormFields>({ resolver: zodResolver(authFormSchema) });
+
+  const { trigger: signIn, isMutating, error } = useSignIn();
+
+  const onSubmit: SubmitHandler<AuthFormFields> = async (formData) => {
+    await signIn(formData);
+    router.replace('/campgrounds');
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-5">
+      {error && (
+        <Alert className="w-full max-w-96" color="danger">
+          {error.message}
+        </Alert>
+      )}
+
+      <Card className={cn('w-full max-w-96 gap-3', className)} orientation="vertical" {...props}>
+        <h1 className="text-xl font-semibold">Sign In</h1>
+
+        <Divider />
+
+        <form className="flex w-full flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+          <InputWrapper label="Email" inputId="email" error={errors.email?.message}>
+            <Input {...register('email')} id="email" type="text" />
+          </InputWrapper>
+
+          <InputWrapper
+            label="Password"
+            inputId="password"
+            error={errors.password?.message}
+            helperElement={
+              <Link className="text-accent hover:underline" href="/forgot-password">
+                Forgot Password?
+              </Link>
+            }
+          >
+            <Input {...register('password')} id="password" type="password" />
+          </InputWrapper>
+
+          <Button className="mt-1.5" variant="accent" disabled={isSubmitting || isMutating}>
+            Sign In
+          </Button>
+
+          <p className="mt-1 text-center">
+            Not with us yet?{' '}
+            <Link className="text-accent ml-1 hover:underline" href="/sign-up">
+              Sign Up!
+            </Link>
+          </p>
+        </form>
+      </Card>
+    </div>
+  );
+};
+
+export default SignInForm;
