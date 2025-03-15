@@ -1,27 +1,34 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isEmail } from 'class-validator';
 import { isValidObjectId, Model } from 'mongoose';
+import { CreateUserDTO } from 'src/dto/user/create-user.dto';
 import { handleError } from 'src/helpers/misc';
-import { User } from 'src/schemas/user.schema';
+import { User, UserDocument } from 'src/schemas/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async create(): Promise<unknown> {
+  async create(createUserDto: CreateUserDTO): Promise<UserDocument> {
     try {
-      return 'user';
+      const foundUser = await this.userModel.findOne({ email: createUserDto.email }).exec();
+      if (foundUser) {
+        throw new ConflictException('User already exists');
+      }
+
+      const newUser = new this.userModel(createUserDto);
+      return newUser.save();
     } catch (error) {
       handleError(error, UsersService.name);
     }
   }
 
-  async getAll(): Promise<User[]> {
+  async getAll(): Promise<UserDocument[]> {
     return this.userModel.find().exec();
   }
 
-  async getById(id: string): Promise<User> {
+  async getById(id: string): Promise<UserDocument> {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
@@ -39,7 +46,7 @@ export class UsersService {
     }
   }
 
-  async getByEmail(email: string): Promise<User> {
+  async getByEmail(email: string): Promise<UserDocument> {
     try {
       const isValidEmail = isEmail(email);
       if (!isValidEmail) {
@@ -57,7 +64,7 @@ export class UsersService {
     }
   }
 
-  async delete(id: string): Promise<User> {
+  async delete(id: string): Promise<UserDocument> {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
