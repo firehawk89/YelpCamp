@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "0.0.1",
-  "description": "A YelpCamp project API",
+  "description": "A CampZone project API",
   "author": "firehawk89",
   "private": true,
   "license": "MIT",

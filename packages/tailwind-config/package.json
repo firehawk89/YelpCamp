@@ -2,7 +2,7 @@
   "name": "@repo/tailwind-config",
   "version": "0.0.1",
   "private": true,
-  "description": "A TailwindCSS config for the YelpCamp project apps.",
+  "description": "A TailwindCSS config for the CampZone project apps.",
   "author": "firehawk89",
   "license": "MIT",
   "exports": {

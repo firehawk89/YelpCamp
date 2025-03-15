@@ -1,5 +1,5 @@
 {
-  "name": "yelp-camp",
+  "name": "camp-zone",
   "private": true,
   "scripts": {
     "build": "turbo build",

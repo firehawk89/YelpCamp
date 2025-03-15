@@ -1,7 +1,7 @@
 {
   "name": "web",
   "version": "0.0.1",
-  "description": "A YelpCamp project web app",
+  "description": "A CampZone project web app",
   "author": "firehawk89",
   "type": "module",
   "license": "MIT",
