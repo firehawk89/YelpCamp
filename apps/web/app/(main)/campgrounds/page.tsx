@@ -1,4 +1,4 @@
-import CampgroundsList from '@/components/campgrounds/CamgroundsList';
+import CampgroundsList from '@/components/campgrounds/CampgroundsList';
 import CampgroundsFilterBar from '@/components/campgrounds/FilterBar';
 import { fetchCampgrounds } from '@/utils/api/campgrounds';
 import { CampgroundsFilterDto } from 'types/campground';

@@ -16,26 +16,28 @@ interface CampgroundsListProps extends HTMLAttributes<HTMLDivElement> {
 const CampgroundsList = ({ campgrounds, paginationData, className, ...props }: CampgroundsListProps) => {
   const shouldDisplayPagination = !!paginationData?.totalPages && paginationData?.totalPages > 1;
 
-  if (!campgrounds?.length) {
-    return (
-      <Alert className="w-full text-center" color="info">
-        Sorry, we couldn't find any campgrounds.
-      </Alert>
-    );
-  }
-
   return (
-    <section className={cn('flex flex-col gap-3', className)} {...props}>
-      <CampgroundsSortBar />
-
-      <div className="flex flex-col gap-7">
-        {campgrounds?.map((campground) => <CampgroundCard key={campground._id} campground={campground} />)}
-      </div>
-
-      {shouldDisplayPagination && (
-        <Pagination className="mt-5" page={paginationData?.page} totalPages={paginationData?.totalPages} />
+    <>
+      {!campgrounds?.length && (
+        <Alert className="w-full text-center" color="info">
+          Sorry, we couldn't find any campgrounds.
+        </Alert>
       )}
-    </section>
+
+      {!!campgrounds?.length && (
+        <section className={cn('flex flex-col gap-3', className)} {...props}>
+          <CampgroundsSortBar />
+
+          <div className="flex flex-col gap-7">
+            {campgrounds?.map((campground) => <CampgroundCard key={campground._id} campground={campground} />)}
+          </div>
+
+          {shouldDisplayPagination && (
+            <Pagination className="mt-5" page={paginationData?.page} totalPages={paginationData?.totalPages} />
+          )}
+        </section>
+      )}
+    </>
   );
 };
 
