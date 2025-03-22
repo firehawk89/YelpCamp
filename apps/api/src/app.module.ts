@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import config from './config';
-import { ACCESS_TOKEN_EXPIRATION_TIME } from './helpers/constants';
+import { ACCESS_TOKEN_EXPIRATION_SECONDS } from './helpers/constants';
 import { AuthModule } from './modules/auth/auth.module';
 import { CampgroundsModule } from './modules/campgrounds/campgrounds.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
@@ -24,7 +24,7 @@ import { UsersModule } from './modules/users/users.module';
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('jwt.secret'),
-        signOptions: { expiresIn: ACCESS_TOKEN_EXPIRATION_TIME },
+        signOptions: { expiresIn: ACCESS_TOKEN_EXPIRATION_SECONDS },
       }),
       inject: [ConfigService],
       global: true,
