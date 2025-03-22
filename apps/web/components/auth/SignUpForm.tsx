@@ -1,5 +1,6 @@
 'use client';
 
+import { signUp } from '@/utils/api/auth';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@repo/ui/alert';
@@ -8,9 +9,9 @@ import Card, { CardProps } from '@repo/ui/card';
 import Divider from '@repo/ui/divider';
 import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
-import { useSignUp } from 'hooks/useSignUp';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { AuthFormFields, authFormSchema } from './helpers';
@@ -24,18 +25,25 @@ const SignUpForm = ({ className, ...props }: CardProps) => {
     formState: { errors, isSubmitting },
   } = useForm<AuthFormFields>({ resolver: zodResolver(authFormSchema) });
 
-  const { trigger: signUp, isMutating, error } = useSignUp();
+  const [signUpError, setSignUpError] = useState<Error | null>(null);
 
   const onSubmit: SubmitHandler<AuthFormFields> = async (formData) => {
-    await signUp(formData);
-    router.replace('/campgrounds');
+    try {
+      await signUp(formData);
+      router.replace('/campgrounds');
+    } catch (error) {
+      if (error instanceof Error) {
+        setSignUpError(error);
+      }
+      setSignUpError(new Error('An error occurred while signing up.'));
+    }
   };
 
   return (
     <div className="flex flex-col items-center gap-5">
-      {error && (
+      {signUpError && (
         <Alert className="w-full max-w-96" color="danger">
-          {error.message}
+          {signUpError.message}
         </Alert>
       )}
 
@@ -53,7 +61,7 @@ const SignUpForm = ({ className, ...props }: CardProps) => {
             <Input {...register('password')} id="password" type="password" />
           </InputWrapper>
 
-          <Button className="mt-1.5" variant="accent" disabled={isSubmitting || isMutating}>
+          <Button className="mt-1.5" variant="accent" disabled={isSubmitting}>
             Sign Up
           </Button>
 

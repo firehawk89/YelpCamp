@@ -1,61 +1,66 @@
 'use server';
 
 import { AuthFormFields } from '@/components/auth/helpers';
-import { cookies } from 'next/headers';
-import { User, UserTokens } from 'types/user';
+import { ApiError } from 'types/api';
+import { UserTokens } from 'types/user';
 
-import { ACCESS_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME } from '../constants';
+import { API_ROUTES } from '../constants';
+import { setSessionCookies } from '../session';
 
-const setCookie = async (cookieConfig: { name: string; value: string }) => {
-  const { name, value } = cookieConfig;
-
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name,
-    value,
-    httpOnly: true,
-    secure: true,
-    path: '/',
-  });
-};
-
-export const signIn = async (url: string, { arg }: { arg: AuthFormFields }): Promise<UserTokens> => {
-  const response = await fetch(url, {
+export const signIn = async (userData: AuthFormFields): Promise<UserTokens> => {
+  const response = await fetch(`${API_ROUTES.AUTH}/sign-in`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(arg),
+    body: JSON.stringify(userData),
   });
 
-  const data = await response.json();
+  const data: UserTokens | ApiError = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Failed to sign in a user');
+    throw new Error((data as ApiError).message || 'Failed to sign in a user');
   }
 
-  setCookie({
-    name: ACCESS_TOKEN_COOKIE_NAME,
-    value: data.accessToken,
-  });
-  setCookie({
-    name: REFRESH_TOKEN_COOKIE_NAME,
-    value: data.refreshToken,
-  });
+  await setSessionCookies(data as UserTokens);
 
-  return data;
+  return data as UserTokens;
 };
 
-export const signUp = async (url: string, { arg }: { arg: AuthFormFields }): Promise<User> => {
-  const response = await fetch(url, {
+export const signUp = async (userData: AuthFormFields): Promise<UserTokens> => {
+  const response = await fetch(`${API_ROUTES.AUTH}/sign-up`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(arg),
+    body: JSON.stringify(userData),
   });
 
-  const data = await response.json();
+  const data: UserTokens | ApiError = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Failed to sign up a user');
+    throw new Error((data as ApiError).message || 'Failed to sign up a user');
   }
 
-  return data;
+  await setSessionCookies(data as UserTokens);
+
+  return data as UserTokens;
+};
+
+export const refreshTokens = async (refreshToken?: string): Promise<UserTokens> => {
+  if (!refreshToken) {
+    throw new Error('Refresh token is missing');
+  }
+
+  const response = await fetch(`${API_ROUTES.AUTH}/refresh`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refreshToken }),
+  });
+
+  const data: UserTokens | ApiError = await response.json();
+
+  if (!response.ok) {
+    throw new Error((data as ApiError).message || 'Failed to refresh a token');
+  }
+
+  await setSessionCookies(data as UserTokens);
+
+  return data as UserTokens;
 };

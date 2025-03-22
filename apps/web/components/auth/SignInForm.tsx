@@ -1,5 +1,6 @@
 'use client';
 
+import { signIn } from '@/utils/api/auth';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@repo/ui/alert';
@@ -8,9 +9,9 @@ import Card, { CardProps } from '@repo/ui/card';
 import Divider from '@repo/ui/divider';
 import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
-import { useSignIn } from 'hooks/useSignIn';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { AuthFormFields, authFormSchema } from './helpers';
@@ -24,18 +25,25 @@ const SignInForm = ({ className, ...props }: CardProps) => {
     formState: { errors, isSubmitting },
   } = useForm<AuthFormFields>({ resolver: zodResolver(authFormSchema) });
 
-  const { trigger: signIn, isMutating, error } = useSignIn();
+  const [signInError, setSignInError] = useState<Error | null>(null);
 
   const onSubmit: SubmitHandler<AuthFormFields> = async (formData) => {
-    await signIn(formData);
-    router.replace('/campgrounds');
+    try {
+      await signIn(formData);
+      router.replace('/campgrounds');
+    } catch (error) {
+      if (error instanceof Error) {
+        setSignInError(error);
+      }
+      setSignInError(new Error('An error occurred while signing in.'));
+    }
   };
 
   return (
     <div className="flex flex-col items-center gap-5">
-      {error && (
+      {signInError && (
         <Alert className="w-full max-w-96" color="danger">
-          {error.message}
+          {signInError.message}
         </Alert>
       )}
 
@@ -62,7 +70,7 @@ const SignInForm = ({ className, ...props }: CardProps) => {
             <Input {...register('password')} id="password" type="password" />
           </InputWrapper>
 
-          <Button className="mt-1.5" variant="accent" disabled={isSubmitting || isMutating}>
+          <Button className="mt-1.5" variant="accent" disabled={isSubmitting}>
             Sign In
           </Button>
 
