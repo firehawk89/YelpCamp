@@ -31,7 +31,7 @@ const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
 
           <div className="flex flex-wrap items-center gap-2">
             <p className="flex items-center gap-1">
-              <StarIcon className="fill-accent text-accent" />
+              <StarIcon className={cn('text-accent', { 'fill-accent': campground.rating })} />
 
               {campground.rating ? (
                 <>

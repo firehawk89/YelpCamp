@@ -15,8 +15,8 @@ export const buttonVariants = tv({
       destructive: 'bg-danger hover:bg-opacity-80',
     },
     size: {
-      default: 'px-3 py-1.5',
-      sm: 'px-2 py-1 text-sm',
+      default: 'px-3 py-1.5 gap-1.5',
+      sm: 'px-2 py-1 text-sm gap-1',
       icon: 'p-1.5',
     },
     color: {
