@@ -22,6 +22,10 @@ export async function middleware(request: NextRequest) {
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
   const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
 
+  if (!accessToken && !refreshToken) {
+    return NextResponse.next();
+  }
+
   const accessTokenData = await decryptToken(accessToken);
 
   if (accessTokenData?.userId) {

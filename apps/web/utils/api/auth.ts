@@ -1,11 +1,16 @@
 'use server';
 
 import { AuthFormFields } from '@/components/auth/helpers';
+import { cookies } from 'next/headers';
 import { ApiError } from 'types/api';
 import { UserTokens } from 'types/user';
 
-import { API_ROUTES } from '../constants';
-import { setSessionCookies } from '../session';
+import { ACCESS_TOKEN_COOKIE_NAME, API_ROUTES } from '../constants';
+import { decryptToken, deleteSessionCookies, setSessionCookies } from '../session';
+
+type LogoutResponse = {
+  message: string;
+};
 
 export const signIn = async (userData: AuthFormFields): Promise<UserTokens> => {
   const response = await fetch(`${API_ROUTES.AUTH}/sign-in`, {
@@ -41,6 +46,33 @@ export const signUp = async (userData: AuthFormFields): Promise<UserTokens> => {
   await setSessionCookies(data as UserTokens);
 
   return data as UserTokens;
+};
+
+export const logout = async (): Promise<LogoutResponse> => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
+
+  if (!accessToken) {
+    throw new Error('Failed to log out - access token is missing');
+  }
+
+  const { userId } = await decryptToken(accessToken);
+
+  const response = await fetch(`${API_ROUTES.AUTH}/log-out`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify({ userId }),
+  });
+
+  const data: LogoutResponse | ApiError = await response.json();
+
+  if (!response.ok) {
+    throw new Error((data as ApiError).message || 'Failed to log out');
+  }
+
+  await deleteSessionCookies();
+
+  return { message: data.message } as LogoutResponse;
 };
 
 export const refreshTokens = async (refreshToken?: string): Promise<UserTokens> => {
