@@ -5,8 +5,9 @@ import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
 import Input from '@repo/ui/input';
+import { routes } from 'app/routes';
 import useCustomSearchParams from 'hooks/useCustomSearchParams';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FormEvent, FormHTMLAttributes } from 'react';
 
 export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
@@ -15,7 +16,6 @@ export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
 
 const SearchForm = ({ className, label, ...props }: SearchFormProps) => {
   const router = useRouter();
-  const pathname = usePathname();
 
   const { searchParams, getUpdatedSearchParamsString } = useCustomSearchParams();
 
@@ -37,7 +37,7 @@ const SearchForm = ({ className, label, ...props }: SearchFormProps) => {
     }
     const newSearchParamsString = getUpdatedSearchParamsString(params);
 
-    router.replace(pathname + (newSearchParamsString ? `?${newSearchParamsString}` : ''));
+    router.push(routes.campgrounds(newSearchParamsString));
   };
 
   return (

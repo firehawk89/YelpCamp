@@ -4,8 +4,9 @@ import { DEFAULT_PAGE, PAGE_PARAM, SORT_BY_PARAM, SORT_ORDER_PARAM } from '@/uti
 import { cn } from '@/utils/misc';
 import Divider from '@repo/ui/divider';
 import { SelectOption } from '@repo/ui/select';
+import { routes } from 'app/routes';
 import useCustomSearchParams from 'hooks/useCustomSearchParams';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { HTMLAttributes } from 'react';
 
 import CampgroundsMobileFilterBar from '../FilterBar/MobileFilterBar';
@@ -14,7 +15,6 @@ import SortControls from './SortControls';
 
 const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
   const router = useRouter();
-  const pathname = usePathname();
 
   const { searchParams, getUpdatedSearchParamsString } = useCustomSearchParams();
 
@@ -32,7 +32,7 @@ const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivEleme
     }
     const newSearchParamsString = getUpdatedSearchParamsString(params);
 
-    router.replace(pathname + (newSearchParamsString ? `?${newSearchParamsString}` : ''));
+    router.push(routes.campgrounds(newSearchParamsString));
   };
 
   return (

@@ -5,29 +5,26 @@ import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import Divider from '@repo/ui/divider';
 import { CloseIcon, MenuIcon } from '@repo/ui/icons';
-import { MAIN_ROUTES, USER_AUTHENTICATED_ROUTES, USER_UNAUTHENTICATED_ROUTES } from 'app/routes';
 import { HTMLAttributes, useState } from 'react';
+import { User } from 'types/user';
 
-import HeaderLink from './HeaderLink';
+import HeaderAuthMenu from './HeaderAuthMenu';
 import HeaderMenu from './HeaderMenu';
 
 interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
+  user: User | null;
   overlayClassName?: string;
 }
 
-const MobileMenu = ({ overlayClassName, className, ...props }: MobileMenuProps) => {
-  const user = null;
-
+const MobileMenu = ({ user, overlayClassName, className, ...props }: MobileMenuProps) => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
-
-  const authRoutes = !user ? USER_UNAUTHENTICATED_ROUTES : USER_AUTHENTICATED_ROUTES;
 
   return (
     <>
       <Button className="lg:hidden" size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
 
       <Overlay
-        className={overlayClassName}
+        className={cn('lg:hidden', overlayClassName)}
         isHidden={!isMenuOpened}
         content="right"
         onClick={() => setIsMenuOpened(false)}
@@ -51,27 +48,9 @@ const MobileMenu = ({ overlayClassName, className, ...props }: MobileMenuProps) 
           />
 
           <div className="mt-3 flex flex-col gap-5">
-            <HeaderMenu orientation="vertical">
-              {MAIN_ROUTES.map((route) => (
-                <li key={route.label}>
-                  <HeaderLink className={route.linkStyles} href={route.path} icon={route.icon}>
-                    {route.label}
-                  </HeaderLink>
-                </li>
-              ))}
-            </HeaderMenu>
-
+            <HeaderMenu orientation="vertical" />
             <Divider />
-
-            <HeaderMenu orientation="vertical">
-              {authRoutes.map((route) => (
-                <li key={route.label}>
-                  <HeaderLink className={route.linkStyles} href={route.path} icon={route.icon}>
-                    {route.label}
-                  </HeaderLink>
-                </li>
-              ))}
-            </HeaderMenu>
+            <HeaderAuthMenu orientation="vertical" user={user} onLogout={() => setIsMenuOpened(false)} />
           </div>
         </div>
       </Overlay>

@@ -2,6 +2,7 @@
 
 import { DEFAULT_PAGE, MAX_SHOWN_PAGES, PAGE_PARAM } from '@/utils/constants';
 import { cn } from '@/utils/misc';
+import { routes } from 'app/routes';
 import useCustomSearchParams from 'hooks/useCustomSearchParams';
 import { usePathname, useRouter } from 'next/navigation';
 import { HTMLAttributes, useMemo, useCallback } from 'react';
@@ -40,7 +41,7 @@ const Pagination = ({ page, totalPages, onPageChange, className, ...props }: Pag
       const newSearchParamsString = getUpdatedSearchParamsString({ [PAGE_PARAM]: page });
       onPageChange?.(page);
 
-      router.replace(pathname + (newSearchParamsString ? `?${newSearchParamsString}` : ''));
+      router.push(routes.custom(pathname, newSearchParamsString));
     },
     [getUpdatedSearchParamsString, onPageChange, pathname, router, totalPages]
   );
