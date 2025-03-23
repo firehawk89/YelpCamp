@@ -59,6 +59,15 @@ export class AuthService {
     }
   }
 
+  async logout(userId: string): Promise<{ message: string }> {
+    try {
+      await this.refreshTokenModel.deleteMany({ userId }).exec();
+      return { message: 'User logged out successfully' };
+    } catch (error) {
+      handleError(error, AuthService.name);
+    }
+  }
+
   async validateRefreshToken(refreshToken: string): Promise<UserTokens> {
     try {
       if (!refreshToken) {
