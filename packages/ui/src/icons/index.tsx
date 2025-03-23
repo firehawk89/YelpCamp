@@ -16,3 +16,4 @@ export { MapPinIcon } from './MapPinIcon';
 export { ChevronIcon } from './ChevronIcon';
 export { MenuIcon } from './MenuIcon';
 export { FilterIcon } from './FilterIcon';
+export { EyeIcon } from './EyeIcon';

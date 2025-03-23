@@ -9,6 +9,7 @@ import Card, { CardProps } from '@repo/ui/card';
 import Divider from '@repo/ui/divider';
 import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
+import PasswordInput from '@repo/ui/password-input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -67,7 +68,7 @@ const SignInForm = ({ className, ...props }: CardProps) => {
               </Link>
             }
           >
-            <Input {...register('password')} id="password" type="password" />
+            <PasswordInput {...register('password')} id="password" />
           </InputWrapper>
 
           <Button className="mt-1.5" variant="accent" disabled={isSubmitting}>
