@@ -14,6 +14,7 @@ export interface Campground {
 }
 
 export interface CampgroundsFilterDto extends SortOptions {
-  search?: string;
   page?: string;
+  search?: string;
+  rating?: string;
 }

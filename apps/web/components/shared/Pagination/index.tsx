@@ -1,7 +1,7 @@
 'use client';
 
 import { DEFAULT_PAGE, MAX_SHOWN_PAGES, PAGE_PARAM } from '@/utils/constants';
-import { cn } from '@/utils/misc';
+import { cn, generateList } from '@/utils/misc';
 import { routes } from 'app/routes';
 import useCustomSearchParams from 'hooks/useCustomSearchParams';
 import { usePathname, useRouter } from 'next/navigation';
@@ -61,7 +61,7 @@ const Pagination = ({ page, totalPages, onPageChange, className, ...props }: Pag
         </>
       )}
 
-      {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+      {generateList(endPage - startPage + 1, (i) => {
         const page = i + startPage;
 
         return (

@@ -74,13 +74,16 @@ export class AuthService {
         throw new BadRequestException('Refresh token is required');
       }
 
-      const foundRefreshToken = await this.refreshTokenModel
-        .findOneAndDelete({ token: refreshToken, expiryDate: { $gte: new Date() } })
-        .exec();
+      const foundRefreshToken = await this.refreshTokenModel.findOne({
+        token: refreshToken,
+        expiryDate: { $gte: new Date() },
+      });
 
       if (!foundRefreshToken) {
         throw new ForbiddenException('Refresh token is expired or invalid');
       }
+
+      await this.refreshTokenModel.deleteOne({ _id: foundRefreshToken._id });
 
       return this.generateUserTokens(foundRefreshToken.userId.toString());
     } catch (error) {

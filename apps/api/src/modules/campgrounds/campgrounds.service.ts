@@ -46,7 +46,7 @@ export class CampgroundsService {
 
   async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<Campground>> {
     try {
-      const { search, page, sortBy = DEFAULT_SORT_FIELD, sortOrder = DEFAULT_SORT_ORDER } = filter ?? {};
+      const { sortBy = DEFAULT_SORT_FIELD, sortOrder = DEFAULT_SORT_ORDER, page, search, rating } = filter ?? {};
 
       const pageNumber = +page;
       const validPage = isNaN(pageNumber) || pageNumber < 1 ? DEFAULT_PAGE : pageNumber;
@@ -59,6 +59,12 @@ export class CampgroundsService {
       if (search) {
         pipeline.push({
           $match: { title: { $regex: search, $options: 'i' } },
+        });
+      }
+
+      if (rating) {
+        pipeline.push({
+          $match: { rating: { $gte: +rating } },
         });
       }
 

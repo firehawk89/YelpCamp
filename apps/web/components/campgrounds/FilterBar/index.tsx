@@ -2,10 +2,14 @@ import SearchForm from '@/components/shared/SearchForm';
 import { cn } from '@/utils/misc';
 import Card, { CardProps } from '@repo/ui/card';
 
-const CampgroundsFilterBar = ({ className, ...props }: CardProps) => {
+import CampgroundRatingFilter from './CampgroundRatingFilter';
+
+const CampgroundsFilterBar = ({ ref, className, ...props }: CardProps) => {
   return (
-    <Card className={cn('flex-col', className)} {...props}>
+    <Card ref={ref} className={cn('', className)} orientation="vertical" {...props}>
       <SearchForm label="Search by name" />
+
+      <CampgroundRatingFilter />
     </Card>
   );
 };
