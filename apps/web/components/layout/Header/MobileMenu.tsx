@@ -25,9 +25,9 @@ const MobileMenu = ({ user, overlayClassName, className, ...props }: MobileMenuP
 
   return (
     <>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 lg:hidden">
         {user && <UserMenu />}
-        <Button className="lg:hidden" size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
+        <Button size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
       </div>
 
       <Overlay className={cn('lg:hidden', overlayClassName)} isHidden={!isMenuOpened} content="right">
