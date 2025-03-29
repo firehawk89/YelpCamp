@@ -17,3 +17,4 @@ export { ChevronIcon } from './ChevronIcon';
 export { MenuIcon } from './MenuIcon';
 export { FilterIcon } from './FilterIcon';
 export { EyeIcon } from './EyeIcon';
+export { SettingsIcon } from './SettingsIcon';
