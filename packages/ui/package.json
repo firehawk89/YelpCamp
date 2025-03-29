@@ -12,7 +12,8 @@
     "./input-wrapper": "./src/InputWrapper.tsx",
     "./alert": "./src/Alert.tsx",
     "./select": "./src/Select/index.tsx",
-    "./divider": "./src/Divider.tsx"
+    "./divider": "./src/Divider.tsx",
+    "./tooltip": "./src/Tooltip.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
