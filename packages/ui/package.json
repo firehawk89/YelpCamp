@@ -11,7 +11,7 @@
     "./password-input": "./src/Input/PasswordInput.tsx",
     "./input-wrapper": "./src/InputWrapper.tsx",
     "./alert": "./src/Alert.tsx",
-    "./select": "./src/Select.tsx",
+    "./select": "./src/Select/index.tsx",
     "./divider": "./src/Divider.tsx"
   },
   "scripts": {
