@@ -1,5 +1,5 @@
 import { cn } from '@/utils/misc';
-import { ElementType, HTMLAttributes } from 'react';
+import { ElementType, HTMLAttributes, Ref } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
 export const cardVariants = tv({
@@ -21,11 +21,12 @@ export const cardVariants = tv({
 });
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {
+  ref?: Ref<HTMLDivElement>;
   component?: ElementType;
 }
 
-const Card = ({ children, className, orientation, size, component: Component = 'div', ...props }: CardProps) => (
-  <Component className={cn(cardVariants({ orientation, size }), className)} {...props}>
+const Card = ({ ref, children, className, orientation, size, component: Component = 'div', ...props }: CardProps) => (
+  <Component ref={ref} className={cn(cardVariants({ orientation, size }), className)} {...props}>
     {children}
   </Component>
 );

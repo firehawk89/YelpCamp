@@ -5,11 +5,13 @@ import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import Divider from '@repo/ui/divider';
 import { CloseIcon, MenuIcon } from '@repo/ui/icons';
+import { useClickOutside } from 'hooks/useClickOutside';
 import { HTMLAttributes, useState } from 'react';
 import { User } from 'types/user';
 
-import HeaderAuthMenu from './HeaderAuthMenu';
 import HeaderMenu from './HeaderMenu';
+import { authMenuItems } from './helpers';
+import UserMenu from './UserMenu';
 
 interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
   user: User | null;
@@ -19,17 +21,18 @@ interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
 const MobileMenu = ({ user, overlayClassName, className, ...props }: MobileMenuProps) => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
+  const mobileMenuRef = useClickOutside<HTMLDivElement>(() => setIsMenuOpened(false));
+
   return (
     <>
-      <Button className="lg:hidden" size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
+      <div className="flex items-center gap-4">
+        {user && <UserMenu />}
+        <Button className="lg:hidden" size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
+      </div>
 
-      <Overlay
-        className={cn('lg:hidden', overlayClassName)}
-        isHidden={!isMenuOpened}
-        content="right"
-        onClick={() => setIsMenuOpened(false)}
-      >
+      <Overlay className={cn('lg:hidden', overlayClassName)} isHidden={!isMenuOpened} content="right">
         <div
+          ref={mobileMenuRef}
           className={cn(
             'h-full w-72 translate-x-72 bg-white px-5 py-3 transition-all',
             {
@@ -49,8 +52,13 @@ const MobileMenu = ({ user, overlayClassName, className, ...props }: MobileMenuP
 
           <div className="mt-3 flex flex-col gap-5">
             <HeaderMenu orientation="vertical" />
-            <Divider />
-            <HeaderAuthMenu orientation="vertical" user={user} onLogout={() => setIsMenuOpened(false)} />
+
+            {!user && (
+              <>
+                <Divider />
+                <HeaderMenu orientation="vertical" items={authMenuItems} />
+              </>
+            )}
           </div>
         </div>
       </Overlay>

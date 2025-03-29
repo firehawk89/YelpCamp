@@ -5,6 +5,7 @@ import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import { CardProps } from '@repo/ui/card';
 import { FilterIcon } from '@repo/ui/icons';
+import { useClickOutside } from 'hooks/useClickOutside';
 import { useState } from 'react';
 
 import CampgroundsFilterBar from '.';
@@ -22,6 +23,8 @@ const CampgroundsMobileFilterBar = ({
 }: CampgroundsMobileFilterBarProps) => {
   const [isFilterMenuOpened, setIsFilterMenuOpened] = useState(false);
 
+  const filterBarRef = useClickOutside<HTMLDivElement>(() => setIsFilterMenuOpened(false));
+
   return (
     <>
       <Button
@@ -31,8 +34,8 @@ const CampgroundsMobileFilterBar = ({
         icon={<FilterIcon className="size-7" />}
       />
 
-      <Overlay className={overlayClassName} isHidden={!isFilterMenuOpened} onClick={() => setIsFilterMenuOpened(false)}>
-        <CampgroundsFilterBar className={className} {...props} />
+      <Overlay className={overlayClassName} isHidden={!isFilterMenuOpened}>
+        <CampgroundsFilterBar ref={filterBarRef} className={className} {...props} />
       </Overlay>
     </>
   );
