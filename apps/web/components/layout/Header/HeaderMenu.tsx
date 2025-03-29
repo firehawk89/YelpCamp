@@ -2,18 +2,10 @@
 
 import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
-import { Url } from 'next/dist/shared/lib/router/router';
 import { HTMLAttributes, useMemo } from 'react';
 
 import HeaderLink from './HeaderLink';
-
-export interface MenuItem {
-  path?: Url;
-  label: string;
-  icon?: JSX.Element;
-  className?: string;
-  onClick?: () => void;
-}
+import { defaultMenuItems, MenuItem } from './helpers';
 
 export interface HeaderMenuProps extends HTMLAttributes<HTMLElement> {
   items?: MenuItem[];
@@ -21,16 +13,7 @@ export interface HeaderMenuProps extends HTMLAttributes<HTMLElement> {
 }
 
 const HeaderMenu = ({ items = [], orientation = 'horizontal', children, className, ...props }: HeaderMenuProps) => {
-  const menuItems = useMemo(
-    () =>
-      items.length
-        ? items
-        : [
-            { path: '/', label: 'Home' },
-            { path: '/campgrounds', label: 'Campgrounds' },
-          ],
-    [items]
-  );
+  const menuItems = useMemo(() => (items.length ? items : defaultMenuItems), [items]);
 
   return (
     <ul

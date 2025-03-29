@@ -7,7 +7,7 @@ import { HTMLAttributes } from 'react';
 interface SortControlsProps extends HTMLAttributes<HTMLDivElement> {
   label: string;
   options: SelectOption[];
-  selectedOption: string;
+  selectedOption?: SelectOption;
   handleSort: (sortOption: SelectOption) => void;
 }
 

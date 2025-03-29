@@ -18,11 +18,14 @@ const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivEleme
 
   const { searchParams, getUpdatedSearchParamsString } = useCustomSearchParams();
 
-  const selectedSortByOption = searchParams.get(SORT_BY_PARAM) || DEFAULT_SORT_BY_OPTION.value;
-  const selectedSortOrderOption = searchParams.get(SORT_ORDER_PARAM) || DEFAULT_SORT_ORDER_OPTION.value;
+  const selectedSortByValue = searchParams.get(SORT_BY_PARAM) || DEFAULT_SORT_BY_OPTION.value;
+  const selectedSortByOption = SORT_BY_OPTIONS.find((option) => option.value === selectedSortByValue);
+
+  const selectedSortOrderValue = searchParams.get(SORT_ORDER_PARAM) || DEFAULT_SORT_ORDER_OPTION.value;
+  const selectedSortOrderOption = SORT_ORDER_OPTIONS.find((option) => option.value === selectedSortOrderValue);
 
   const handleSort = (sortOption: SelectOption, param: string) => {
-    if (sortOption.value === selectedSortByOption || sortOption.value === selectedSortOrderOption) {
+    if (sortOption.value === selectedSortByValue || sortOption.value === selectedSortOrderValue) {
       return;
     }
 
