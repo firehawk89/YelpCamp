@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-export const getSearchParamsString = (params: Record<string, unknown>, existingParams?: string | URLSearchParams) => {
+export const getSearchParamsString = <T extends object>(params: T, existingParams?: string | URLSearchParams) => {
   const searchParams = new URLSearchParams(existingParams);
 
   Object.entries(params).forEach(([key, value]) => {
@@ -26,4 +26,8 @@ export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(fu
   };
 
   return debounced;
+};
+
+export const generateList = <T>(length: number, generator: (index: number) => T): T[] => {
+  return Array.from({ length }, (_, index) => generator(index));
 };
