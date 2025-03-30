@@ -22,7 +22,9 @@ export const inputVariants = tv({
   },
 });
 
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>, VariantProps<typeof inputVariants> {}
+export interface InputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
+    VariantProps<typeof inputVariants> {}
 
 const Input = ({ type, className, variant, size, ...props }: InputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

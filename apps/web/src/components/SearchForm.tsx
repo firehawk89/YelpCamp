@@ -1,0 +1,57 @@
+'use client';
+
+import { cn } from '@/utils/misc';
+import Button from '@repo/ui/button';
+import { SearchIcon } from '@repo/ui/icons';
+import Input from '@repo/ui/input';
+import { useRouter } from 'next/navigation';
+import { FormEvent, FormHTMLAttributes } from 'react';
+import { routes } from 'src/app/routes';
+import useCustomSearchParams from 'src/hooks/useCustomSearchParams';
+import { DEFAULT_PAGE, PAGE_PARAM, SEARCH_PARAM } from 'src/utils/constants';
+
+export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
+  label?: string;
+}
+
+const SearchForm = ({ className, label, ...props }: SearchFormProps) => {
+  const router = useRouter();
+
+  const { searchParams, getUpdatedSearchParamsString } = useCustomSearchParams();
+
+  const defaultValue = searchParams.get(SEARCH_PARAM) || '';
+
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const search = formData.get(SEARCH_PARAM);
+
+    if (search === defaultValue) {
+      return;
+    }
+
+    const params = { [SEARCH_PARAM]: search };
+    if (searchParams.has(PAGE_PARAM)) {
+      params[PAGE_PARAM] = DEFAULT_PAGE.toString();
+    }
+    const newSearchParamsString = getUpdatedSearchParamsString(params);
+
+    router.push(routes.campgrounds(newSearchParamsString));
+  };
+
+  return (
+    <form className={cn('flex w-full flex-col gap-2', className)} onSubmit={handleSearch} {...props}>
+      <label className={cn('font-medium', !label && 'sr-only')} htmlFor={SEARCH_PARAM}>
+        {label ? label : 'Search'}
+      </label>
+
+      <div className="flex items-center gap-2">
+        <Input id={SEARCH_PARAM} name={SEARCH_PARAM} type="text" placeholder="Search" defaultValue={defaultValue} />
+        <Button variant="outline" icon={<SearchIcon />} />
+      </div>
+    </form>
+  );
+};
+
+export default SearchForm;
