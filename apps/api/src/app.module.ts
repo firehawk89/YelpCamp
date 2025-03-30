@@ -10,6 +10,7 @@ import { ACCESS_TOKEN_EXPIRATION_SECONDS } from './helpers/constants';
 import { AuthModule } from './modules/auth/auth.module';
 import { CampgroundsModule } from './modules/campgrounds/campgrounds.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
+import { SeederModule } from './modules/seeder/seeder.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -29,6 +30,7 @@ import { UsersModule } from './modules/users/users.module';
       inject: [ConfigService],
       global: true,
     }),
+    SeederModule,
     AuthModule,
     UsersModule,
     CampgroundsModule,
