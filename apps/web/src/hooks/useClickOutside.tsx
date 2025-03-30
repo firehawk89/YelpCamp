@@ -1,3 +1,5 @@
+'use client';
+
 import { RefObject, useCallback, useEffect, useRef } from 'react';
 
 type UseClickOutsideCallback = (event: MouseEvent) => void;
