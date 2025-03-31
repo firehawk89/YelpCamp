@@ -18,3 +18,5 @@ export { MenuIcon } from './MenuIcon';
 export { FilterIcon } from './FilterIcon';
 export { EyeIcon } from './EyeIcon';
 export { SettingsIcon } from './SettingsIcon';
+export { ThumbUp } from './ThumbUp';
+export { ThumbDown } from './ThumbDown';
