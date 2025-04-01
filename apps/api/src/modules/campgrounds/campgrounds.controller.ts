@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { User } from 'src/decorators/user.decorator';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { type JwtPayload } from 'src/types/user';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { CampgroundsService } from './campgrounds.service';
@@ -22,9 +24,9 @@ export class CampgroundsController {
     return this.campgroundsService.create(createCampgroundDto);
   }
 
-  @Get(':id')
-  getCampgroundById(@Param('id') id: string) {
-    return this.campgroundsService.getById(id);
+  @Get(':slug')
+  getCampgroundBySlug(@Param('slug') slug: string) {
+    return this.campgroundsService.getBySlug(slug);
   }
 
   @UseGuards(AuthGuard)
@@ -46,7 +48,7 @@ export class CampgroundsController {
 
   @UseGuards(AuthGuard)
   @Post(':id/reviews')
-  createReview(@Param('id') campgroundId: string, @Body() createReviewDto: CreateReviewDTO) {
-    return this.campgroundsService.createReview(campgroundId, createReviewDto);
+  createReview(@Param('id') campgroundId: string, @User() user: JwtPayload, @Body() createReviewDto: CreateReviewDTO) {
+    return this.campgroundsService.createReview(campgroundId, user.userId, createReviewDto);
   }
 }

@@ -118,21 +118,30 @@ export class CampgroundsService {
     }
   }
 
-  async update(id: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<Campground> {
+  async getBySlug(slug: string): Promise<Campground> {
     try {
-      const isValidId = isValidObjectId(id);
-      if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
+      const campground = await this.campgroundModel.findOne({ slug }).exec();
+
+      if (!campground) {
+        throw new NotFoundException("Campground with given slug doesn't exist");
       }
 
-      const campground = await this.campgroundModel.findById(id).exec();
+      return campground;
+    } catch (error) {
+      handleError(error, CampgroundsService.name);
+    }
+  }
+
+  async update(slug: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<Campground> {
+    try {
+      const campground = await this.campgroundModel.findOne({ slug }).exec();
       if (!campground) {
-        throw new NotFoundException("Campground doesn't exist");
+        throw new NotFoundException("Campground with given slug doesn't exist");
       }
 
       const updatedAtDate = Date.now();
       return this.campgroundModel
-        .findByIdAndUpdate(id, { ...updateCampgroundDto, updatedAt: updatedAtDate }, { new: true })
+        .findByIdAndUpdate(campground.id, { ...updateCampgroundDto, updatedAt: updatedAtDate }, { new: true })
         .exec();
     } catch (error) {
       handleError(error, CampgroundsService.name);
@@ -164,17 +173,17 @@ export class CampgroundsService {
         throw new BadRequestException('Invalid campground ID');
       }
 
-      const reviews = await this.reviewModel.find({ campgroundId }).exec();
+      const reviews = await this.reviewModel.find({ campgroundId }).populate('author', 'email').exec();
       return reviews;
     } catch (error) {
       handleError(error, CampgroundsService.name);
     }
   }
 
-  async createReview(campgroundId: string, createReviewDto: CreateReviewDTO): Promise<Review> {
+  async createReview(campgroundId: string, userId: string, createReviewDto: CreateReviewDTO): Promise<Review> {
     try {
-      const isValidId = isValidObjectId(campgroundId);
-      if (!isValidId) {
+      const isValidCampgroundId = isValidObjectId(campgroundId);
+      if (!isValidCampgroundId) {
         throw new BadRequestException('Invalid campground ID');
       }
 
@@ -183,7 +192,12 @@ export class CampgroundsService {
         throw new NotFoundException("Campground doesn't exist");
       }
 
-      const newReview = new this.reviewModel({ ...createReviewDto, campgroundId });
+      const isValidUserId = isValidObjectId(userId);
+      if (!isValidUserId) {
+        throw new BadRequestException('Invalid campground ID');
+      }
+
+      const newReview = new this.reviewModel({ ...createReviewDto, campgroundId, author: userId });
 
       await this.increaseCampgroundRating(campgroundId, campground, createReviewDto.rating);
 
