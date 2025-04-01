@@ -11,13 +11,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getAllUsers(@Query() filter?: UsersFilterDTO) {
+  getUsers(@Query() filter?: UsersFilterDTO) {
     const { id, email } = filter;
-
     if (id) return this.usersService.getById(id);
-
     if (email) return this.usersService.getByEmail(email);
-
     return this.usersService.getAll();
   }
 
