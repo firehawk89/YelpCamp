@@ -13,7 +13,9 @@
     "./alert": "./src/Alert.tsx",
     "./select": "./src/Select/index.tsx",
     "./divider": "./src/Divider.tsx",
-    "./tooltip": "./src/Tooltip.tsx"
+    "./tooltip": "./src/Tooltip.tsx",
+    "./avatar": "./src/Avatar.tsx",
+    "./image-placeholder": "./src/ImagePlaceholder.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
