@@ -31,3 +31,5 @@ export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(fu
 export const generateList = <T>(length: number, generator: (index: number) => T): T[] => {
   return Array.from({ length }, (_, index) => generator(index));
 };
+
+export const round = (value: number, precision: number = 2) => parseFloat(value.toFixed(precision));

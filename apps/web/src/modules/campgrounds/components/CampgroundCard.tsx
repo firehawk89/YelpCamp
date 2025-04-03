@@ -1,11 +1,15 @@
-import ImagePlaceholder from '@/components/ImagePlaceholder';
 import { Campground } from '@/types/campground';
-import { cn } from '@/utils/misc';
+import { cn, round } from '@/utils/misc';
 import Button, { buttonVariants } from '@repo/ui/button';
 import Card, { CardProps } from '@repo/ui/card';
-import { HeartIcon, MapPinIcon, StarIcon } from '@repo/ui/icons';
+import { HeartIcon } from '@repo/ui/icons';
+import ImagePlaceholder from '@repo/ui/image-placeholder';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Link from 'next/link';
+
+import CampgroundLocation from './CampgroundLocation';
+import CampgroundRating from './CampgroundRating';
+import ReviewsChip from './ReviewsChip';
 
 interface CampgroundCardProps extends CardProps {
   campground: Campground;
@@ -23,31 +27,14 @@ const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
             <h2 className="text-2xl font-medium">{campground.title}</h2>
           </Link>
 
-          <div className="flex items-center gap-1 text-neutral-500">
-            <MapPinIcon />
-            <span> {campground.location}</span>
-          </div>
+          <CampgroundLocation location={campground.location} />
 
           <div className="flex flex-wrap items-center gap-2">
-            <p className="flex items-center gap-1">
-              <StarIcon className={cn('text-accent', { 'fill-accent': campground.rating })} />
-
-              {campground.rating ? (
-                <>
-                  <span className="text-lg">{campground.rating}</span>
-                  <span className="text-neutral-500">/5</span>
-                </>
-              ) : (
-                <span className="text-sm text-neutral-500">No rating yet</span>
-              )}
-            </p>
-
-            <span className="rounded-lg bg-orange-100 px-2 py-1 text-sm text-neutral-600">
-              {campground.reviewsCount ?? 0} reviews
-            </span>
+            <CampgroundRating rating={campground.rating} />
+            <ReviewsChip reviewsCount={campground.reviewsCount} />
           </div>
 
-          {campground.description && <p className="text-neutral-500">{campground.description}</p>}
+          {campground.description && <p className="text-neutral-700">{campground.description}</p>}
         </div>
 
         <div className="flex flex-col justify-between gap-4 sm:items-end">
@@ -60,7 +47,7 @@ const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
 
           <div className="flex flex-col gap-2.5">
             <p className="flex items-center max-sm:justify-center max-sm:gap-2 sm:flex-col sm:items-end">
-              <span className="text-lg font-semibold text-black">{campground.price} $</span>
+              <span className="text-lg font-semibold text-black">{round(campground.price)} $</span>
               <span className="text-neutral-500">per night</span>
             </p>
 
