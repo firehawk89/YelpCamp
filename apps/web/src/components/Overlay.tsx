@@ -1,5 +1,7 @@
+'use client';
+
 import { cn } from '@/utils/misc';
-import { HTMLAttributes, MouseEvent } from 'react';
+import { HTMLAttributes, MouseEvent, useEffect } from 'react';
 
 interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   isHidden?: boolean;
@@ -12,6 +14,14 @@ const Overlay = ({ isHidden, content = 'center', className, onClick, ...props }:
       onClick?.(event);
     }
   };
+
+  useEffect(() => {
+    if (isHidden) document.body.style.overflow = 'auto';
+    else document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isHidden]);
 
   return (
     <div
