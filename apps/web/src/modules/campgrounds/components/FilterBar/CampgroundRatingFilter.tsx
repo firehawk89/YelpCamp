@@ -11,7 +11,11 @@ const CampgroundRatingFilter = () => {
   return (
     <div className="flex w-full flex-col gap-2">
       <span className="font-medium">Rating</span>
-      <Rating rating={selectedRating} onChange={(rating) => applyFilter({ param: RATING_PARAM, value: rating })} />
+      <Rating
+        rating={selectedRating}
+        onChange={(rating) => applyFilter({ param: RATING_PARAM, value: rating })}
+        selectable
+      />
     </div>
   );
 };

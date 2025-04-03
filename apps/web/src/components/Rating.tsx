@@ -1,21 +1,34 @@
 'use client';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { cn, generateList } from '@/utils/misc';
 import { StarIcon } from '@repo/ui/icons';
 import Tooltip from '@repo/ui/tooltip';
 import { HTMLAttributes, useCallback, useMemo, useState } from 'react';
 import { MAX_RATING } from 'src/utils/constants';
 
-interface RatingProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  rating?: number;
+interface RatingProps extends Omit<HTMLAttributes<HTMLUListElement>, 'onChange'> {
   className?: string;
+  starClassName?: string;
+  rating?: number;
   maxStars?: number;
+  selectable?: boolean;
   onChange?: (value?: number) => void;
 }
 
-const Rating = ({ rating, className, maxStars = MAX_RATING, onChange, ...props }: RatingProps) => {
+const Rating = ({
+  rating,
+  maxStars = MAX_RATING,
+  selectable = false,
+  starClassName,
+  className,
+  onChange,
+  ...props
+}: RatingProps) => {
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+
   const [selectedRating, setSelectedRating] = useState(rating);
-  const [hoveredRating, setHoveredRating] = useState<number>();
+  const [hoveredRating, setHoveredRating] = useState<number | undefined>(undefined);
 
   const handleRatingClick = useCallback(
     (value: number) => {
@@ -30,44 +43,68 @@ const Rating = ({ rating, className, maxStars = MAX_RATING, onChange, ...props }
     [onChange, selectedRating]
   );
 
-  const handleMouseEnter = (value: number) => {
-    setHoveredRating(value);
-  };
+  const handleMouseEnter = useCallback(
+    (value: number) => {
+      if (isDesktop) setHoveredRating(value);
+    },
+    [isDesktop]
+  );
 
-  const handleMouseLeave = () => {
-    setHoveredRating(undefined);
-  };
+  const handleMouseLeave = useCallback(() => {
+    if (isDesktop) setHoveredRating(undefined);
+  }, [isDesktop]);
 
   const stars = useMemo(
     () =>
       generateList(maxStars, (i) => {
         const ratingValue = i + 1;
-        const isFilled = hoveredRating ? ratingValue <= hoveredRating : ratingValue <= (selectedRating || 0);
+        const isFilled =
+          hoveredRating !== undefined ? ratingValue <= hoveredRating : ratingValue <= (selectedRating || 0);
 
-        return (
-          <Tooltip key={i} label={`${ratingValue}${ratingValue < MAX_RATING ? '+' : ''}`}>
-            <button
-              className="cursor-pointer"
-              onClick={() => handleRatingClick(ratingValue)}
-              onMouseEnter={() => handleMouseEnter(ratingValue)}
-              onMouseLeave={handleMouseLeave}
-            >
-              <StarIcon
-                className={cn('text-accent size-7', {
+        const ratingButton = (
+          <button
+            className={cn({ 'cursor-pointer': selectable, 'cursor-default': !selectable })}
+            onClick={selectable ? () => handleRatingClick(ratingValue) : undefined}
+            onMouseEnter={selectable ? () => handleMouseEnter(ratingValue) : undefined}
+            onMouseLeave={selectable ? handleMouseLeave : undefined}
+            type="button"
+          >
+            <StarIcon
+              className={cn(
+                'text-accent size-7',
+                {
                   'fill-accent': isFilled,
-                })}
-              />
-            </button>
-          </Tooltip>
+                },
+                starClassName
+              )}
+            />
+          </button>
+        );
+
+        return selectable ? (
+          <li key={i}>
+            <Tooltip label={`${ratingValue}${ratingValue < MAX_RATING ? '+' : ''}`}>{ratingButton}</Tooltip>
+          </li>
+        ) : (
+          <li key={i}>{ratingButton}</li>
         );
       }),
-    [handleRatingClick, hoveredRating, maxStars, selectedRating]
+    [
+      handleMouseEnter,
+      handleMouseLeave,
+      handleRatingClick,
+      hoveredRating,
+      maxStars,
+      selectable,
+      selectedRating,
+      starClassName,
+    ]
   );
 
   return (
-    <div className={cn('flex items-center', className)} {...props}>
+    <ul className={cn('flex items-center', className)} {...props}>
       {stars}
-    </div>
+    </ul>
   );
 };
 
