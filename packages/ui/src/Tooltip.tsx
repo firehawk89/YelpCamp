@@ -25,7 +25,7 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>, VariantProps<type
 
 const Tooltip = ({ label, position, containerClassName, className, children, ...props }: TooltipProps) => (
   <div className={cn('relative flex', containerClassName)} {...props}>
-    <div className={cn('peer h-fit', className)}>{children}</div>
+    <div className={cn('peer flex h-fit', className)}>{children}</div>
     <div className={cn(tooltipVariants({ position }))}>
       <div className="rounded-lg bg-neutral-200 px-3 py-0.5 text-sm shadow">{label}</div>
     </div>

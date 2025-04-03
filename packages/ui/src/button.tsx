@@ -84,8 +84,12 @@ export interface ButtonProps
   icon?: ReactNode;
 }
 
-const Button = ({ children, variant, size, color, icon, className, ...props }: ButtonProps) => (
-  <button className={cn(buttonVariants({ variant, size: icon ? 'icon' : size, color }), className)} {...props}>
+const Button = ({ type = 'button', children, variant, size, color, icon, className, ...props }: ButtonProps) => (
+  <button
+    className={cn(buttonVariants({ variant, size: icon ? 'icon' : size, color }), className)}
+    type={type}
+    {...props}
+  >
     {icon} {children}
   </button>
 );

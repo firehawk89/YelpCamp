@@ -47,7 +47,7 @@ const UserMenu = ({ onLogout, className, containerClassName, ...props }: UserMen
           className={cn('border-accent h-10 w-10 rounded-full border', className)}
           onClick={toggleDropdown}
           size="icon"
-          icon={<UserIcon className="text-accent size-6" />}
+          icon={<UserIcon className="text-accent size-5" />}
           {...props}
         />
       )}
