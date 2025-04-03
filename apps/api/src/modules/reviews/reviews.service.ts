@@ -14,17 +14,23 @@ export class ReviewsService {
     @InjectModel(Campground.name) private campgroundModel: Model<Campground>
   ) {}
 
-  async create(createReviewDto: CreateReviewDTO): Promise<Review> {
+  async getAll(): Promise<Review[]> {
+    return this.reviewModel.find().exec();
+  }
+
+  async getAllByCampgroundId(campgroundId: string): Promise<Review[]> {
     try {
-      const newReview = new this.reviewModel(createReviewDto);
-      return newReview.save();
+      const isValidId = isValidObjectId(campgroundId);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid campground ID');
+      }
+
+      const reviews = await this.reviewModel.find({ campgroundId }).populate('author', 'email').exec();
+
+      return reviews;
     } catch (error) {
       handleError(error, ReviewsService.name);
     }
-  }
-
-  async getAll(): Promise<Review[]> {
-    return this.reviewModel.find().exec();
   }
 
   async getById(id: string): Promise<Review> {
@@ -74,6 +80,53 @@ export class ReviewsService {
       return this.reviewModel.findByIdAndDelete(id).exec();
     } catch (error) {
       handleError(error, ReviewsService.name);
+    }
+  }
+
+  async create(campgroundId: string, userId: string, createReviewDto: CreateReviewDTO): Promise<Review> {
+    try {
+      const isValidCampgroundId = isValidObjectId(campgroundId);
+      if (!isValidCampgroundId) {
+        throw new BadRequestException('Invalid campground ID');
+      }
+
+      const campground = await this.campgroundModel.findById(campgroundId).exec();
+      if (!campground) {
+        throw new NotFoundException("Campground doesn't exist");
+      }
+
+      const isValidUserId = isValidObjectId(userId);
+      if (!isValidUserId) {
+        throw new BadRequestException('Invalid user ID');
+      }
+
+      const newReview = new this.reviewModel({ ...createReviewDto, campgroundId, author: userId });
+
+      await this.increaseCampgroundRating(campgroundId, campground, createReviewDto.rating);
+
+      return newReview.save();
+    } catch (error) {
+      handleError(error, ReviewsService.name);
+    }
+  }
+
+  private async increaseCampgroundRating(campgroundId: string, campground: Campground, reviewRating: number) {
+    try {
+      const campgroundRating = isFinite(campground.rating) ? campground.rating : 0;
+      const reviewsCount = campground.reviewsCount ?? 0;
+      const newReviewsCount = reviewsCount + 1;
+
+      const newRating = getUpdatedRating(reviewRating, campgroundRating, reviewsCount, newReviewsCount);
+
+      await this.campgroundModel
+        .findByIdAndUpdate(campgroundId, {
+          rating: newRating,
+          reviewsCount: newReviewsCount,
+        })
+        .exec();
+    } catch (error) {
+      handleError(error, ReviewsService.name, false);
+      throw new InternalServerErrorException('Failed to update campground rating');
     }
   }
 

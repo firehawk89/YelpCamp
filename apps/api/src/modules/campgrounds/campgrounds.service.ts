@@ -1,19 +1,11 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
-import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_PAGE, DEFAULT_SORT_ORDER } from 'src/helpers/constants';
 import { generateSlug, handleError } from 'src/helpers/misc';
-import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review } from 'src/schemas/review.schema';
 import { PaginatedResponse } from 'src/types/api';
@@ -163,67 +155,6 @@ export class CampgroundsService {
       return this.campgroundModel.findByIdAndDelete(id).exec();
     } catch (error) {
       handleError(error, CampgroundsService.name);
-    }
-  }
-
-  async getReviews(campgroundId: string): Promise<Review[]> {
-    try {
-      const isValidId = isValidObjectId(campgroundId);
-      if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
-      }
-
-      const reviews = await this.reviewModel.find({ campgroundId }).populate('author', 'email').exec();
-      return reviews;
-    } catch (error) {
-      handleError(error, CampgroundsService.name);
-    }
-  }
-
-  async createReview(campgroundId: string, userId: string, createReviewDto: CreateReviewDTO): Promise<Review> {
-    try {
-      const isValidCampgroundId = isValidObjectId(campgroundId);
-      if (!isValidCampgroundId) {
-        throw new BadRequestException('Invalid campground ID');
-      }
-
-      const campground = await this.campgroundModel.findById(campgroundId).exec();
-      if (!campground) {
-        throw new NotFoundException("Campground doesn't exist");
-      }
-
-      const isValidUserId = isValidObjectId(userId);
-      if (!isValidUserId) {
-        throw new BadRequestException('Invalid campground ID');
-      }
-
-      const newReview = new this.reviewModel({ ...createReviewDto, campgroundId, author: userId });
-
-      await this.increaseCampgroundRating(campgroundId, campground, createReviewDto.rating);
-
-      return newReview.save();
-    } catch (error) {
-      handleError(error, CampgroundsService.name);
-    }
-  }
-
-  private async increaseCampgroundRating(campgroundId: string, campground: Campground, reviewRating: number) {
-    try {
-      const campgroundRating = isFinite(campground.rating) ? campground.rating : 0;
-      const reviewsCount = campground.reviewsCount ?? 0;
-      const newReviewsCount = reviewsCount + 1;
-
-      const newRating = getUpdatedRating(reviewRating, campgroundRating, reviewsCount, newReviewsCount);
-
-      await this.campgroundModel
-        .findByIdAndUpdate(campgroundId, {
-          rating: newRating,
-          reviewsCount: newReviewsCount,
-        })
-        .exec();
-    } catch (error) {
-      handleError(error, CampgroundsService.name, false);
-      throw new InternalServerErrorException('Failed to update campground rating');
     }
   }
 }

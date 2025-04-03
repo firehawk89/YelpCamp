@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { ReviewsService } from './reviews.service';
@@ -11,12 +10,6 @@ export class ReviewsController {
   @Get()
   getAllReviews() {
     return this.reviewsService.getAll();
-  }
-
-  @UseGuards(AuthGuard)
-  @Post()
-  createReview(@Body() createReviewDto: CreateReviewDTO) {
-    return this.reviewsService.create(createReviewDto);
   }
 
   @Get(':id')

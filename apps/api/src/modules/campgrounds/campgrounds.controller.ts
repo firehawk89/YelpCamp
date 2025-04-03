@@ -7,11 +7,15 @@ import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { type JwtPayload } from 'src/types/user';
 
 import { AuthGuard } from '../auth/auth.guard';
+import { ReviewsService } from '../reviews/reviews.service';
 import { CampgroundsService } from './campgrounds.service';
 
 @Controller('campgrounds')
 export class CampgroundsController {
-  constructor(private readonly campgroundsService: CampgroundsService) {}
+  constructor(
+    private readonly campgroundsService: CampgroundsService,
+    private readonly reviewsService: ReviewsService
+  ) {}
 
   @Get()
   getAllCampgrounds(@Query() filter?: CampgroundsFilterDTO) {
@@ -43,12 +47,12 @@ export class CampgroundsController {
 
   @Get(':id/reviews')
   getReviews(@Param('id') campgroundId: string) {
-    return this.campgroundsService.getReviews(campgroundId);
+    return this.reviewsService.getAllByCampgroundId(campgroundId);
   }
 
   @UseGuards(AuthGuard)
   @Post(':id/reviews')
   createReview(@Param('id') campgroundId: string, @User() user: JwtPayload, @Body() createReviewDto: CreateReviewDTO) {
-    return this.campgroundsService.createReview(campgroundId, user.userId, createReviewDto);
+    return this.reviewsService.create(campgroundId, user.userId, createReviewDto);
   }
 }
