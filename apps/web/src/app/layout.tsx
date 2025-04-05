@@ -15,7 +15,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-p-5 scroll-smooth">
       <body className={`relative bg-neutral-100 ${nunito.variable} font-primary`}>
         <div className="flex min-h-dvh flex-col">{children}</div>
       </body>
