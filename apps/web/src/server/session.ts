@@ -1,12 +1,12 @@
 'use server';
 
 import config from '@/app/config';
+import { fetchUser } from '@/server/user';
 import { UserTokens } from '@/types/user';
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-import { fetchUser } from './api/user';
-import { ACCESS_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME } from './constants';
+import { ACCESS_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME } from '../utils/constants';
 
 type JWTPayload = {
   userId: string;

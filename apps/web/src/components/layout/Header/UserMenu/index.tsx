@@ -7,7 +7,7 @@ import Select, { SelectOption } from '@repo/ui/select';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { routes } from 'src/app/routes';
-import { logout } from 'src/utils/api/auth';
+import { logout } from 'src/server/auth';
 
 import UserMenuOption from './UserMenuOption';
 

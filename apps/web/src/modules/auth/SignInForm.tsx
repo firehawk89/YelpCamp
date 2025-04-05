@@ -1,6 +1,6 @@
 'use client';
 
-import { signIn } from '@/utils/api/auth';
+import { signIn } from '@/server/auth';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@repo/ui/alert';

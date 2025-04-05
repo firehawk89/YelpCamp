@@ -1,7 +1,7 @@
+import { fetchCampgroundReviews } from '@/server/reviews';
+import { getSessionUser } from '@/server/session';
 import { Campground } from '@/types/campground';
-import { fetchCampgroundReviews } from '@/utils/api/reviews';
 import { cn } from '@/utils/misc';
-import { getSessionUser } from '@/utils/session';
 import Alert from '@repo/ui/alert';
 import { HTMLAttributes } from 'react';
 

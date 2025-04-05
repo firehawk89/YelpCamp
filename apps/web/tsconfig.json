@@ -11,6 +11,7 @@
       "@/app/*": ["src/app/*"],
       "@/components/*": ["src/components/*"],
       "@/modules/*": ["src/modules/*"],
+      "@/server/*": ["src/server/*"],
       "@/hooks/*": ["src/hooks/*"],
       "@/utils/*": ["src/utils/*"],
       "@/types/*": ["src/types/*"]

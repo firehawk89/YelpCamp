@@ -3,9 +3,9 @@
 import { AuthFormFields } from '@/modules/auth/helpers';
 import { ApiError } from '@/types/api';
 import { UserTokens } from '@/types/user';
+import { API_ROUTES } from '@/utils/constants';
 
-import { API_ROUTES } from '../constants';
-import { decryptToken, deleteSessionCookies, getAccessToken, setSessionCookies } from '../session';
+import { decryptToken, deleteSessionCookies, getAccessToken, setSessionCookies } from './session';
 
 type LogoutResponse = {
   message: string;

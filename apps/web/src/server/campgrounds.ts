@@ -2,9 +2,8 @@
 
 import { ApiResponse, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { Campground, CampgroundsFilterDto } from '@/types/campground';
-
-import { API_ROUTES } from '../constants';
-import { getSearchParamsString } from '../misc';
+import { API_ROUTES } from '@/utils/constants';
+import { getSearchParamsString } from '@/utils/misc';
 
 export const fetchCampgrounds = async (props: CampgroundsFilterDto): PaginatedApiResponse<Campground> => {
   try {

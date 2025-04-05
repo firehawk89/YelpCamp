@@ -2,7 +2,7 @@ import CampgroundLocation from '@/modules/campgrounds/components/CampgroundLocat
 import CampgroundRating from '@/modules/campgrounds/components/CampgroundRating';
 import Reviews from '@/modules/campgrounds/components/Reviews';
 import ReviewsChip from '@/modules/campgrounds/components/ReviewsChip';
-import { fetchCampground } from '@/utils/api/campgrounds';
+import { fetchCampground } from '@/server/campgrounds';
 import ImagePlaceholder from '@repo/ui/image-placeholder';
 
 interface CampgroundProps {

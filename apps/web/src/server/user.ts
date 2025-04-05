@@ -2,9 +2,9 @@
 
 import { ApiError } from '@/types/api';
 import { User } from '@/types/user';
+import { API_ROUTES, USER_ID_PARAM } from '@/utils/constants';
 
-import { API_ROUTES, USER_ID_PARAM } from '../constants';
-import { getAccessToken } from '../session';
+import { getAccessToken } from './session';
 
 export const fetchUser = async (userId: string): Promise<User> => {
   const accessToken = await getAccessToken();

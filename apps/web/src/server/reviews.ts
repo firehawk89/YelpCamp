@@ -2,10 +2,10 @@
 
 import { ApiResponse } from '@/types/api';
 import { Review } from '@/types/review';
+import { API_ROUTES } from '@/utils/constants';
 import { revalidateTag } from 'next/cache';
 
-import { API_ROUTES } from '../constants';
-import { getAccessToken } from '../session';
+import { getAccessToken } from './session';
 
 export const fetchCampgroundReviews = async (campgroundId: string): ApiResponse<Review[]> => {
   try {

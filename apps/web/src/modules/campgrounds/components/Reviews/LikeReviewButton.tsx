@@ -1,8 +1,8 @@
 'use client';
 
 import { routes } from '@/app/routes';
+import { likeReview, unlikeReview } from '@/server/reviews';
 import { User } from '@/types/user';
-import { likeReview, unlikeReview } from '@/utils/api/reviews';
 import { cn } from '@/utils/misc';
 import Button, { ButtonProps } from '@repo/ui/button';
 import { ThumbUp } from '@repo/ui/icons';

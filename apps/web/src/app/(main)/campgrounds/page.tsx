@@ -1,7 +1,7 @@
 import CampgroundsList from '@/modules/campgrounds/components/CampgroundsList';
 import CampgroundsFilterBar from '@/modules/campgrounds/components/FilterBar';
+import { fetchCampgrounds } from 'src/server/campgrounds';
 import { CampgroundsFilterDto } from 'src/types/campground';
-import { fetchCampgrounds } from 'src/utils/api/campgrounds';
 
 interface CampgroundsPageProps {
   searchParams?: CampgroundsFilterDto;

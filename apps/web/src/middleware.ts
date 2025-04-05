@@ -1,14 +1,14 @@
 import type { NextRequest } from 'next/server';
 
 import { routes } from '@/app/routes';
-import { refreshTokens } from '@/utils/api/auth';
+import { refreshTokens } from '@/server/auth';
+import { decryptToken } from '@/server/session';
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   ACCESS_TOKEN_EXPIRATION_DATE,
   REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRATION_DATE,
 } from '@/utils/constants';
-import { decryptToken } from '@/utils/session';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 

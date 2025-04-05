@@ -1,7 +1,7 @@
 import Logo from '@/components/Logo';
+import { getSessionUser } from '@/server/session';
 import { cn } from '@/utils/misc';
 import { HTMLAttributes } from 'react';
-import { getSessionUser } from 'src/utils/session';
 
 import HeaderMenu from './HeaderMenu';
 import { authMenuItems } from './helpers';
