@@ -2,6 +2,7 @@
 
 import { routes } from '@/app/routes';
 import { likeReview, unlikeReview } from '@/server/reviews';
+import { Review } from '@/types/review';
 import { User } from '@/types/user';
 import { cn } from '@/utils/misc';
 import Button, { ButtonProps } from '@repo/ui/button';
@@ -12,14 +13,15 @@ import { useMemo, useState } from 'react';
 
 interface LikeReviewButtonProps extends Omit<ButtonProps, 'icon'> {
   userId?: User['_id'];
-  reviewId: string;
+  review: Review;
   likedBy: string[];
 }
 
-const LikeReviewButton = ({ userId, reviewId, likedBy, className, ...props }: LikeReviewButtonProps) => {
+const LikeReviewButton = ({ userId, review, likedBy, className, ...props }: LikeReviewButtonProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const isOwnReview = userId === review.author._id;
   const isLikedByUser = useMemo(() => likedBy.some((likedUserId) => likedUserId === userId), [likedBy, userId]);
 
   const handleLikeClick = async () => {
@@ -32,9 +34,9 @@ const LikeReviewButton = ({ userId, reviewId, likedBy, className, ...props }: Li
 
     try {
       if (!isLikedByUser) {
-        await likeReview(reviewId);
+        await likeReview(review._id);
       } else {
-        await unlikeReview(reviewId);
+        await unlikeReview(review._id);
       }
     } catch (error) {
       console.error('Error liking review:', error);
@@ -43,7 +45,14 @@ const LikeReviewButton = ({ userId, reviewId, likedBy, className, ...props }: Li
     }
   };
 
-  return (
+  return isOwnReview ? (
+    <Button
+      className={cn({ 'text-accent': isLikedByUser }, className)}
+      icon={likedBy.length ? <ThumbUp /> : null}
+      disabled
+      {...props}
+    />
+  ) : (
     <Tooltip label="Helpful">
       <Button
         className={cn({ 'text-accent': isLikedByUser }, className)}

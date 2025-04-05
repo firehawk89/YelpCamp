@@ -27,7 +27,7 @@ const Reviews = async ({ campground, className, ...props }: ReviewsProps) => {
       )}
 
       {!error && !!campgroundReviews?.length && (
-        <ul className="flex flex-col gap-10">
+        <ul className="flex flex-col gap-8">
           {campgroundReviews?.map((review) => <ReviewCard key={review._id} userId={user?._id} review={review} />)}
         </ul>
       )}

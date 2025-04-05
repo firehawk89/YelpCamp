@@ -15,7 +15,7 @@ interface ReviewProps extends HTMLAttributes<HTMLLIElement> {
 }
 
 const ReviewCard = ({ userId, review, className, ...props }: ReviewProps) => {
-  const { _id: id, createdAt, likedBy, author, body, title, rating } = review;
+  const { createdAt, likedBy, author, body, title, rating } = review;
 
   const createdAtDate = formatDate(new Date(createdAt));
   const likesCount = likedBy.length;
@@ -38,7 +38,7 @@ const ReviewCard = ({ userId, review, className, ...props }: ReviewProps) => {
           <div className="flex items-center gap-0.5">
             {!!likesCount && <span className="text-sm">{likesCount}</span>}
 
-            <LikeReviewButton userId={userId} reviewId={id} likedBy={likedBy} />
+            <LikeReviewButton userId={userId} review={review} likedBy={likedBy} />
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ export default async function Campground({ params }: CampgroundProps) {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-16">
       <div className="flex flex-col items-center gap-5">
         <h1 className="text-center text-3xl font-bold lg:text-4xl">{campground?.title}</h1>
 
@@ -32,9 +32,9 @@ export default async function Campground({ params }: CampgroundProps) {
           <ImagePlaceholder className="mx-auto aspect-video w-full shrink-0 rounded-lg" />
           {campground?.description && <p className="text-neutral-700">{campground?.description}</p>}
         </div>
-
-        {campground && <Reviews campground={campground} />}
       </div>
+
+      {campground && <Reviews campground={campground} />}
     </div>
   );
 }
