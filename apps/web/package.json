@@ -10,9 +10,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --max-warnings 0",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "tsc --noEmit"
+    "lint": "next lint --max-warnings 0 && pnpm run check-types",
+    "check-types": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.2",
