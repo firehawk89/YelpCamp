@@ -1,5 +1,6 @@
 'use server';
 
+import { ReviewFormFields } from '@/modules/campgrounds/components/Reviews/helpers';
 import { ApiResponse } from '@/types/api';
 import { Review } from '@/types/review';
 import { API_ROUTES } from '@/utils/constants';
@@ -20,6 +21,33 @@ export const fetchCampgroundReviews = async (campgroundId: string): ApiResponse<
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Failed to fetch campground reviews';
     return { error: errorMessage };
+  }
+};
+
+export const createReview = async (campgroundId: string, reviewData: ReviewFormFields): Promise<Review> => {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      throw new Error('Failed to create a review. Please, sign in or sign up and try again');
+    }
+
+    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${campgroundId}/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(reviewData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create a review. Please, try again later');
+    }
+
+    const review: Review = await response.json();
+    revalidateTag('reviews');
+
+    return review;
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to create a review. Please, try again later';
+    throw new Error(errorMessage);
   }
 };
 

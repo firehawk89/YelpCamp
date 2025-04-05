@@ -40,7 +40,7 @@ const ReviewsHeader = ({ userId, campground, reviews, className, ...props }: Rev
       <div className="flex justify-between gap-5">
         <h2 className="text-2xl font-bold">Reviews</h2>
 
-        {!canUserAddReview && <AddReviewButton userId={userId} campgroundName={campground.title} />}
+        {canUserAddReview && <AddReviewButton userId={userId} campground={campground} />}
       </div>
 
       <div className="flex h-full items-center gap-3">

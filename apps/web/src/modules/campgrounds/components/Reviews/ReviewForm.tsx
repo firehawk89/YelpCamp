@@ -2,6 +2,8 @@
 
 import Rating from '@/components/Rating';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { createReview } from '@/server/reviews';
+import { Campground } from '@/types/campground';
 import { MAX_REVIEW_BODY_LENGTH, MAX_REVIEW_TITLE_LENGTH } from '@/utils/constants';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,18 +17,18 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ReviewFormFields, reviewFormSchema } from './helpers';
 
 interface ReviewFormProps extends CardProps {
-  campgroundName: string;
+  campground: Campground;
   onClose: () => void;
 }
 
-const ReviewForm = ({ campgroundName, onClose, className, ...props }: ReviewFormProps) => {
+const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProps) => {
   const {
     register,
     watch,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<ReviewFormFields>({ resolver: zodResolver(reviewFormSchema) });
+  } = useForm<ReviewFormFields>({ defaultValues: { title: null }, resolver: zodResolver(reviewFormSchema) });
 
   const reviewFormRef = useClickOutside<HTMLDivElement>(() => onClose());
 
@@ -34,7 +36,12 @@ const ReviewForm = ({ campgroundName, onClose, className, ...props }: ReviewForm
   const enteredBodyLength = watch('body')?.length || 0;
 
   const onSubmit: SubmitHandler<ReviewFormFields> = async (formData) => {
-    console.log('formData', formData);
+    try {
+      await createReview(campground._id, formData);
+      onClose();
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
   };
 
   return (
@@ -46,7 +53,7 @@ const ReviewForm = ({ campgroundName, onClose, className, ...props }: ReviewForm
       {...props}
     >
       <div className="flex items-start justify-between gap-4">
-        <h3 className="mt-1 text-xl font-semibold">Review the {campgroundName}</h3>
+        <h3 className="mt-1 text-xl font-semibold">Review the {campground.title}</h3>
         <Button className="shrink-0" onClick={onClose} icon={<CloseIcon />} />
       </div>
 

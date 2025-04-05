@@ -2,6 +2,7 @@
 
 import { routes } from '@/app/routes';
 import Overlay from '@/components/Overlay';
+import { Campground } from '@/types/campground';
 import { User } from '@/types/user';
 import Button, { ButtonProps } from '@repo/ui/button';
 import { useRouter } from 'next/navigation';
@@ -11,10 +12,10 @@ import ReviewForm from './ReviewForm';
 
 interface AddReviewButtonProps extends Omit<ButtonProps, 'variant'> {
   userId?: User['_id'];
-  campgroundName: string;
+  campground: Campground;
 }
 
-const AddReviewButton = ({ userId, campgroundName, ...props }: AddReviewButtonProps) => {
+const AddReviewButton = ({ userId, campground, ...props }: AddReviewButtonProps) => {
   const router = useRouter();
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -35,7 +36,7 @@ const AddReviewButton = ({ userId, campgroundName, ...props }: AddReviewButtonPr
 
       <Overlay isHidden={!isReviewModalOpen}>
         <div className="container">
-          <ReviewForm campgroundName={campgroundName} onClose={() => setIsReviewModalOpen(false)} />
+          <ReviewForm campground={campground} onClose={() => setIsReviewModalOpen(false)} />
         </div>
       </Overlay>
     </>
