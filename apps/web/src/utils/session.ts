@@ -60,9 +60,14 @@ const getUserFromToken = async (token: string) => {
   return user;
 };
 
-export const getSessionUser = async () => {
+export const getAccessToken = async () => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
+  return accessToken;
+};
+
+export const getSessionUser = async () => {
+  const accessToken = await getAccessToken();
   if (accessToken) return getUserFromToken(accessToken);
   return null;
 };

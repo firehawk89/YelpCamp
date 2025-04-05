@@ -48,7 +48,7 @@ const SearchForm = ({ className, label, ...props }: SearchFormProps) => {
 
       <div className="flex items-center gap-2">
         <Input id={SEARCH_PARAM} name={SEARCH_PARAM} type="text" placeholder="Search" defaultValue={defaultValue} />
-        <Button variant="outline" icon={<SearchIcon />} />
+        <Button variant="outline" icon={<SearchIcon />} type="submit" />
       </div>
     </form>
   );

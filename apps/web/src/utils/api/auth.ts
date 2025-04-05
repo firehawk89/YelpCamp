@@ -3,10 +3,9 @@
 import { AuthFormFields } from '@/modules/auth/helpers';
 import { ApiError } from '@/types/api';
 import { UserTokens } from '@/types/user';
-import { cookies } from 'next/headers';
 
-import { ACCESS_TOKEN_COOKIE_NAME, API_ROUTES } from '../constants';
-import { decryptToken, deleteSessionCookies, setSessionCookies } from '../session';
+import { API_ROUTES } from '../constants';
+import { decryptToken, deleteSessionCookies, getAccessToken, setSessionCookies } from '../session';
 
 type LogoutResponse = {
   message: string;
@@ -49,9 +48,7 @@ export const signUp = async (userData: AuthFormFields): Promise<UserTokens> => {
 };
 
 export const logout = async (): Promise<LogoutResponse> => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
-
+  const accessToken = await getAccessToken();
   if (!accessToken) {
     throw new Error('Failed to log out - access token is missing');
   }

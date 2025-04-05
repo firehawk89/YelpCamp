@@ -2,14 +2,12 @@
 
 import { ApiError } from '@/types/api';
 import { User } from '@/types/user';
-import { cookies } from 'next/headers';
 
-import { ACCESS_TOKEN_COOKIE_NAME, API_ROUTES, USER_ID_PARAM } from '../constants';
+import { API_ROUTES, USER_ID_PARAM } from '../constants';
+import { getAccessToken } from '../session';
 
 export const fetchUser = async (userId: string): Promise<User> => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
-
+  const accessToken = await getAccessToken();
   if (!accessToken) {
     throw new Error('Failed to fetch a user - access token is missing');
   }

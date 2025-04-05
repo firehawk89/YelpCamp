@@ -71,7 +71,7 @@ const SignInForm = ({ className, ...props }: CardProps) => {
             <PasswordInput {...register('password')} id="password" />
           </InputWrapper>
 
-          <Button className="mt-1.5" variant="accent" disabled={isSubmitting}>
+          <Button className="mt-1.5" variant="accent" disabled={isSubmitting} type="submit">
             Sign In
           </Button>
 
