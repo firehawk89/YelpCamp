@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from 'src/helpers/constants';
 import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
@@ -25,7 +26,11 @@ export class ReviewsService {
         throw new BadRequestException('Invalid campground ID');
       }
 
-      const reviews = await this.reviewModel.find({ campgroundId }).populate('author', 'email').exec();
+      const reviews = await this.reviewModel
+        .find({ campgroundId })
+        .sort({ [DEFAULT_SORT_FIELD]: DEFAULT_SORT_ORDER })
+        .populate('author', 'email')
+        .exec();
 
       return reviews;
     } catch (error) {
