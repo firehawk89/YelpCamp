@@ -6,6 +6,7 @@ export const API_ROUTES = {
   AUTH: `${API_URL}/auth`,
   CAMPGROUNDS: `${API_URL}/campgrounds`,
   USERS: `${API_URL}/users`,
+  REVIEWS: `${API_URL}/reviews`,
 };
 
 export const SEARCH_PARAM: string = 'search';
@@ -21,7 +22,7 @@ export const MIN_RATING: number = 1;
 export const MAX_RATING: number = 5;
 
 export const POSITIVE_RATING_THRESHOLD = 4;
-export const RECOMMENDED_PERCENTAGE_THRESHOLD = 50;
+export const POSITIVE_RATING_PERCENTAGE_THRESHOLD = 50;
 
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

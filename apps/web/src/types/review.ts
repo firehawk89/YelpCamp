@@ -5,10 +5,12 @@ export interface ReviewAuthor {
 
 export interface Review {
   _id: string;
-  body?: string;
+  title?: string;
+  body: string;
   rating: number;
   campgroundId: string;
   author: ReviewAuthor;
+  likedBy: string[];
   createdAt: string;
   updatedAt: string;
 }
