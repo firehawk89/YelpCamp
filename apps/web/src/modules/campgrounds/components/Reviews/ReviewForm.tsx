@@ -40,13 +40,13 @@ const ReviewForm = ({ campgroundName, onClose, className, ...props }: ReviewForm
   return (
     <Card
       ref={reviewFormRef}
-      className={cn('flex w-full min-w-80 max-w-[50%] flex-col gap-5', className)}
+      className={cn('mx-auto flex w-full max-w-[640px] flex-col gap-5', className)}
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       {...props}
     >
-      <div className="flex justify-between gap-4">
-        <h3 className="text-xl font-semibold">Review the {campgroundName}</h3>
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="mt-1 text-xl font-semibold">Review the {campgroundName}</h3>
         <Button className="shrink-0" onClick={onClose} icon={<CloseIcon />} />
       </div>
 

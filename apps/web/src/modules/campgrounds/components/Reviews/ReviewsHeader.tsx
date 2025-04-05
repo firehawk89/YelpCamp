@@ -1,7 +1,7 @@
 import { Campground } from '@/types/campground';
 import { Review } from '@/types/review';
 import { User } from '@/types/user';
-import { POSITIVE_RATING_THRESHOLD, RECOMMENDED_PERCENTAGE_THRESHOLD } from '@/utils/constants';
+import { POSITIVE_RATING_THRESHOLD, POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@/utils/constants';
 import { cn } from '@/utils/misc';
 import Divider from '@repo/ui/divider';
 import { ThumbDown, ThumbUp } from '@repo/ui/icons';
@@ -11,15 +11,15 @@ import CampgroundRating from '../CampgroundRating';
 import AddReviewButton from './AddReviewButton';
 
 interface ReviewsHeaderProps extends HTMLAttributes<HTMLDivElement> {
-  user: User | null;
+  userId?: User['_id'];
   campground: Campground;
-  reviews: Review[];
+  reviews?: Review[];
 }
 
-const ReviewsHeader = ({ user, campground, reviews, className, ...props }: ReviewsHeaderProps) => {
+const ReviewsHeader = ({ userId, campground, reviews, className, ...props }: ReviewsHeaderProps) => {
   const recommendationPercentage = useMemo(() => {
-    const totalReviews = reviews.length;
-    if (totalReviews === 0) return 0;
+    const totalReviews = reviews?.length ?? 0;
+    if (!reviews || totalReviews === 0) return totalReviews;
 
     const positiveReviews = reviews.filter((review) => review.rating >= POSITIVE_RATING_THRESHOLD);
     const percentage = Math.round((positiveReviews.length / totalReviews) * 100);
@@ -27,19 +27,20 @@ const ReviewsHeader = ({ user, campground, reviews, className, ...props }: Revie
     return percentage;
   }, [reviews]);
 
-  const isRecommended = recommendationPercentage >= RECOMMENDED_PERCENTAGE_THRESHOLD;
+  const isRecommended = recommendationPercentage >= POSITIVE_RATING_PERCENTAGE_THRESHOLD;
 
   const canUserAddReview = useMemo(() => {
-    if (!user) return false;
-    const isAlreadyReviewed = reviews.some((review) => review.author._id === user?._id);
+    if (!userId) return false;
+    const isAlreadyReviewed = reviews?.some((review) => review.author._id === userId);
     return !isAlreadyReviewed;
-  }, [reviews, user]);
+  }, [reviews, userId]);
 
   return (
-    <div className={cn('flex flex-col gap-1', className)} {...props}>
+    <div className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex justify-between gap-5">
         <h2 className="text-2xl font-bold">Reviews</h2>
-        {!canUserAddReview && <AddReviewButton campgroundName={campground.title} />}
+
+        {!canUserAddReview && <AddReviewButton userId={userId} campgroundName={campground.title} />}
       </div>
 
       <div className="flex h-full items-center gap-3">
@@ -47,9 +48,15 @@ const ReviewsHeader = ({ user, campground, reviews, className, ...props }: Revie
 
         <Divider className="h-6" orientation="vertical" />
 
-        <p className="flex shrink-0 items-center gap-1 text-sm text-neutral-600">
-          {isRecommended ? <ThumbUp className="text-success" /> : <ThumbDown className="text-danger" />}
-          {recommendationPercentage}% of travelers recommend this campground
+        <p className="flex shrink-0 items-center gap-1 text-neutral-600">
+          {reviews?.length ? (
+            <>
+              {isRecommended ? <ThumbUp className="text-success" /> : <ThumbDown className="text-danger" />}
+              {recommendationPercentage}% of travelers recommend this campground
+            </>
+          ) : (
+            'Be the first to write a review!'
+          )}
         </p>
       </div>
     </div>

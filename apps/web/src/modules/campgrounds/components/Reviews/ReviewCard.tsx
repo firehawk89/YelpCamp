@@ -1,21 +1,24 @@
 import Rating from '@/components/Rating';
 import { type Review } from '@/types/review';
+import { User } from '@/types/user';
 import { formatDate } from '@/utils/date';
 import { cn } from '@/utils/misc';
 import Avatar from '@repo/ui/avatar';
-import Button from '@repo/ui/button';
-import { ThumbUp } from '@repo/ui/icons';
-import Tooltip from '@repo/ui/tooltip';
 import { HTMLAttributes } from 'react';
 
+import LikeReviewButton from './LikeReviewButton';
+
 interface ReviewProps extends HTMLAttributes<HTMLLIElement> {
+  userId?: User['_id'];
   review: Review;
   className?: string;
 }
 
-const Review = ({ review, className, ...props }: ReviewProps) => {
-  const createdAtDate = formatDate(new Date(review.createdAt));
-  const likesCount = 0;
+const ReviewCard = ({ userId, review, className, ...props }: ReviewProps) => {
+  const { _id: id, createdAt, likedBy, author, body, title, rating } = review;
+
+  const createdAtDate = formatDate(new Date(createdAt));
+  const likesCount = likedBy.length;
 
   return (
     <li className={cn('flex flex-col gap-2', className)} {...props}>
@@ -24,8 +27,8 @@ const Review = ({ review, className, ...props }: ReviewProps) => {
           <Avatar />
 
           <div className="flex flex-col">
-            <span>{review.author.email}</span>
-            <Rating rating={review.rating} starClassName="size-5" />
+            <span>{author.email}</span>
+            <Rating rating={rating} starClassName="size-5" />
           </div>
         </div>
 
@@ -33,17 +36,19 @@ const Review = ({ review, className, ...props }: ReviewProps) => {
           <span className="text-xs text-neutral-500">{createdAtDate}</span>
 
           <div className="flex items-center gap-0.5">
-            <span>{likesCount}</span>
-            <Tooltip label="Helpful">
-              <Button icon={<ThumbUp />} />
-            </Tooltip>
+            {!!likesCount && <span className="text-sm">{likesCount}</span>}
+
+            <LikeReviewButton userId={userId} reviewId={id} likedBy={likedBy} />
           </div>
         </div>
       </div>
 
-      <p>{review.body}</p>
+      <div className="flex flex-col gap-1">
+        {!!title && <h3 className="text-lg font-semibold">{title}</h3>}
+        <p>{body}</p>
+      </div>
     </li>
   );
 };
 
-export default Review;
+export default ReviewCard;
