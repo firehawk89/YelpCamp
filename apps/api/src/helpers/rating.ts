@@ -4,9 +4,7 @@ export const getUpdatedRating = (
   reviewsCount: number,
   newReviewsCount: number
 ) => {
-  if (newReviewsCount === 0) {
-    return 0;
-  }
+  if (newReviewsCount === 0) return 0;
   const newRating = Math.round(((campgroundRating * reviewsCount + reviewRating) / newReviewsCount) * 100) / 100;
   return newRating;
 };

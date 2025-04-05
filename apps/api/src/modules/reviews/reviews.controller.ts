@@ -1,4 +1,6 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { User } from 'src/decorators/user.decorator';
+import { type JwtPayload } from 'src/types/user';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { ReviewsService } from './reviews.service';
@@ -17,6 +19,12 @@ export class ReviewsController {
     return this.reviewsService.getById(id);
   }
 
+  @UseGuards(AuthGuard)
+  @Post(':id/like')
+  likeReview(@Param('id') id: string, @User() user: JwtPayload) {
+    return this.reviewsService.likeReview(id, user.userId);
+  }
+
   // TODO: Make available only for admin users
   //   @Patch(':id')
   //   updateReview(@Param('id') id: string, @Body() updateCampgroundDto: UpdateCampgroundDTO) {
@@ -27,5 +35,11 @@ export class ReviewsController {
   @Delete(':id')
   deleteReview(@Param('id') id: string) {
     return this.reviewsService.delete(id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id/like')
+  unlikeReview(@Param('id') id: string, @User() user: JwtPayload) {
+    return this.reviewsService.unlikeReview(id, user.userId);
   }
 }

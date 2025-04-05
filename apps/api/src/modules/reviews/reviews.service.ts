@@ -5,7 +5,7 @@ import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
-import { Review } from 'src/schemas/review.schema';
+import { Review, ReviewDocument } from 'src/schemas/review.schema';
 
 @Injectable()
 export class ReviewsService {
@@ -18,7 +18,7 @@ export class ReviewsService {
     return this.reviewModel.find().exec();
   }
 
-  async getAllByCampgroundId(campgroundId: string): Promise<Review[]> {
+  async getAllByCampgroundId(campgroundId: string): Promise<ReviewDocument[]> {
     try {
       const isValidId = isValidObjectId(campgroundId);
       if (!isValidId) {
@@ -33,7 +33,7 @@ export class ReviewsService {
     }
   }
 
-  async getById(id: string): Promise<Review> {
+  async getById(id: string): Promise<ReviewDocument> {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
@@ -63,27 +63,7 @@ export class ReviewsService {
   //       .exec();
   //   }
 
-  async delete(id: string): Promise<Review> {
-    try {
-      const isValidId = isValidObjectId(id);
-      if (!isValidId) {
-        throw new BadRequestException('Invalid review ID');
-      }
-
-      const foundReview = await this.reviewModel.findById(id).exec();
-      if (!foundReview) {
-        throw new NotFoundException("Review doesn't exist");
-      }
-
-      await this.decreaseCampgroundRating(foundReview.campgroundId, foundReview.rating);
-
-      return this.reviewModel.findByIdAndDelete(id).exec();
-    } catch (error) {
-      handleError(error, ReviewsService.name);
-    }
-  }
-
-  async create(campgroundId: string, userId: string, createReviewDto: CreateReviewDTO): Promise<Review> {
+  async create(campgroundId: string, userId: string, createReviewDto: CreateReviewDTO): Promise<ReviewDocument> {
     try {
       const isValidCampgroundId = isValidObjectId(campgroundId);
       if (!isValidCampgroundId) {
@@ -105,6 +85,78 @@ export class ReviewsService {
       await this.increaseCampgroundRating(campgroundId, campground, createReviewDto.rating);
 
       return newReview.save();
+    } catch (error) {
+      handleError(error, ReviewsService.name);
+    }
+  }
+
+  async likeReview(id: string, userId: string): Promise<ReviewDocument> {
+    try {
+      this.validateReviewAndUserIDs(id, userId);
+
+      const foundReview = await this.reviewModel.findById(id).exec();
+      if (!foundReview) {
+        throw new NotFoundException("Review doesn't exist");
+      }
+
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+      const isLiked = foundReview.likedBy.includes(userObjectId);
+
+      if (isLiked) {
+        return foundReview;
+      }
+
+      const updatedReview = await this.reviewModel.findByIdAndUpdate(
+        id,
+        { $addToSet: { likedBy: userId } },
+        { new: true }
+      );
+
+      return updatedReview;
+    } catch (error) {
+      handleError(error, ReviewsService.name);
+    }
+  }
+
+  async unlikeReview(id: string, userId: string): Promise<ReviewDocument> {
+    try {
+      this.validateReviewAndUserIDs(id, userId);
+
+      const foundReview = await this.reviewModel.findById(id).exec();
+      if (!foundReview) {
+        throw new NotFoundException("Review doesn't exist");
+      }
+
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+      const isLiked = foundReview.likedBy.includes(userObjectId);
+
+      if (!isLiked) {
+        return foundReview;
+      }
+
+      const updatedReview = await this.reviewModel.findByIdAndUpdate(id, { $pull: { likedBy: userId } }, { new: true });
+
+      return updatedReview;
+    } catch (error) {
+      handleError(error, ReviewsService.name);
+    }
+  }
+
+  async delete(id: string): Promise<ReviewDocument> {
+    try {
+      const isValidId = isValidObjectId(id);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid review ID');
+      }
+
+      const foundReview = await this.reviewModel.findById(id).exec();
+      if (!foundReview) {
+        throw new NotFoundException("Review doesn't exist");
+      }
+
+      await this.decreaseCampgroundRating(foundReview.campgroundId, foundReview.rating);
+
+      return this.reviewModel.findByIdAndDelete(id).exec();
     } catch (error) {
       handleError(error, ReviewsService.name);
     }
@@ -149,6 +201,16 @@ export class ReviewsService {
     } catch (error) {
       handleError(error, ReviewsService.name, false);
       throw new InternalServerErrorException('Failed to update campground rating');
+    }
+  }
+
+  private validateReviewAndUserIDs(reviewId: string, userId: string): void {
+    if (!isValidObjectId(reviewId)) {
+      throw new BadRequestException('Invalid review ID');
+    }
+
+    if (!isValidObjectId(userId)) {
+      throw new BadRequestException('Invalid user ID');
     }
   }
 }
