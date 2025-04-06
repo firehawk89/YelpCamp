@@ -13,16 +13,23 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 const publicRoutes = [routes.signIn(), routes.signUp];
+const protectedRoutes = [routes.profile()];
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isPublicRoute = publicRoutes.includes(path);
+  const isProtectedRoute = protectedRoutes.includes(path);
 
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
   const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
 
   if (!accessToken && !refreshToken) {
+    if (isProtectedRoute) {
+      const url = new URL(routes.signIn(), request.nextUrl);
+      return NextResponse.redirect(url);
+    }
+
     return NextResponse.next();
   }
 
