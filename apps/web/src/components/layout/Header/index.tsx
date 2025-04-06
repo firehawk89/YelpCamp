@@ -3,9 +3,9 @@ import { getSessionUser } from '@/server/session';
 import { cn } from '@/utils/misc';
 import { HTMLAttributes } from 'react';
 
-import HeaderMenu from './HeaderMenu';
 import { authMenuItems } from './helpers';
-import MobileMenu from './MobileMenu';
+import HeaderMenu from './Menu';
+import MobileMenu from './Menu/MobileMenu';
 import UserMenu from './UserMenu';
 
 const Header = async ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {

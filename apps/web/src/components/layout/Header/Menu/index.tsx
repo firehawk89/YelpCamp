@@ -1,11 +1,11 @@
 'use client';
 
 import { cn } from '@/utils/misc';
-import Button from '@repo/ui/button';
 import { HTMLAttributes, useMemo } from 'react';
 
-import HeaderLink from './HeaderLink';
-import { defaultMenuItems, MenuItem } from './helpers';
+import { defaultMenuItems, MenuItem } from '../helpers';
+import MenuButton from './MenuButton';
+import MenuLink from './MenuLink';
 
 export interface HeaderMenuProps extends HTMLAttributes<HTMLElement> {
   items?: MenuItem[];
@@ -13,7 +13,7 @@ export interface HeaderMenuProps extends HTMLAttributes<HTMLElement> {
 }
 
 const HeaderMenu = ({ items = [], orientation = 'horizontal', children, className, ...props }: HeaderMenuProps) => {
-  const menuItems = useMemo(() => (items.length ? items : defaultMenuItems), [items]);
+  const menuItems = useMemo<MenuItem[]>(() => (items.length ? items : defaultMenuItems), [items]);
 
   return (
     <ul
@@ -30,13 +30,13 @@ const HeaderMenu = ({ items = [], orientation = 'horizontal', children, classNam
       {menuItems.map((item) => (
         <li key={item.label}>
           {item.path ? (
-            <HeaderLink className={item.className} href={item.path} icon={item.icon}>
+            <MenuLink className={item.className} href={item.path} icon={item.icon}>
               {item.label}
-            </HeaderLink>
+            </MenuLink>
           ) : (
-            <Button className={item.className} onClick={item.onClick} icon={item.icon}>
+            <MenuButton className={item.className} onClick={item.onClick} icon={item.icon}>
               {item.label}
-            </Button>
+            </MenuButton>
           )}
         </li>
       ))}

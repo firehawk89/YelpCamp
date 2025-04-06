@@ -1,34 +1,53 @@
 'use client';
 
+import { routes } from '@/app/routes';
 import Overlay from '@/components/Overlay';
+import useAuthActions from '@/hooks/useAuthActions';
 import { cn } from '@/utils/misc';
-import Button from '@repo/ui/button';
+import Button, { buttonVariants } from '@repo/ui/button';
 import Divider from '@repo/ui/divider';
-import { CloseIcon, MenuIcon } from '@repo/ui/icons';
-import { HTMLAttributes, useState } from 'react';
+import { CloseIcon, LogOutIcon, MenuIcon, UserIcon } from '@repo/ui/icons';
+import { HTMLAttributes, useMemo, useState } from 'react';
 import { useClickOutside } from 'src/hooks/useClickOutside';
 import { User } from 'src/types/user';
 
-import HeaderMenu from './HeaderMenu';
-import { authMenuItems } from './helpers';
-import UserMenu from './UserMenu';
+import HeaderMenu from '.';
+import { authMenuItems, MenuItem } from '../helpers';
 
 interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
   user: User | null;
+  onLogout?: () => void;
   overlayClassName?: string;
 }
 
-const MobileMenu = ({ user, overlayClassName, className, ...props }: MobileMenuProps) => {
+const MobileMenu = ({ user, onLogout, overlayClassName, className, ...props }: MobileMenuProps) => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
   const mobileMenuRef = useClickOutside<HTMLDivElement>(() => setIsMenuOpened(false));
+  const { handleLogout } = useAuthActions({ onLogout });
+
+  const userMenuItems = useMemo<MenuItem[]>(
+    () => [
+      {
+        path: routes.profile(),
+        label: 'Profile',
+        icon: <UserIcon />,
+      },
+      {
+        label: 'Log Out',
+        onClick: handleLogout,
+        icon: <LogOutIcon />,
+        className: buttonVariants({ variant: 'outline', color: 'destructive', size: 'sm' }),
+      },
+    ],
+    [handleLogout]
+  );
+
+  console.log({ user, authMenuItems, userMenuItems });
 
   return (
     <>
-      <div className="flex items-center gap-4 lg:hidden">
-        {user && <UserMenu />}
-        <Button size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
-      </div>
+      <Button className="lg:hidden" size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
 
       <Overlay className={cn('lg:hidden', overlayClassName)} isHidden={!isMenuOpened} content="right">
         <div
@@ -52,13 +71,8 @@ const MobileMenu = ({ user, overlayClassName, className, ...props }: MobileMenuP
 
           <div className="mt-3 flex flex-col gap-5">
             <HeaderMenu orientation="vertical" />
-
-            {!user && (
-              <>
-                <Divider />
-                <HeaderMenu orientation="vertical" items={authMenuItems} />
-              </>
-            )}
+            <Divider />
+            <HeaderMenu orientation="vertical" items={!user ? authMenuItems : userMenuItems} />
           </div>
         </div>
       </Overlay>
