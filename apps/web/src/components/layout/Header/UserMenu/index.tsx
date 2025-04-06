@@ -1,13 +1,12 @@
 'use client';
 
+import useAuthActions from '@/hooks/useAuthActions';
 import { cn } from '@/utils/misc';
 import Button, { ButtonProps } from '@repo/ui/button';
 import { LogOutIcon, SettingsIcon, UserIcon } from '@repo/ui/icons';
 import Select, { SelectOption } from '@repo/ui/select';
-import { useRouter } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { routes } from 'src/app/routes';
-import { logout } from 'src/server/auth';
 
 import UserMenuOption from './UserMenuOption';
 
@@ -17,19 +16,9 @@ interface UserMenuProps extends Omit<ButtonProps, 'size' | 'icon'> {
 }
 
 const UserMenu = ({ onLogout, className, containerClassName, ...props }: UserMenuProps) => {
-  const router = useRouter();
+  const { handleLogout } = useAuthActions({ onLogout });
 
-  const handleLogout = useCallback(async () => {
-    try {
-      await logout();
-      onLogout?.();
-      router.replace('/campgrounds');
-    } catch (error) {
-      console.error(error);
-    }
-  }, [onLogout, router]);
-
-  const userMenuOptions: SelectOption[] = useMemo(
+  const userMenuOptions = useMemo<SelectOption[]>(
     () => [
       { label: 'Profile', value: routes.profile() },
       { label: 'Settings', value: routes.profile('settings'), icon: <SettingsIcon /> },
@@ -51,7 +40,18 @@ const UserMenu = ({ onLogout, className, containerClassName, ...props }: UserMen
           {...props}
         />
       )}
-      renderOption={({ option }) => <UserMenuOption key={option.label} option={option} />}
+      renderOption={({ option, closeDropdown }) => (
+        <UserMenuOption
+          key={option.label}
+          option={{
+            ...option,
+            onClick: () => {
+              option.onClick?.();
+              closeDropdown();
+            },
+          }}
+        />
+      )}
       position="right"
     />
   );

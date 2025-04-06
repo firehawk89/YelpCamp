@@ -21,7 +21,7 @@ const UserMenuOption = ({ option }: UserMenuOptionProps) => {
   );
 
   return href ? (
-    <Link key={label} className={optionClassName} href={href}>
+    <Link key={label} className={optionClassName} href={href} onClick={onClick}>
       {optionContent}
     </Link>
   ) : (

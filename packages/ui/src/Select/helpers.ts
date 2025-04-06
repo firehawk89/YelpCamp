@@ -5,14 +5,14 @@ export const dropdownPositionClasses: Record<DropdownPosition, string> = {
   left: 'left-0',
 };
 
-export interface CustomButtonProps<T> {
+export interface SelectButtonProps<T> {
   selectedOption?: T;
   isOpen: boolean;
   toggleDropdown: () => void;
 }
 
-export interface CustomOptionProps<T> {
+export interface SelectOptionProps<T> {
   option: T;
   isSelected: boolean;
-  onSelect: () => void;
+  closeDropdown: () => void;
 }

@@ -3,7 +3,7 @@ import { HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 
 import Card from '../Card';
 import { ChevronIcon } from '../icons';
-import { CustomButtonProps, CustomOptionProps, DropdownPosition, dropdownPositionClasses } from './helpers';
+import { SelectButtonProps, SelectOptionProps, DropdownPosition, dropdownPositionClasses } from './helpers';
 
 export type SelectOption<T = string> = {
   label: string;
@@ -17,8 +17,8 @@ export interface SelectProps<T, M extends SelectOption<T>> extends Omit<HTMLAttr
   options: M[];
   selectedOption?: M;
   onChange?: (option: M) => void;
-  renderButton?: (props: CustomButtonProps<M>) => ReactNode;
-  renderOption?: (props: CustomOptionProps<M>) => ReactNode;
+  renderButton?: (props: SelectButtonProps<M>) => ReactNode;
+  renderOption?: (props: SelectOptionProps<M>) => ReactNode;
   position?: DropdownPosition;
 }
 
@@ -36,9 +36,9 @@ const Select = <T, M extends SelectOption<T>>({
   const [showOptions, setShowOptions] = useState(false);
 
   const handleOptionClick = (option: M) => {
+    setShowOptions(false);
     onChange?.(option);
     option.onClick?.();
-    setShowOptions(false);
   };
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const Select = <T, M extends SelectOption<T>>({
           const isSelected = option.value === selectedOption?.value;
 
           return renderOption ? (
-            renderOption({ option, isSelected, onSelect: () => handleOptionClick(option) })
+            renderOption({ option, isSelected, closeDropdown: () => handleOptionClick(option) })
           ) : (
             <span
               key={option.label}
