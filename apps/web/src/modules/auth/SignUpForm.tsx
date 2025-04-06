@@ -1,6 +1,6 @@
 'use client';
 
-import { signUp } from '@/server/auth';
+import useAuthActions from '@/hooks/useAuthActions';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@repo/ui/alert';
@@ -11,40 +11,24 @@ import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
 import PasswordInput from '@repo/ui/password-input';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { AuthFormFields, authFormSchema } from './helpers';
 
 const SignUpForm = ({ className, ...props }: CardProps) => {
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<AuthFormFields>({ resolver: zodResolver(authFormSchema) });
 
-  const [signUpError, setSignUpError] = useState<Error | null>(null);
-
-  const onSubmit: SubmitHandler<AuthFormFields> = async (formData) => {
-    try {
-      await signUp(formData);
-      router.replace('/campgrounds');
-    } catch (error) {
-      if (error instanceof Error) {
-        setSignUpError(error);
-      }
-      setSignUpError(new Error('An error occurred while signing up.'));
-    }
-  };
+  const { handleSignIn, error } = useAuthActions();
 
   return (
     <div className="flex flex-col items-center gap-5">
-      {signUpError && (
+      {error && (
         <Alert className="w-full max-w-96" color="danger">
-          {signUpError.message}
+          {error.message}
         </Alert>
       )}
 
@@ -53,7 +37,7 @@ const SignUpForm = ({ className, ...props }: CardProps) => {
 
         <Divider />
 
-        <form className="flex w-full flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex w-full flex-col gap-3" onSubmit={handleSubmit(handleSignIn)}>
           <InputWrapper label="Email" inputId="email" error={errors.email?.message}>
             <Input {...register('email')} id="email" type="text" />
           </InputWrapper>
