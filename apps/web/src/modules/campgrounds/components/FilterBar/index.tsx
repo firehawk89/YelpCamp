@@ -8,7 +8,6 @@ const CampgroundsFilterBar = ({ ref, className, ...props }: CardProps) => {
   return (
     <Card ref={ref} className={cn('', className)} orientation="vertical" {...props}>
       <SearchForm label="Search by name" />
-
       <CampgroundRatingFilter />
     </Card>
   );

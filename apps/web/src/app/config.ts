@@ -5,4 +5,7 @@ export default {
   jwt: {
     secret: process.env.JWT_SECRET || 'secret',
   },
+  mapbox: {
+    accessToken: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '',
+  },
 };

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import '@repo/tailwind-config/styles';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { ReactNode } from 'react';
 import { nunito } from 'src/app/fonts';
 

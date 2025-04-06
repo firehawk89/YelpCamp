@@ -23,7 +23,10 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
         <CampgroundsFilterBar />
       </aside>
 
-      <CampgroundsList className="flex-1" campgrounds={campgrounds} paginationData={campgroundsMetadata} />
+      <div className="flex flex-1 flex-col gap-10">
+        {/* <CampgroundsMap campgrounds={campgrounds} /> */}
+        <CampgroundsList campgrounds={campgrounds} paginationData={campgroundsMetadata} />
+      </div>
     </div>
   );
 }

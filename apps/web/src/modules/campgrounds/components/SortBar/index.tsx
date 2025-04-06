@@ -14,7 +14,7 @@ const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivEleme
   const { selectedSortByOption, selectedSortOrderOption, applyFilter } = useFilter();
 
   return (
-    <div className={cn('flex items-center gap-4', className)} {...props}>
+    <div className={cn('flex gap-4', className)} {...props}>
       <div className="flex h-full gap-x-4 gap-y-2 max-sm:flex-col sm:items-center sm:py-2 lg:py-0">
         <SortControls
           label="Sort by"
@@ -33,7 +33,7 @@ const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivEleme
         />
       </div>
 
-      <CampgroundsMobileFilterBar buttonClassName="ml-auto" overlayClassName="lg:hidden" />
+      <CampgroundsMobileFilterBar buttonClassName="h-fit ml-auto" overlayClassName="lg:hidden" />
     </div>
   );
 };
