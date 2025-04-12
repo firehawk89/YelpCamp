@@ -21,6 +21,9 @@ export const DEFAULT_PAGE: number = 1;
 export const MIN_RATING: number = 1;
 export const MAX_RATING: number = 5;
 
+export const MIN_AVATAR_DIMENSION = 400;
+export const MAX_AVATAR_SIZE_KB = 512;
+
 export const POSITIVE_RATING_THRESHOLD = 4;
 export const POSITIVE_RATING_PERCENTAGE_THRESHOLD = 50;
 

@@ -1,16 +1,37 @@
+import { cn } from '@/utils/misc';
+import { ImgHTMLAttributes } from 'react';
+import { tv, VariantProps } from 'tailwind-variants';
+
 import { UserIcon } from './icons';
 import ImagePlaceholder from './ImagePlaceholder';
 
-interface AvatarProps {
-  imgSrc?: string;
-  alt?: string;
+export const avatarVariants = tv({
+  base: 'shrink-0 rounded-full object-cover object-center',
+  variants: {
+    size: {
+      default: 'h-12 w-12',
+      sm: 'h-10 w-10',
+      lg: 'h-14 w-14',
+    },
+  },
+  defaultVariants: {
+    size: 'default',
+  },
+});
+
+interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement>, VariantProps<typeof avatarVariants> {
+  className?: string;
 }
 
-const Avatar = ({ imgSrc, alt }: AvatarProps) =>
-  imgSrc ? (
-    <img src={imgSrc} alt={alt ?? 'Avatar'} className="h-12 w-12 shrink-0 rounded-full object-cover" />
+const Avatar = ({ src, alt, size, className, ...props }: AvatarProps) =>
+  src ? (
+    <img src={src} alt={alt ?? 'Avatar'} className={cn(avatarVariants({ size }), className)} {...props} />
   ) : (
-    <ImagePlaceholder className="h-12 w-12 shrink-0 rounded-full" icon={<UserIcon className="size-6" />} />
+    <ImagePlaceholder
+      className={cn(avatarVariants({ size }), className)}
+      icon={<UserIcon className="size-[50%]" />}
+      {...props}
+    />
   );
 
 export default Avatar;
