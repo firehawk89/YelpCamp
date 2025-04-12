@@ -8,6 +8,7 @@ export type User = {
   email: string;
   password: string;
   role: UserRole;
+  avatar: string | null;
   createdAt: string;
   updatedAt: string;
 };

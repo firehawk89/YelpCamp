@@ -1,9 +1,9 @@
 import { cn } from '@/utils/misc';
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
 export const tooltipVariants = tv({
-  base: 'absolute pb-2 opacity-0 transition-opacity peer-hover:opacity-100',
+  base: 'absolute z-10 pb-2 opacity-0 transition-opacity peer-hover:opacity-100',
   variants: {
     position: {
       top: 'bottom-full left-1/2 -translate-x-1/2',
@@ -18,16 +18,25 @@ export const tooltipVariants = tv({
 });
 
 interface TooltipProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltipVariants> {
-  label: string;
+  label: string | ReactNode;
   containerClassName?: string;
   className?: string;
+  tooltipClassName?: string;
 }
 
-const Tooltip = ({ label, position, containerClassName, className, children, ...props }: TooltipProps) => (
+const Tooltip = ({
+  label,
+  position,
+  containerClassName,
+  className,
+  tooltipClassName,
+  children,
+  ...props
+}: TooltipProps) => (
   <div className={cn('relative flex', containerClassName)} {...props}>
     <div className={cn('peer flex h-fit', className)}>{children}</div>
     <div className={cn(tooltipVariants({ position }))}>
-      <div className="rounded-lg bg-neutral-200 px-3 py-0.5 text-sm shadow">{label}</div>
+      <div className={cn('rounded-lg bg-neutral-200 px-3 py-0.5 text-sm shadow', tooltipClassName)}>{label}</div>
     </div>
   </div>
 );

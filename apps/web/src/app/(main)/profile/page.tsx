@@ -1,6 +1,6 @@
 import { routes } from '@/app/routes';
+import UserInfo from '@/modules/profile/components/UserInfo';
 import { getSessionUser } from '@/server/session';
-import Avatar from '@repo/ui/avatar';
 import Card from '@repo/ui/card';
 import { redirect } from 'next/navigation';
 
@@ -13,12 +13,9 @@ export default async function Profile() {
 
   return (
     <div className="flex gap-5">
-      <Card component="aside">
-        Welcome back, {user.email}
-        <Avatar size="lg" />
-      </Card>
+      <UserInfo user={user} />
 
-      <div></div>
+      <Card className="w-full">Hey there</Card>
     </div>
   );
 }

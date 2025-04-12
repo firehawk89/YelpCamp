@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
 
   if (accessTokenData?.userId) {
     if (isPublicRoute) {
-      const url = new URL('/campgrounds', request.nextUrl);
+      const url = new URL(routes.campgrounds(), request.nextUrl);
       return NextResponse.redirect(url);
     }
 

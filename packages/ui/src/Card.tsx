@@ -3,7 +3,7 @@ import { ElementType, HTMLAttributes, Ref } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
 export const cardVariants = tv({
-  base: 'flex rounded-lg bg-white shadow overflow-hidden',
+  base: 'flex rounded-lg bg-white shadow',
   variants: {
     orientation: {
       horizontal: 'flex-row',
