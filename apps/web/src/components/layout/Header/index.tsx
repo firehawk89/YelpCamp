@@ -20,8 +20,7 @@ const Header = async ({ className, ...props }: HTMLAttributes<HTMLDivElement>) =
           <HeaderMenu className="max-lg:hidden" />
 
           <div className="flex basis-1/3 justify-end max-lg:hidden">
-            {!user && <HeaderMenu items={authMenuItems} />}
-            {user && <UserMenu />}
+            {user ? <UserMenu user={user} /> : <HeaderMenu items={authMenuItems} />}
           </div>
 
           <MobileMenu user={user} />

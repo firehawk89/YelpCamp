@@ -10,10 +10,23 @@ import MenuLink from './MenuLink';
 export interface HeaderMenuProps extends HTMLAttributes<HTMLElement> {
   items?: MenuItem[];
   orientation?: 'horizontal' | 'vertical';
+  onItemClick?: () => void;
 }
 
-const HeaderMenu = ({ items = [], orientation = 'horizontal', children, className, ...props }: HeaderMenuProps) => {
+const HeaderMenu = ({
+  items = [],
+  orientation = 'horizontal',
+  children,
+  onItemClick,
+  className,
+  ...props
+}: HeaderMenuProps) => {
   const menuItems = useMemo<MenuItem[]>(() => (items.length ? items : defaultMenuItems), [items]);
+
+  const handleMenuItemClick = (item: MenuItem) => {
+    item.onClick?.();
+    onItemClick?.();
+  };
 
   return (
     <ul
@@ -30,11 +43,16 @@ const HeaderMenu = ({ items = [], orientation = 'horizontal', children, classNam
       {menuItems.map((item) => (
         <li key={item.label}>
           {item.path ? (
-            <MenuLink className={item.className} href={item.path} icon={item.icon}>
+            <MenuLink
+              className={item.className}
+              href={item.path}
+              icon={item.icon}
+              onClick={() => handleMenuItemClick(item)}
+            >
               {item.label}
             </MenuLink>
           ) : (
-            <MenuButton className={item.className} onClick={item.onClick} icon={item.icon}>
+            <MenuButton className={item.className} onClick={() => handleMenuItemClick(item)} icon={item.icon}>
               {item.label}
             </MenuButton>
           )}

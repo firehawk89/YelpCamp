@@ -15,9 +15,9 @@ import HeaderMenu from '.';
 import { authMenuItems, MenuItem } from '../helpers';
 
 interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
+  overlayClassName?: string;
   user: User | null;
   onLogout?: () => void;
-  overlayClassName?: string;
 }
 
 const MobileMenu = ({ user, onLogout, overlayClassName, className, ...props }: MobileMenuProps) => {
@@ -42,8 +42,6 @@ const MobileMenu = ({ user, onLogout, overlayClassName, className, ...props }: M
     ],
     [handleLogout]
   );
-
-  console.log({ user, authMenuItems, userMenuItems });
 
   return (
     <>
@@ -70,9 +68,13 @@ const MobileMenu = ({ user, onLogout, overlayClassName, className, ...props }: M
           />
 
           <div className="mt-3 flex flex-col gap-5">
-            <HeaderMenu orientation="vertical" />
+            <HeaderMenu orientation="vertical" onItemClick={() => setIsMenuOpened(false)} />
             <Divider />
-            <HeaderMenu orientation="vertical" items={!user ? authMenuItems : userMenuItems} />
+            <HeaderMenu
+              orientation="vertical"
+              items={!user ? authMenuItems : userMenuItems}
+              onItemClick={() => setIsMenuOpened(false)}
+            />
           </div>
         </div>
       </Overlay>
