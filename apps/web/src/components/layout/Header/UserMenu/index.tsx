@@ -1,21 +1,24 @@
 'use client';
 
 import useAuthActions from '@/hooks/useAuthActions';
+import { User } from '@/types/user';
 import { cn } from '@/utils/misc';
-import Button, { ButtonProps } from '@repo/ui/button';
-import { LogOutIcon, SettingsIcon, UserIcon } from '@repo/ui/icons';
+import Avatar from '@repo/ui/avatar';
+import { LogOutIcon, SettingsIcon } from '@repo/ui/icons';
 import Select, { SelectOption } from '@repo/ui/select';
 import { useMemo } from 'react';
 import { routes } from 'src/app/routes';
 
 import UserMenuOption from './UserMenuOption';
 
-interface UserMenuProps extends Omit<ButtonProps, 'size' | 'icon'> {
+interface UserMenuProps {
+  user: User;
   onLogout?: () => void;
+  className?: string;
   containerClassName?: string;
 }
 
-const UserMenu = ({ onLogout, className, containerClassName, ...props }: UserMenuProps) => {
+const UserMenu = ({ user, onLogout, className, containerClassName }: UserMenuProps) => {
   const { handleLogout } = useAuthActions({ onLogout });
 
   const userMenuOptions = useMemo<SelectOption[]>(
@@ -32,12 +35,10 @@ const UserMenu = ({ onLogout, className, containerClassName, ...props }: UserMen
       className={containerClassName}
       options={userMenuOptions}
       renderButton={({ toggleDropdown }) => (
-        <Button
-          className={cn('border-accent h-10 w-10 rounded-full border', className)}
+        <Avatar
+          className={cn('border-accent cursor-pointer border', className)}
+          src={user.avatar ?? ''}
           onClick={toggleDropdown}
-          size="icon"
-          icon={<UserIcon className="text-accent size-5" />}
-          {...props}
         />
       )}
       renderOption={({ option, closeDropdown }) => (
