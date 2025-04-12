@@ -2,7 +2,7 @@ import { cn } from '@/utils/misc';
 
 import { IconProps } from '.';
 
-export const ThumbDown = ({ className, ...props }: IconProps) => (
+export const ThumbDownIcon = ({ className, ...props }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
