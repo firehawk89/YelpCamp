@@ -98,7 +98,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
         ></textarea>
       </InputWrapper>
 
-      <Button className="mt-1.5" variant="accent" disabled={isSubmitting} type="submit">
+      <Button className="mt-1.5" type="submit" isLoading={isSubmitting} variant="accent">
         Submit a review
       </Button>
     </Card>

@@ -6,7 +6,7 @@ import { Review } from '@/types/review';
 import { User } from '@/types/user';
 import { cn } from '@/utils/misc';
 import Button, { ButtonProps } from '@repo/ui/button';
-import { ThumbUp } from '@repo/ui/icons';
+import { ThumbUpIcon } from '@repo/ui/icons';
 import Tooltip from '@repo/ui/tooltip';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -48,7 +48,7 @@ const LikeReviewButton = ({ userId, review, likedBy, className, ...props }: Like
   return isOwnReview ? (
     <Button
       className={cn({ 'text-accent': isLikedByUser }, className)}
-      icon={likedBy.length ? <ThumbUp /> : null}
+      icon={likedBy.length ? <ThumbUpIcon /> : null}
       disabled
       {...props}
     />
@@ -56,9 +56,9 @@ const LikeReviewButton = ({ userId, review, likedBy, className, ...props }: Like
     <Tooltip label="Helpful">
       <Button
         className={cn({ 'text-accent': isLikedByUser }, className)}
-        onClick={() => handleLikeClick()}
-        disabled={isLoading}
-        icon={<ThumbUp />}
+        onClick={handleLikeClick}
+        isLoading={isLoading}
+        icon={<ThumbUpIcon />}
         {...props}
       />
     </Tooltip>

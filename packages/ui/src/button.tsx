@@ -3,6 +3,8 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { VariantProps } from 'tailwind-variants';
 import { tv } from 'tailwind-variants';
 
+import { LoadingIcon } from './icons';
+
 export const buttonVariants = tv({
   base: 'flex items-center justify-center text-center rounded-lg active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none transition-all',
   variants: {
@@ -82,15 +84,28 @@ export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
     VariantProps<typeof buttonVariants> {
   icon?: ReactNode;
+  isLoading?: boolean;
 }
 
-const Button = ({ type = 'button', children, variant, size, color, icon, className, ...props }: ButtonProps) => (
+const Button = ({
+  type = 'button',
+  disabled,
+  variant,
+  size,
+  color,
+  icon,
+  isLoading,
+  className,
+  children,
+  ...props
+}: ButtonProps) => (
   <button
     className={cn(buttonVariants({ variant, size: icon ? 'icon' : size, color }), className)}
     type={type}
+    disabled={isLoading || disabled}
     {...props}
   >
-    {icon} {children}
+    {isLoading ? <LoadingIcon /> : icon} {children}
   </button>
 );
 

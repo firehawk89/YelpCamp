@@ -4,7 +4,7 @@ import { User } from '@/types/user';
 import { POSITIVE_RATING_THRESHOLD, POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@/utils/constants';
 import { cn } from '@/utils/misc';
 import Divider from '@repo/ui/divider';
-import { ThumbDown, ThumbUp } from '@repo/ui/icons';
+import { ThumbDownIcon, ThumbUpIcon } from '@repo/ui/icons';
 import { HTMLAttributes, useMemo } from 'react';
 
 import CampgroundRating from '../CampgroundRating';
@@ -51,7 +51,7 @@ const ReviewsHeader = ({ userId, campground, reviews, className, ...props }: Rev
         <p className="flex shrink-0 items-center gap-1 text-neutral-600">
           {reviews?.length ? (
             <>
-              {isRecommended ? <ThumbUp className="text-success" /> : <ThumbDown className="text-danger" />}
+              {isRecommended ? <ThumbUpIcon className="text-success" /> : <ThumbDownIcon className="text-danger" />}
               {recommendationPercentage}% of travelers recommend this campground
             </>
           ) : (

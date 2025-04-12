@@ -46,7 +46,7 @@ const SignUpForm = ({ className, ...props }: CardProps) => {
             <PasswordInput {...register('password')} id="password" />
           </InputWrapper>
 
-          <Button className="mt-1.5" variant="accent" disabled={isSubmitting} type="submit">
+          <Button className="mt-1.5" type="submit" isLoading={isSubmitting} variant="accent">
             Sign Up
           </Button>
 
