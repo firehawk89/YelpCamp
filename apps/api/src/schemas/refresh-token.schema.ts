@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants';
+import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants/auth';
 
 export type RefreshTokenDocument = HydratedDocument<RefreshToken>;
 

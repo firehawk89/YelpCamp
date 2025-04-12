@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
-import { DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from 'src/helpers/constants';
+import { DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from 'src/helpers/constants/defaults';
 import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
@@ -62,9 +62,8 @@ export class ReviewsService {
   //       throw new NotFoundException("Review doesn't exist");
   //     }
 
-  //     const updatedAtDate = Date.now();
   //     return this.reviewModel
-  //       .findByIdAndUpdate(id, { ...updateCampgroundDto, updatedAt: updatedAtDate }, { new: true })
+  //       .findByIdAndUpdate(id, { ...updateCampgroundDto }, { new: true })
   //       .exec();
   //   }
 

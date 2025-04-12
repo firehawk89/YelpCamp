@@ -7,7 +7,7 @@ import {
   MIN_RATING,
   MIN_REVIEW_BODY_LENGTH,
   MIN_REVIEW_TITLE_LENGTH,
-} from 'src/helpers/constants';
+} from 'src/helpers/constants/validation';
 
 export type ReviewDocument = HydratedDocument<Review>;
 

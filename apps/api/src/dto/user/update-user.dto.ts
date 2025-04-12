@@ -1,6 +1,6 @@
 import { IsEmail, IsOptional, IsStrongPassword } from 'class-validator';
 import { IsBase64Image } from 'src/decorators/isBase64Image.decorator';
-import { MIN_PASSWORD_LENGTH } from 'src/helpers/constants';
+import { MIN_PASSWORD_LENGTH } from 'src/helpers/constants/validation';
 
 export class UpdateUserDTO {
   @IsOptional()

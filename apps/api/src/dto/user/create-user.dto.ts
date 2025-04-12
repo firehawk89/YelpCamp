@@ -1,5 +1,5 @@
 import { IsBase64, IsEmail, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator';
-import { MIN_PASSWORD_LENGTH } from 'src/helpers/constants';
+import { MIN_PASSWORD_LENGTH } from 'src/helpers/constants/validation';
 
 export class CreateUserDTO {
   @IsNotEmpty({ message: 'Email is required' })

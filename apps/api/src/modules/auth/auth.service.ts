@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto';
 import { Model } from 'mongoose';
 import { SignInDTO } from 'src/dto/auth/sign-in.dto';
 import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
-import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants';
+import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants/auth';
 import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
 import { User } from 'src/schemas/user.schema';

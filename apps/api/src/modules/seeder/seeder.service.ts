@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MAX_RATING, MAX_SEEDED_CAMPGROUNDS, MAX_SEEDED_REVIEWS, MIN_RATING } from 'src/helpers/constants';
+import { MAX_SEEDED_CAMPGROUNDS, MAX_SEEDED_REVIEWS } from 'src/helpers/constants/misc';
+import { MAX_RATING, MIN_RATING } from 'src/helpers/constants/validation';
 import { generateSlug, handleError } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
 import { Review, ReviewDocument } from 'src/schemas/review.schema';

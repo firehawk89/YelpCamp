@@ -4,18 +4,19 @@ import { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
-import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_PAGE, DEFAULT_SORT_ORDER } from 'src/helpers/constants';
+import {
+  DEFAULT_PAGE_LIMIT,
+  DEFAULT_SORT_FIELD,
+  DEFAULT_PAGE,
+  DEFAULT_SORT_ORDER,
+} from 'src/helpers/constants/defaults';
 import { generateSlug, handleError } from 'src/helpers/misc';
 import { Campground } from 'src/schemas/campground.schema';
-import { Review } from 'src/schemas/review.schema';
 import { PaginatedResponse } from 'src/types/api';
 
 @Injectable()
 export class CampgroundsService {
-  constructor(
-    @InjectModel(Campground.name) private campgroundModel: Model<Campground>,
-    @InjectModel(Review.name) private reviewModel: Model<Review>
-  ) {}
+  constructor(@InjectModel(Campground.name) private campgroundModel: Model<Campground>) {}
 
   async create(createCampgroundDto: CreateCampgroundDTO): Promise<Campground> {
     try {
@@ -131,10 +132,7 @@ export class CampgroundsService {
         throw new NotFoundException("Campground with given slug doesn't exist");
       }
 
-      const updatedAtDate = Date.now();
-      return this.campgroundModel
-        .findByIdAndUpdate(campground.id, { ...updateCampgroundDto, updatedAt: updatedAtDate }, { new: true })
-        .exec();
+      return this.campgroundModel.findByIdAndUpdate(campground.id, { ...updateCampgroundDto }, { new: true }).exec();
     } catch (error) {
       handleError(error, CampgroundsService.name);
     }

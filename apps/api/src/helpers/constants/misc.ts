@@ -1,0 +1,2 @@
+export const MAX_SEEDED_CAMPGROUNDS: number = 18;
+export const MAX_SEEDED_REVIEWS: number = 12;
