@@ -1,21 +1,22 @@
-import { IsBase64, IsEmail, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsOptional, IsStrongPassword } from 'class-validator';
+import { IsBase64Image } from 'src/decorators/isBase64Image.decorator';
 import { MIN_PASSWORD_LENGTH } from 'src/helpers/constants';
 
-export class CreateUserDTO {
-  @IsNotEmpty({ message: 'Email is required' })
+export class UpdateUserDTO {
+  @IsOptional()
   @IsEmail({}, { message: 'Email address should be valid' })
-  email: string;
+  email?: string;
 
-  @IsNotEmpty({ message: 'Password is required' })
+  @IsOptional()
   @IsStrongPassword(
     { minLength: MIN_PASSWORD_LENGTH, minLowercase: 1, minUppercase: 1, minNumbers: 1 },
     {
       message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters long and contain at least 1 lowercase letter, 1 uppercase letter, and 1 number`,
     }
   )
-  password: string;
+  password?: string;
 
   @IsOptional()
-  @IsBase64({}, { message: 'Avatar image should be in base64 format' })
+  @IsBase64Image({ message: 'Avatar image should be in base64 format with the header' })
   avatar?: string;
 }
