@@ -14,6 +14,9 @@ export class User {
 
   @Prop({ default: UserRole.USER, enum: UserRole })
   role: UserRole;
+
+  @Prop({ default: null })
+  avatar: string | null;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

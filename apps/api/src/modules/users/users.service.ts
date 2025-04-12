@@ -3,12 +3,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { isEmail } from 'class-validator';
 import { isValidObjectId, Model } from 'mongoose';
 import { CreateUserDTO } from 'src/dto/user/create-user.dto';
+import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { handleError } from 'src/helpers/misc';
 import { User, UserDocument } from 'src/schemas/user.schema';
 
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly cloudinaryService: CloudinaryService
+  ) {}
 
   async create(createUserDto: CreateUserDTO): Promise<UserDocument> {
     try {
@@ -59,6 +65,37 @@ export class UsersService {
       }
 
       return user;
+    } catch (error) {
+      handleError(error, UsersService.name);
+    }
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDTO): Promise<UserDocument> {
+    try {
+      const isValidId = isValidObjectId(id);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid user ID');
+      }
+
+      const user = await this.userModel.findById(id).exec();
+      if (!user) {
+        throw new NotFoundException("User with given ID doesn't exist");
+      }
+
+      if (updateUserDto.avatar) {
+        return this.updateAvatar(id, updateUserDto.avatar);
+      }
+
+      return this.userModel.findByIdAndUpdate(id, { ...updateUserDto }, { new: true }).exec();
+    } catch (error) {
+      handleError(error, UsersService.name);
+    }
+  }
+
+  private async updateAvatar(userId: string, avatar: string): Promise<UserDocument> {
+    try {
+      const avatarImageUrl = await this.cloudinaryService.uploadImage(avatar, { public_id: `avatar-${userId}` });
+      return this.userModel.findByIdAndUpdate(userId, { avatar: avatarImageUrl }, { new: true }).exec();
     } catch (error) {
       handleError(error, UsersService.name);
     }
