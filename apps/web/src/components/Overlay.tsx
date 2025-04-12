@@ -3,12 +3,12 @@
 import { cn } from '@/utils/misc';
 import { HTMLAttributes, MouseEvent, useEffect } from 'react';
 
-interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
+export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   isHidden?: boolean;
-  content?: 'right' | 'left' | 'center';
+  placement?: 'right' | 'left' | 'center';
 }
 
-const Overlay = ({ isHidden, content = 'center', className, onClick, ...props }: OverlayProps) => {
+const Overlay = ({ isHidden, placement = 'center', className, onClick, ...props }: OverlayProps) => {
   const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       onClick?.(event);
@@ -28,10 +28,11 @@ const Overlay = ({ isHidden, content = 'center', className, onClick, ...props }:
       className={cn(
         'fixed right-0 top-0 z-10 flex h-screen w-full bg-neutral-900 bg-opacity-50 transition-all',
         {
-          'pointer-events-none opacity-0': isHidden,
-          'justify-start': content === 'left',
-          'items-center justify-center': content === 'center',
-          'justify-end': content === 'right',
+          'pointer-events-none invisible opacity-0': isHidden,
+          'pointer-events-auto visible opacity-100': !isHidden,
+          'justify-start': placement === 'left',
+          'items-center justify-center': placement === 'center',
+          'justify-end': placement === 'right',
         },
         className
       )}
