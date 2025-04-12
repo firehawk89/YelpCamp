@@ -6,11 +6,11 @@
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["PORT", "DATABASE_*", "JWT_*"]
+      "env": ["PORT", "DATABASE_*", "JWT_*", "CLOUDINARY_*"]
     },
     "lint": {
       "dependsOn": ["^lint"],
-      "env": ["PORT", "DATABASE_*", "JWT_*"]
+      "env": ["PORT", "DATABASE_*", "JWT_*", "CLOUDINARY_*"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]
@@ -18,7 +18,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["PORT", "DATABASE_*", "JWT_*"]
+      "env": ["PORT", "DATABASE_*", "JWT_*", "CLOUDINARY_*"]
     }
   }
 }

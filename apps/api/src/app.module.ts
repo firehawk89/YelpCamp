@@ -6,16 +6,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import config from './config';
-import { ACCESS_TOKEN_EXPIRATION_SECONDS } from './helpers/constants';
+import { ACCESS_TOKEN_EXPIRATION_SECONDS } from './helpers/constants/auth';
 import { AuthModule } from './modules/auth/auth.module';
 import { CampgroundsModule } from './modules/campgrounds/campgrounds.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { SeederModule } from './modules/seeder/seeder.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [config] }),
+    ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({ uri: config.get<string>('database.url') }),
@@ -35,6 +36,7 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     CampgroundsModule,
     ReviewsModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
