@@ -1,0 +1,5 @@
+export const ACCESS_TOKEN_COOKIE_NAME = 'accessToken';
+export const REFRESH_TOKEN_COOKIE_NAME = 'refreshToken';
+
+export const ACCESS_TOKEN_EXPIRATION_DATE = new Date(Date.now() + 1000 * 60 * 15);
+export const REFRESH_TOKEN_EXPIRATION_DATE = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);

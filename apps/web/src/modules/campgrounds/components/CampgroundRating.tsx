@@ -1,5 +1,5 @@
 import { Campground } from '@/types/campground';
-import { MAX_RATING } from '@/utils/constants';
+import { MAX_RATING } from '@/utils/constants/validation';
 import { cn, round } from '@/utils/misc';
 import { StarIcon } from '@repo/ui/icons';
 import { HTMLAttributes } from 'react';

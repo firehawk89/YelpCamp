@@ -1,7 +1,7 @@
 'use client';
 
 import Rating from '@/components/Rating';
-import { RATING_PARAM } from '@/utils/constants';
+import { RATING_PARAM } from '@/utils/constants/params';
 
 import useFilter from '../../hooks/useFilter';
 

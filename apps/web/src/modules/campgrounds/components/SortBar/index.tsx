@@ -1,7 +1,7 @@
 'use client';
 
 import useFilter from '@/modules/campgrounds/hooks/useFilter';
-import { SORT_BY_PARAM, SORT_ORDER_PARAM } from '@/utils/constants';
+import { SORT_BY_PARAM, SORT_ORDER_PARAM } from '@/utils/constants/params';
 import { cn } from '@/utils/misc';
 import Divider from '@repo/ui/divider';
 import { HTMLAttributes } from 'react';

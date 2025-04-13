@@ -3,7 +3,7 @@
 import Rating from '@/components/Rating';
 import { createReview } from '@/server/reviews';
 import { Campground } from '@/types/campground';
-import { MAX_REVIEW_BODY_LENGTH, MAX_REVIEW_TITLE_LENGTH } from '@/utils/constants';
+import { MAX_REVIEW_BODY_LENGTH, MAX_REVIEW_TITLE_LENGTH } from '@/utils/constants/validation';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@repo/ui/button';

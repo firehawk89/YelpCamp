@@ -8,7 +8,7 @@ import {
   ACCESS_TOKEN_EXPIRATION_DATE,
   REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRATION_DATE,
-} from '@/utils/constants';
+} from '@/utils/constants/auth';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 

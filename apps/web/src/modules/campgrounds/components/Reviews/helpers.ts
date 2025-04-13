@@ -5,7 +5,7 @@ import {
   MAX_REVIEW_BODY_LENGTH,
   MIN_RATING,
   MIN_REVIEW_BODY_LENGTH,
-} from '@/utils/constants';
+} from '@/utils/constants/validation';
 import { z } from 'zod';
 
 export const reviewFormSchema = z

@@ -3,7 +3,7 @@
 import { ReviewFormFields } from '@/modules/campgrounds/components/Reviews/helpers';
 import { ApiResponse } from '@/types/api';
 import { Review } from '@/types/review';
-import { API_ROUTES } from '@/utils/constants';
+import { API_ROUTES } from '@/utils/constants/misc';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';

@@ -1,4 +1,4 @@
-import { MAX_AVATAR_SIZE_KB, MIN_AVATAR_DIMENSION } from '@/utils/constants';
+import { MAX_AVATAR_SIZE_KB, MIN_AVATAR_DIMENSION } from '@/utils/constants/validation';
 import { useState, useCallback } from 'react';
 
 interface Options {

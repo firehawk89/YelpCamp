@@ -1,7 +1,7 @@
 import { Campground } from '@/types/campground';
 import { Review } from '@/types/review';
 import { User } from '@/types/user';
-import { POSITIVE_RATING_THRESHOLD, POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@/utils/constants';
+import { POSITIVE_RATING_THRESHOLD, POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@/utils/constants/misc';
 import { cn } from '@/utils/misc';
 import Divider from '@repo/ui/divider';
 import { ThumbDownIcon, ThumbUpIcon } from '@repo/ui/icons';

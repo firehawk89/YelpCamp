@@ -1,13 +1,16 @@
 'use client';
 
+import { DEFAULT_PAGE } from '@/utils/constants/defaults';
+import { PAGE_PARAM } from '@/utils/constants/params';
 import { cn, generateList } from '@/utils/misc';
 import { usePathname, useRouter } from 'next/navigation';
 import { HTMLAttributes, useMemo, useCallback } from 'react';
 import { routes } from 'src/app/routes';
 import useCustomSearchParams from 'src/hooks/useCustomSearchParams';
-import { DEFAULT_PAGE, MAX_SHOWN_PAGES, PAGE_PARAM } from 'src/utils/constants';
 
 import PaginationButton from './PaginationButton';
+
+const MAX_SHOWN_PAGES: number = 3;
 
 interface PaginationProps extends HTMLAttributes<HTMLDivElement> {
   page?: number;

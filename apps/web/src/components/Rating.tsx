@@ -1,11 +1,11 @@
 'use client';
 
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { MAX_RATING } from '@/utils/constants/validation';
 import { cn, generateList } from '@/utils/misc';
 import { StarIcon } from '@repo/ui/icons';
 import Tooltip from '@repo/ui/tooltip';
 import { HTMLAttributes, useCallback, useMemo, useState } from 'react';
-import { MAX_RATING } from 'src/utils/constants';
 
 interface RatingProps extends Omit<HTMLAttributes<HTMLUListElement>, 'onChange'> {
   className?: string;

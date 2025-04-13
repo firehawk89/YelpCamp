@@ -1,5 +1,7 @@
 'use client';
 
+import { DEFAULT_PAGE } from '@/utils/constants/defaults';
+import { PAGE_PARAM, SEARCH_PARAM } from '@/utils/constants/params';
 import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
@@ -8,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, FormHTMLAttributes } from 'react';
 import { routes } from 'src/app/routes';
 import useCustomSearchParams from 'src/hooks/useCustomSearchParams';
-import { DEFAULT_PAGE, PAGE_PARAM, SEARCH_PARAM } from 'src/utils/constants';
 
 export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
   label?: string;

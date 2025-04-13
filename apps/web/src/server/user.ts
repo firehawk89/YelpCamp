@@ -2,7 +2,8 @@
 
 import { ApiError } from '@/types/api';
 import { User } from '@/types/user';
-import { API_ROUTES, USER_ID_PARAM } from '@/utils/constants';
+import { API_ROUTES } from '@/utils/constants/misc';
+import { USER_ID_PARAM } from '@/utils/constants/params';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';
