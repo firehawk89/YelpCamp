@@ -1,14 +1,14 @@
 'use client';
 
-import Overlay from '@/components/Overlay';
-import { useClickOutside } from '@/hooks/useClickOutside';
+import Modal from '@/components/Modal';
+import SearchForm from '@/components/SearchForm';
 import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
 import { CardProps } from '@repo/ui/card';
 import { FilterIcon } from '@repo/ui/icons';
 import { useState } from 'react';
 
-import CampgroundsFilterBar from '.';
+import CampgroundRatingFilter from './RatingFilter';
 
 interface CampgroundsMobileFilterBarProps extends CardProps {
   buttonClassName?: string;
@@ -23,8 +23,6 @@ const CampgroundsMobileFilterBar = ({
 }: CampgroundsMobileFilterBarProps) => {
   const [isFilterMenuOpened, setIsFilterMenuOpened] = useState(false);
 
-  const filterBarRef = useClickOutside<HTMLDivElement>(() => setIsFilterMenuOpened(false));
-
   return (
     <>
       <Button
@@ -34,9 +32,17 @@ const CampgroundsMobileFilterBar = ({
         icon={<FilterIcon className="size-7" />}
       />
 
-      <Overlay className={overlayClassName} isHidden={!isFilterMenuOpened}>
-        <CampgroundsFilterBar ref={filterBarRef} className={className} {...props} />
-      </Overlay>
+      <Modal
+        overlayClassName={overlayClassName}
+        className={className}
+        isHidden={!isFilterMenuOpened}
+        onClose={() => setIsFilterMenuOpened(false)}
+        title="Filter"
+        {...props}
+      >
+        <SearchForm label="Search by name" />
+        <CampgroundRatingFilter />
+      </Modal>
     </>
   );
 };

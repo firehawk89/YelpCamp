@@ -1,7 +1,7 @@
 'use client';
 
 import { routes } from '@/app/routes';
-import Overlay from '@/components/Overlay';
+import Modal from '@/components/Modal';
 import { Campground } from '@/types/campground';
 import { User } from '@/types/user';
 import Button, { ButtonProps } from '@repo/ui/button';
@@ -34,11 +34,13 @@ const AddReviewButton = ({ userId, campground, ...props }: AddReviewButtonProps)
         Add a review
       </Button>
 
-      <Overlay isHidden={!isReviewModalOpen}>
-        <div className="container">
-          <ReviewForm campground={campground} onClose={() => setIsReviewModalOpen(false)} />
-        </div>
-      </Overlay>
+      <Modal
+        isHidden={!isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
+        title={`Review the ${campground.title}`}
+      >
+        <ReviewForm campground={campground} onClose={() => setIsReviewModalOpen(false)} />
+      </Modal>
     </>
   );
 };

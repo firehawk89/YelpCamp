@@ -1,22 +1,20 @@
 'use client';
 
 import Rating from '@/components/Rating';
-import { useClickOutside } from '@/hooks/useClickOutside';
 import { createReview } from '@/server/reviews';
 import { Campground } from '@/types/campground';
 import { MAX_REVIEW_BODY_LENGTH, MAX_REVIEW_TITLE_LENGTH } from '@/utils/constants';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@repo/ui/button';
-import Card, { CardProps } from '@repo/ui/card';
-import { CloseIcon } from '@repo/ui/icons';
 import Input, { inputVariants } from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
+import { FormHTMLAttributes } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { ReviewFormFields, reviewFormSchema } from './helpers';
 
-interface ReviewFormProps extends CardProps {
+interface ReviewFormProps extends FormHTMLAttributes<HTMLFormElement> {
   campground: Campground;
   onClose: () => void;
 }
@@ -29,8 +27,6 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
     control,
     formState: { errors, isSubmitting },
   } = useForm<ReviewFormFields>({ defaultValues: { title: null }, resolver: zodResolver(reviewFormSchema) });
-
-  const reviewFormRef = useClickOutside<HTMLDivElement>(() => onClose());
 
   const enteredTitleLength = watch('title')?.length || 0;
   const enteredBodyLength = watch('body')?.length || 0;
@@ -45,18 +41,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
   };
 
   return (
-    <Card
-      ref={reviewFormRef}
-      className={cn('mx-auto flex w-full max-w-[640px] flex-col gap-5', className)}
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      {...props}
-    >
-      <div className="flex items-start justify-between gap-4">
-        <h3 className="mt-1 text-xl font-semibold">Review the {campground.title}</h3>
-        <Button className="shrink-0" onClick={onClose} icon={<CloseIcon />} />
-      </div>
-
+    <form className={cn('flex flex-col gap-5', className)} onSubmit={handleSubmit(onSubmit)} {...props}>
       <InputWrapper label="Rating" inputId="rating" error={errors.rating?.message} required>
         <Controller
           control={control}
@@ -101,7 +86,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
       <Button className="mt-1.5" type="submit" isLoading={isSubmitting} variant="accent">
         Submit a review
       </Button>
-    </Card>
+    </form>
   );
 };
 

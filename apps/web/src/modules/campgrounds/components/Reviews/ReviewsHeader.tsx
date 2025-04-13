@@ -43,10 +43,10 @@ const ReviewsHeader = ({ userId, campground, reviews, className, ...props }: Rev
         {canUserAddReview && <AddReviewButton userId={userId} campground={campground} />}
       </div>
 
-      <div className="flex h-full items-center gap-3">
+      <div className="flex h-full flex-col items-center gap-1 sm:flex-row sm:gap-3">
         <CampgroundRating rating={campground.rating} />
 
-        <Divider className="h-6" orientation="vertical" />
+        <Divider className="h-6 max-sm:hidden" orientation="vertical" />
 
         <p className="flex shrink-0 items-center gap-1 text-neutral-600">
           {reviews?.length ? (

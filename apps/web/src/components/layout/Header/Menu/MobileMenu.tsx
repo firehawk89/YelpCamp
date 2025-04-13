@@ -47,7 +47,7 @@ const MobileMenu = ({ user, onLogout, overlayClassName, className, ...props }: M
     <>
       <Button className="lg:hidden" size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
 
-      <Overlay className={cn('lg:hidden', overlayClassName)} isHidden={!isMenuOpened} content="right">
+      <Overlay className={cn('lg:hidden', overlayClassName)} isHidden={!isMenuOpened} placement="right">
         <div
           ref={mobileMenuRef}
           className={cn(

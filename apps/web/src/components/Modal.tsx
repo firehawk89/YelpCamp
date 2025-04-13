@@ -9,23 +9,38 @@ import { ReactNode } from 'react';
 
 import Overlay, { OverlayProps } from './Overlay';
 
-interface ModalProps extends CardProps {
+export interface ModalProps extends CardProps {
   isHidden: OverlayProps['isHidden'];
   title: string;
   renderHeader?: ({ titleSlot, closeButtonSlot }: { titleSlot: ReactNode; closeButtonSlot: ReactNode }) => ReactNode;
   onClose: () => void;
+  overlayClassName?: string;
 }
 
-const Modal = ({ isHidden, title, renderHeader, onClose, className, children, ...props }: ModalProps) => {
+const Modal = ({
+  isHidden,
+  title,
+  renderHeader,
+  onClose,
+  overlayClassName,
+  className,
+  children,
+  ...props
+}: ModalProps) => {
   const modalRef = useClickOutside<HTMLDivElement>(() => onClose());
 
   const titleSlot = <h3 className="mt-1 text-xl font-semibold">{title}</h3>;
   const closeButtonSlot = <Button className="shrink-0" onClick={onClose} icon={<CloseIcon />} />;
 
   return (
-    <Overlay isHidden={isHidden} placement="center">
+    <Overlay className={overlayClassName} isHidden={isHidden} placement="center">
       <div className="container">
-        <Card ref={modalRef} className={cn('w-full max-w-[640px]', className)} orientation="vertical" {...props}>
+        <Card
+          ref={modalRef}
+          className={cn('mx-auto w-full max-w-[640px]', className)}
+          orientation="vertical"
+          {...props}
+        >
           <div className="flex items-start justify-between gap-4">
             {renderHeader ? (
               renderHeader({ titleSlot, closeButtonSlot })

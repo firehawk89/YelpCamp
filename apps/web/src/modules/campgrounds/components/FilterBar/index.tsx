@@ -2,7 +2,7 @@ import SearchForm from '@/components/SearchForm';
 import { cn } from '@/utils/misc';
 import Card, { CardProps } from '@repo/ui/card';
 
-import CampgroundRatingFilter from './CampgroundRatingFilter';
+import CampgroundRatingFilter from './RatingFilter';
 
 const CampgroundsFilterBar = ({ ref, className, ...props }: CardProps) => {
   return (

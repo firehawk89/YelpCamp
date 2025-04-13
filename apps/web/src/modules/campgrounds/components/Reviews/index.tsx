@@ -17,7 +17,7 @@ const Reviews = async ({ campground, className, ...props }: ReviewsProps) => {
   const { result: campgroundReviews, error } = await fetchCampgroundReviews(campground._id);
 
   return (
-    <div id="reviews" className={cn('flex min-w-96 flex-col gap-6', className)} {...props}>
+    <div id="reviews" className={cn('flex w-full min-w-80 flex-col gap-6 lg:mx-auto lg:w-[75%]', className)} {...props}>
       <ReviewsHeader userId={user?._id} campground={campground} reviews={campgroundReviews} />
 
       {error && (
