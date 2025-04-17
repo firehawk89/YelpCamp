@@ -2,7 +2,6 @@ import { cn } from '@/utils/misc';
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface MenuButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string;
   icon?: ReactNode;
 }
 

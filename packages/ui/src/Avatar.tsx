@@ -19,8 +19,8 @@ export const avatarVariants = tv({
   },
 });
 
-interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement>, VariantProps<typeof avatarVariants> {
-  className?: string;
+interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'>, VariantProps<typeof avatarVariants> {
+  src?: string | null;
 }
 
 const Avatar = ({ src, alt, size, className, ...props }: AvatarProps) =>

@@ -8,7 +8,6 @@ import Tooltip from '@repo/ui/tooltip';
 import { HTMLAttributes, useCallback, useMemo, useState } from 'react';
 
 interface RatingProps extends Omit<HTMLAttributes<HTMLUListElement>, 'onChange'> {
-  className?: string;
   starClassName?: string;
   rating?: number;
   maxStars?: number;

@@ -9,7 +9,6 @@ import Map from 'react-map-gl/mapbox';
 
 interface CampgroundsMapProps extends HTMLAttributes<HTMLDivElement> {
   campgrounds?: Campground[];
-  className?: string;
 }
 
 const CampgroundsMap = ({ className, ...props }: CampgroundsMapProps) => {

@@ -3,7 +3,6 @@ import { ImageIcon } from '@repo/ui/icons';
 import { HTMLAttributes, ReactNode } from 'react';
 
 interface ImagePlaceholderProps extends HTMLAttributes<HTMLDivElement> {
-  className?: string;
   icon?: ReactNode;
 }
 

@@ -15,12 +15,18 @@
     "./divider": "./src/Divider.tsx",
     "./tooltip": "./src/Tooltip.tsx",
     "./avatar": "./src/Avatar.tsx",
-    "./image-placeholder": "./src/ImagePlaceholder.tsx"
+    "./image-placeholder": "./src/ImagePlaceholder.tsx",
+    "./tabs": "./src/Tabs/index.tsx",
+    "./tabs/helpers": "./src/Tabs/helpers.ts",
+    "./tab": "./src/Tabs/Tab.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -28,8 +34,8 @@
     "@repo/typescript-config": "workspace:*",
     "@turbo/gen": "^1.12.4",
     "@types/node": "^20.11.24",
-    "@types/react": "18.3.0",
-    "@types/react-dom": "18.3.1",
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
     "postcss": "^8.4.49",
@@ -37,9 +43,5 @@
     "tailwind-variants": "^0.3.0",
     "tailwindcss": "^3.4.17",
     "typescript": "5.5.4"
-  },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
   }
 }

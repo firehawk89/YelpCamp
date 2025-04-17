@@ -10,7 +10,6 @@ interface AvatarModalActionButtonsProps extends HTMLAttributes<HTMLDivElement> {
   onCancel: () => void;
   onSave: () => void;
   isLoading?: boolean;
-  className?: string;
 }
 
 const AvatarModalActionButtons = ({

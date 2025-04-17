@@ -22,7 +22,6 @@ interface AvatarEditModalProps extends Omit<CardProps, 'orientation'> {
   isOpen: boolean;
   onClose: () => void;
   onSave?: (croppedImage: string) => void;
-  className?: string;
 }
 
 const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: AvatarEditModalProps) => {

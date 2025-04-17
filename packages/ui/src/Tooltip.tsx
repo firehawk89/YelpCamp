@@ -20,7 +20,6 @@ export const tooltipVariants = tv({
 interface TooltipProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltipVariants> {
   label: string | ReactNode;
   containerClassName?: string;
-  className?: string;
   tooltipClassName?: string;
 }
 
