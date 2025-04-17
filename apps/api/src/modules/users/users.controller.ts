@@ -4,12 +4,16 @@ import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { UsersFilterDTO } from 'src/dto/user/users-filter.dto';
 
 import { AuthGuard } from '../auth/auth.guard';
+import { ReviewsService } from '../reviews/reviews.service';
 import { UsersService } from './users.service';
 
 @UseGuards(AuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly reviewsService: ReviewsService
+  ) {}
 
   @Get()
   getUsers(@Query() filter?: UsersFilterDTO) {
@@ -17,6 +21,11 @@ export class UsersController {
     if (id) return this.usersService.getById(id);
     if (email) return this.usersService.getByEmail(email);
     return this.usersService.getAll();
+  }
+
+  @Get(':id/reviews')
+  getUserReviews(@Param('id') id: string) {
+    return this.reviewsService.getAllByUserId(id);
   }
 
   @Post()

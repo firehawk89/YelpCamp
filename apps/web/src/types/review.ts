@@ -1,6 +1,15 @@
+import { Campground } from './campground';
+import { User } from './user';
+
 export interface ReviewAuthor {
   _id: string;
-  email: string;
+  email: User['email'];
+}
+
+export interface ReviewCampground {
+  _id: string;
+  title: Campground['title'];
+  slug: Campground['slug'];
 }
 
 export interface Review {
@@ -8,7 +17,7 @@ export interface Review {
   title?: string;
   body: string;
   rating: number;
-  campgroundId: string;
+  campground: ReviewCampground;
   author: ReviewAuthor;
   likedBy: string[];
   createdAt: string;

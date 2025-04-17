@@ -1,6 +1,7 @@
 'use server';
 
 import { ApiError } from '@/types/api';
+import { Review } from '@/types/review';
 import { User } from '@/types/user';
 import { API_ROUTES } from '@/utils/constants/misc';
 import { USER_ID_PARAM } from '@/utils/constants/params';
@@ -26,6 +27,25 @@ export const fetchUser = async (userId: string): Promise<User> => {
   }
 
   return data as User;
+};
+
+export const fetchUserReviews = async (userId: string): Promise<Review[]> => {
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    throw new Error('Failed to fetch user reviews - access token is missing');
+  }
+
+  const response = await fetch(`${API_ROUTES.USERS}/${userId}/reviews`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    next: { tags: ['user'] },
+  });
+
+  const data: Review[] | ApiError = await response.json();
+
+  if (!response.ok) {
+    throw new Error((data as ApiError).message || 'Failed to fetch user reviews');
+  }
+  return data as Review[];
 };
 
 export const updateUserAvatar = async (userId: string, avatar: string): Promise<User> => {

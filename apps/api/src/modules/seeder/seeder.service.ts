@@ -113,7 +113,7 @@ export class SeederService {
           const randomBody = `This is a randomly generated review #${i + 1} for campground ${campgroundId}.`;
 
           const review = new this.reviewModel({
-            campgroundId,
+            campground: campgroundId,
             rating: randomRating,
             body: randomBody,
             author: testAuthorId,

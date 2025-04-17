@@ -27,9 +27,10 @@ export class ReviewsService {
       }
 
       const reviews = await this.reviewModel
-        .find({ campgroundId })
+        .find({ campground: campgroundId })
         .sort({ [DEFAULT_SORT_FIELD]: DEFAULT_SORT_ORDER })
         .populate('author', 'email')
+        .populate('campground', 'title slug')
         .exec();
 
       return reviews;
@@ -38,6 +39,25 @@ export class ReviewsService {
     }
   }
 
+  async getAllByUserId(userId: string): Promise<ReviewDocument[]> {
+    try {
+      const isValidId = isValidObjectId(userId);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid user ID');
+      }
+
+      const reviews = await this.reviewModel
+        .find({ author: userId })
+        .sort({ [DEFAULT_SORT_FIELD]: DEFAULT_SORT_ORDER })
+        .populate('author', 'email')
+        .populate('campground', 'title slug')
+        .exec();
+
+      return reviews;
+    } catch (error) {
+      handleError(error, ReviewsService.name);
+    }
+  }
   async getById(id: string): Promise<ReviewDocument> {
     try {
       const isValidId = isValidObjectId(id);
@@ -84,7 +104,7 @@ export class ReviewsService {
         throw new BadRequestException('Invalid user ID');
       }
 
-      const newReview = new this.reviewModel({ ...createReviewDto, campgroundId, author: userId });
+      const newReview = new this.reviewModel({ ...createReviewDto, campground: campgroundId, author: userId });
 
       await this.increaseCampgroundRating(campgroundId, campground, createReviewDto.rating);
 
@@ -158,7 +178,7 @@ export class ReviewsService {
         throw new NotFoundException("Review doesn't exist");
       }
 
-      await this.decreaseCampgroundRating(foundReview.campgroundId, foundReview.rating);
+      await this.decreaseCampgroundRating(foundReview.campground, foundReview.rating);
 
       return this.reviewModel.findByIdAndDelete(id).exec();
     } catch (error) {
