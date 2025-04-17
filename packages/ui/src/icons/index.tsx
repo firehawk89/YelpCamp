@@ -23,3 +23,4 @@ export { ThumbDownIcon } from './ThumbDownIcon';
 export { EditIcon } from './EditIcon';
 export { UploadDocumentIcon } from './UploadDocumentIcon';
 export { LoadingIcon } from './LoadingIcon';
+export { ReviewIcon } from './ReviewIcon';
