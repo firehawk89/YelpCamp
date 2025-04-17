@@ -9,7 +9,7 @@ const CROP_ASPECT_RATIO = 1;
 interface ImageCropper extends Omit<ReactCropProps, 'onChange'> {
   crop?: Crop;
   onCropChange: (percentCrop: PercentCrop) => void;
-  imageRef: RefObject<HTMLImageElement>;
+  imageRef: RefObject<HTMLImageElement | null>;
   imageSource: string;
   onImageLoad: (e: SyntheticEvent<HTMLImageElement, Event>) => void;
 }

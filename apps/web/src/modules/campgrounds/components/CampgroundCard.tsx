@@ -1,3 +1,4 @@
+import { routes } from '@/app/routes';
 import { Campground } from '@/types/campground';
 import { cn, round } from '@/utils/misc';
 import Button, { buttonVariants } from '@repo/ui/button';
@@ -23,7 +24,7 @@ const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
 
       <div className="flex flex-grow gap-4 p-4 max-sm:flex-col">
         <div className="flex flex-1 flex-col gap-2">
-          <Link href={`/campgrounds/${campground.slug}`}>
+          <Link href={routes.campground(campground.slug)}>
             <h2 className="text-2xl font-medium">{campground.title}</h2>
           </Link>
 
@@ -53,7 +54,7 @@ const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
 
             <Link
               className={cn('justify-center', buttonVariants({ variant: 'accent' }))}
-              href={`/campgrounds/${campground.slug}`}
+              href={routes.campground(campground.slug)}
             >
               View Details
             </Link>
