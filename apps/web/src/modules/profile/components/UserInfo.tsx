@@ -10,7 +10,7 @@ interface UserInfoProps {
 
 const UserInfo = ({ user }: UserInfoProps) => {
   return (
-    <Card component="aside" className="flex shrink-0 basis-1/4 flex-col gap-5">
+    <Card component="aside" className="flex h-fit shrink-0 basis-1/4 flex-col gap-5">
       <UserAvatar user={user} />
       <p className="text-center text-sm text-neutral-500">Joined on {formatDate(new Date(user.createdAt))}</p>
     </Card>
