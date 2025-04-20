@@ -23,3 +23,7 @@ export interface Review {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ReviewsFilterDto {
+  page?: string;
+}

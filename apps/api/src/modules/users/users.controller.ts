@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
 import { CreateUserDTO } from 'src/dto/user/create-user.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { UsersFilterDTO } from 'src/dto/user/users-filter.dto';
@@ -24,8 +25,8 @@ export class UsersController {
   }
 
   @Get(':id/reviews')
-  getUserReviews(@Param('id') id: string) {
-    return this.reviewsService.getAllByUserId(id);
+  getUserReviews(@Param('id') id: string, @Query() filter?: ReviewsFilterDTO) {
+    return this.reviewsService.getAllByUserId(id, filter);
   }
 
   @Post()

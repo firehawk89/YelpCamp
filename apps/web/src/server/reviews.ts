@@ -1,21 +1,35 @@
 'use server';
 
 import { ReviewFormFields } from '@/modules/campgrounds/components/Reviews/helpers';
-import { ApiResponse } from '@/types/api';
-import { Review } from '@/types/review';
+import { PaginatedApiResponse, PaginatedResponse } from '@/types/api';
+import { Review, ReviewsFilterDto } from '@/types/review';
 import { API_ROUTES } from '@/utils/constants/misc';
+import { getSearchParamsString } from '@/utils/misc';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';
 
-export const fetchCampgroundReviews = async (campgroundId: string): ApiResponse<Review[]> => {
+export const fetchCampgroundReviews = async (
+  campgroundId: string,
+  filters?: ReviewsFilterDto
+): PaginatedApiResponse<Review> => {
   try {
-    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${campgroundId}/reviews`, { next: { tags: ['reviews'] } });
+    let searchParamsString = '';
+
+    if (filters) {
+      searchParamsString = getSearchParamsString(filters);
+    }
+
+    const response = await fetch(
+      `${API_ROUTES.CAMPGROUNDS}/${campgroundId}/reviews${searchParamsString ? `?${searchParamsString}` : ''}`,
+      { next: { tags: ['reviews'] } }
+    );
+
     if (!response.ok) {
       return { error: 'Failed to fetch campground reviews' };
     }
 
-    const result: Review[] = await response.json();
+    const result: PaginatedResponse<Review> = await response.json();
 
     return { result };
   } catch (err) {

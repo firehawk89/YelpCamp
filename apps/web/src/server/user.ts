@@ -1,10 +1,11 @@
 'use server';
 
-import { ApiError } from '@/types/api';
-import { Review } from '@/types/review';
+import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
+import { Review, ReviewsFilterDto } from '@/types/review';
 import { User } from '@/types/user';
 import { API_ROUTES } from '@/utils/constants/misc';
 import { USER_ID_PARAM } from '@/utils/constants/params';
+import { getSearchParamsString } from '@/utils/misc';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';
@@ -29,23 +30,38 @@ export const fetchUser = async (userId: string): Promise<User> => {
   return data as User;
 };
 
-export const fetchUserReviews = async (userId: string): Promise<Review[]> => {
-  const accessToken = await getAccessToken();
-  if (!accessToken) {
-    throw new Error('Failed to fetch user reviews - access token is missing');
+export const fetchUserReviews = async (userId: string, filters?: ReviewsFilterDto): PaginatedApiResponse<Review> => {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      throw new Error('Failed to fetch user reviews - access token is missing');
+    }
+
+    let searchParamsString = '';
+
+    if (filters) {
+      searchParamsString = getSearchParamsString(filters);
+    }
+
+    const response = await fetch(
+      `${API_ROUTES.USERS}/${userId}/reviews${searchParamsString ? `?${searchParamsString}` : ''}`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        next: { tags: ['user'] },
+      }
+    );
+
+    const data: PaginatedResponse<Review> | ApiError = await response.json();
+
+    if (!response.ok || 'error' in data) {
+      throw new Error((data as ApiError).message || 'Failed to fetch user reviews');
+    }
+
+    return { result: data as PaginatedResponse<Review> };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to fetch user reviews';
+    return { error: errorMessage };
   }
-
-  const response = await fetch(`${API_ROUTES.USERS}/${userId}/reviews`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-    next: { tags: ['user'] },
-  });
-
-  const data: Review[] | ApiError = await response.json();
-
-  if (!response.ok) {
-    throw new Error((data as ApiError).message || 'Failed to fetch user reviews');
-  }
-  return data as Review[];
 };
 
 export const updateUserAvatar = async (userId: string, avatar: string): Promise<User> => {

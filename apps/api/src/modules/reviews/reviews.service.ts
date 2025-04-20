@@ -1,13 +1,19 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { isValidObjectId, Model } from 'mongoose';
+import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
-import { DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from 'src/helpers/constants/defaults';
+import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
+import {
+  DEFAULT_PAGE_LIMIT,
+  DEFAULT_SORT_FIELD,
+  DEFAULT_SORT_ORDER,
+  DEFAULT_PAGE,
+} from 'src/helpers/constants/defaults';
 import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review, ReviewDocument } from 'src/schemas/review.schema';
-
+import { PaginatedResponse } from 'src/types/api';
 @Injectable()
 export class ReviewsService {
   constructor(
@@ -16,48 +22,155 @@ export class ReviewsService {
   ) {}
 
   async getAll(): Promise<Review[]> {
-    return this.reviewModel.find().exec();
+    try {
+      return this.reviewModel.find().exec();
+    } catch (error) {
+      handleError(error, ReviewsService.name);
+    }
   }
 
-  async getAllByCampgroundId(campgroundId: string): Promise<ReviewDocument[]> {
+  async getAllByCampgroundId(campgroundId: string, filter?: ReviewsFilterDTO): Promise<PaginatedResponse<Review>> {
     try {
       const isValidId = isValidObjectId(campgroundId);
       if (!isValidId) {
         throw new BadRequestException('Invalid campground ID');
       }
 
-      const reviews = await this.reviewModel
-        .find({ campground: campgroundId })
-        .sort({ [DEFAULT_SORT_FIELD]: DEFAULT_SORT_ORDER })
-        .populate('author', 'email')
-        .populate('campground', 'title slug')
-        .exec();
+      const page = Number(filter?.page) || DEFAULT_PAGE;
+      const validPage = isNaN(page) || page < 1 ? DEFAULT_PAGE : page;
+      const skip = (validPage - 1) * DEFAULT_PAGE_LIMIT;
 
-      return reviews;
+      const totalCount = await this.reviewModel.countDocuments({ campground: campgroundId }).exec();
+
+      const pipeline: PipelineStage[] = [
+        {
+          $match: { campground: new mongoose.Types.ObjectId(campgroundId) },
+        },
+        {
+          $sort: { [DEFAULT_SORT_FIELD]: DEFAULT_SORT_ORDER === 'asc' ? 1 : -1 },
+        },
+        {
+          $facet: {
+            metadata: [
+              { $count: 'count' },
+              {
+                $addFields: {
+                  totalCount,
+                  page: validPage,
+                  totalPages: { $ceil: { $divide: ['$count', DEFAULT_PAGE_LIMIT] } },
+                  limit: DEFAULT_PAGE_LIMIT,
+                  offset: skip,
+                },
+              },
+            ],
+            data: [
+              { $skip: skip },
+              { $limit: DEFAULT_PAGE_LIMIT },
+              {
+                $lookup: {
+                  from: 'users',
+                  localField: 'author',
+                  foreignField: '_id',
+                  pipeline: [{ $project: { email: 1 } }],
+                  as: 'author',
+                },
+              },
+              { $unwind: '$author' },
+              {
+                $lookup: {
+                  from: 'campgrounds',
+                  localField: 'campground',
+                  foreignField: '_id',
+                  pipeline: [{ $project: { title: 1, slug: 1 } }],
+                  as: 'campground',
+                },
+              },
+              { $unwind: '$campground' },
+            ],
+          },
+        },
+      ];
+
+      const [result] = await this.reviewModel.aggregate<PaginatedResponse<Review>>(pipeline).exec();
+      result.metadata = { ...result.metadata[0], count: result.data.length };
+
+      return result;
     } catch (error) {
       handleError(error, ReviewsService.name);
     }
   }
 
-  async getAllByUserId(userId: string): Promise<ReviewDocument[]> {
+  async getAllByUserId(userId: string, filter?: ReviewsFilterDTO): Promise<PaginatedResponse<Review>> {
     try {
       const isValidId = isValidObjectId(userId);
       if (!isValidId) {
         throw new BadRequestException('Invalid user ID');
       }
 
-      const reviews = await this.reviewModel
-        .find({ author: userId })
-        .sort({ [DEFAULT_SORT_FIELD]: DEFAULT_SORT_ORDER })
-        .populate('author', 'email')
-        .populate('campground', 'title slug')
-        .exec();
+      const page = Number(filter?.page) || DEFAULT_PAGE;
+      const validPage = isNaN(page) || page < 1 ? DEFAULT_PAGE : page;
+      const skip = (validPage - 1) * DEFAULT_PAGE_LIMIT;
 
-      return reviews;
+      const totalCount = await this.reviewModel.countDocuments({ author: userId }).exec();
+
+      const pipeline: PipelineStage[] = [
+        {
+          $match: { author: new mongoose.Types.ObjectId(userId) },
+        },
+        {
+          $sort: { [DEFAULT_SORT_FIELD]: DEFAULT_SORT_ORDER === 'asc' ? 1 : -1 },
+        },
+        {
+          $facet: {
+            metadata: [
+              { $count: 'count' },
+              {
+                $addFields: {
+                  totalCount,
+                  page: validPage,
+                  totalPages: { $ceil: { $divide: ['$count', DEFAULT_PAGE_LIMIT] } },
+                  limit: DEFAULT_PAGE_LIMIT,
+                  offset: skip,
+                },
+              },
+            ],
+            data: [
+              { $skip: skip },
+              { $limit: DEFAULT_PAGE_LIMIT },
+              {
+                $lookup: {
+                  from: 'users',
+                  localField: 'author',
+                  foreignField: '_id',
+                  pipeline: [{ $project: { email: 1 } }],
+                  as: 'author',
+                },
+              },
+              { $unwind: '$author' },
+              {
+                $lookup: {
+                  from: 'campgrounds',
+                  localField: 'campground',
+                  foreignField: '_id',
+                  pipeline: [{ $project: { title: 1, slug: 1 } }],
+                  as: 'campground',
+                },
+              },
+              { $unwind: '$campground' },
+            ],
+          },
+        },
+      ];
+
+      const [result] = await this.reviewModel.aggregate<PaginatedResponse<Review>>(pipeline).exec();
+      result.metadata = { ...result.metadata[0], count: result.data.length };
+
+      return result;
     } catch (error) {
       handleError(error, ReviewsService.name);
     }
   }
+
   async getById(id: string): Promise<ReviewDocument> {
     try {
       const isValidId = isValidObjectId(id);

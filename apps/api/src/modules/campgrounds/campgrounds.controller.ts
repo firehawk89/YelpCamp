@@ -4,6 +4,7 @@ import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto'
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
+import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
 import { type JwtPayload } from 'src/types/user';
 
 import { AuthGuard } from '../auth/auth.guard';
@@ -18,7 +19,7 @@ export class CampgroundsController {
   ) {}
 
   @Get()
-  getAllCampgrounds(@Query() filter?: CampgroundsFilterDTO) {
+  getCampgrounds(@Query() filter?: CampgroundsFilterDTO) {
     return this.campgroundsService.getAll(filter);
   }
 
@@ -46,8 +47,8 @@ export class CampgroundsController {
   }
 
   @Get(':id/reviews')
-  getReviews(@Param('id') campgroundId: string) {
-    return this.reviewsService.getAllByCampgroundId(campgroundId);
+  getReviews(@Param('id') campgroundId: string, @Query() filter?: ReviewsFilterDTO) {
+    return this.reviewsService.getAllByCampgroundId(campgroundId, filter);
   }
 
   @UseGuards(AuthGuard)
