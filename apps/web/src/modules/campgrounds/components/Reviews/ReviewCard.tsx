@@ -12,7 +12,7 @@ import LikeReviewButton from './LikeReviewButton';
 
 interface ReviewProps extends HTMLAttributes<HTMLLIElement> {
   review: Review;
-  user: User | null;
+  user?: User | null;
   mode?: 'campground' | 'user';
 }
 
