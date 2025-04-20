@@ -6,11 +6,11 @@ import { fetchCampground } from '@/server/campgrounds';
 import { fetchCampgroundReviews } from '@/server/reviews';
 import ImagePlaceholder from '@repo/ui/image-placeholder';
 
-interface CampgroundProps {
+interface CampgroundPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default async function Campground({ params }: CampgroundProps) {
+export default async function Campground({ params }: CampgroundPageProps) {
   const { slug } = await params;
 
   const { result: campground, error: campgroundError } = await fetchCampground(slug);
@@ -23,7 +23,7 @@ export default async function Campground({ params }: CampgroundProps) {
     throw new Error('Campground not found');
   }
 
-  const { result: campgroundReviews, error: reviewsError } = await fetchCampgroundReviews(campground._id);
+  const { result: reviews, error: reviewsError } = await fetchCampgroundReviews(campground._id);
 
   if (reviewsError) {
     throw new Error(typeof reviewsError === 'string' ? reviewsError : reviewsError.join(', '));
@@ -47,7 +47,7 @@ export default async function Campground({ params }: CampgroundProps) {
       </div>
 
       <div className="lg:mx-auto lg:w-[75%]">
-        <Reviews reviews={campgroundReviews} campground={campground} error={reviewsError} mode="campground" />
+        <Reviews reviewsData={reviews} campground={campground} error={reviewsError} mode="campground" />
       </div>
     </div>
   );

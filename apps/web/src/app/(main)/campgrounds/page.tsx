@@ -4,7 +4,7 @@ import { fetchCampgrounds } from 'src/server/campgrounds';
 import { CampgroundsFilterDto } from 'src/types/campground';
 
 interface CampgroundsPageProps {
-  searchParams?: CampgroundsFilterDto;
+  searchParams?: Promise<CampgroundsFilterDto>;
 }
 
 export default async function Campgrounds({ searchParams }: CampgroundsPageProps) {
