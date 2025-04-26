@@ -1,12 +1,10 @@
 'use client';
 
-'use client';
-
 import { routes } from '@/app/routes';
 import useCustomSearchParams from '@/hooks/useCustomSearchParams';
 import { DEFAULT_PAGE } from '@/utils/constants/defaults';
 import { PAGE_PARAM, RATING_PARAM, SORT_BY_PARAM, SORT_ORDER_PARAM } from '@/utils/constants/params';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import {
   DEFAULT_SORT_BY_OPTION,
@@ -16,6 +14,7 @@ import {
 } from '../components/SortBar/helpers';
 
 const useFilter = () => {
+  const pathname = usePathname();
   const router = useRouter();
   const { searchParams, getUpdatedSearchParamsString } = useCustomSearchParams();
 
@@ -39,7 +38,7 @@ const useFilter = () => {
     }
 
     const newSearchParamsString = getUpdatedSearchParamsString(params);
-    router.push(routes.campgrounds(newSearchParamsString));
+    router.push(routes.custom(pathname, newSearchParamsString));
   };
 
   return { selectedRating, selectedSortByOption, selectedSortOrderOption, applyFilter };

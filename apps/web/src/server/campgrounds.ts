@@ -5,9 +5,9 @@ import { Campground, CampgroundsFilterDto } from '@/types/campground';
 import { API_ROUTES } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
 
-export const fetchCampgrounds = async (props: CampgroundsFilterDto): PaginatedApiResponse<Campground> => {
+export const fetchCampgrounds = async (filter: CampgroundsFilterDto): PaginatedApiResponse<Campground> => {
   try {
-    const searchParamsString = getSearchParamsString<CampgroundsFilterDto>(props);
+    const searchParamsString = getSearchParamsString<CampgroundsFilterDto>(filter);
 
     const response = await fetch(`${API_ROUTES.CAMPGROUNDS}${searchParamsString ? `?${searchParamsString}` : ''}`);
     if (!response.ok) {
