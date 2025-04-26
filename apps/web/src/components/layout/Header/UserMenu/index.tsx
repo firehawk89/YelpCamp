@@ -4,7 +4,7 @@ import useAuthActions from '@/hooks/useAuthActions';
 import { User } from '@/types/user';
 import { cn } from '@/utils/misc';
 import Avatar from '@repo/ui/avatar';
-import { LogOutIcon, SettingsIcon } from '@repo/ui/icons';
+import { HeartIcon, LogOutIcon } from '@repo/ui/icons';
 import Select, { SelectOption } from '@repo/ui/select';
 import { useMemo } from 'react';
 import { routes } from 'src/app/routes';
@@ -24,7 +24,8 @@ const UserMenu = ({ user, onLogout, className, containerClassName }: UserMenuPro
   const userMenuOptions = useMemo<SelectOption[]>(
     () => [
       { label: 'Profile', value: routes.profile() },
-      { label: 'Settings', value: routes.profile('settings'), icon: <SettingsIcon /> },
+      { label: 'Favorites', value: routes.profile('favorites'), icon: <HeartIcon /> },
+      //   { label: 'Settings', value: routes.profile('settings'), icon: <SettingsIcon /> },
       { label: 'Log Out', onClick: handleLogout, className: 'hover:bg-danger', icon: <LogOutIcon /> },
     ],
     [handleLogout]

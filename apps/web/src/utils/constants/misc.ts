@@ -6,6 +6,3 @@ export const API_ROUTES = {
   USERS: `${API_URL}/users`,
   REVIEWS: `${API_URL}/reviews`,
 };
-
-export const POSITIVE_RATING_THRESHOLD = 4;
-export const POSITIVE_RATING_PERCENTAGE_THRESHOLD = 50;
