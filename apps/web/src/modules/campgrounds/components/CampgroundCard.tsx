@@ -36,7 +36,7 @@ const CampgroundCard = ({ campground, user, ...props }: CampgroundCardProps) => 
 
           <div className="flex flex-wrap items-center gap-2">
             <CampgroundRating rating={campground.rating} />
-            <ReviewsChip reviewsCount={campground.reviewsCount} />
+            <ReviewsChip reviewsCount={campground.reviewsCount} campgroundSlug={campground.slug} />
           </div>
 
           {campground.description && <p className="text-neutral-700">{campground.description}</p>}

@@ -36,7 +36,7 @@ export default async function Campground({ params }: CampgroundPageProps) {
 
         <div className="flex items-center justify-center gap-3">
           <CampgroundRating rating={campground.rating} />
-          <ReviewsChip reviewsCount={campground.reviewsCount} href="#reviews" />
+          <ReviewsChip reviewsCount={campground.reviewsCount} campgroundSlug={campground.slug} />
           <CampgroundLocation location={campground.location} />
         </div>
 
