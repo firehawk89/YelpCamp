@@ -9,11 +9,13 @@ import {
   DEFAULT_SORT_ORDER,
   DEFAULT_PAGE,
 } from 'src/helpers/constants/defaults';
+import { POSITIVE_RATING_THRESHOLD } from 'src/helpers/constants/misc';
 import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review, ReviewDocument } from 'src/schemas/review.schema';
 import { PaginatedResponse } from 'src/types/api';
+
 @Injectable()
 export class ReviewsService {
   constructor(
@@ -42,6 +44,15 @@ export class ReviewsService {
 
       const totalCount = await this.reviewModel.countDocuments({ campground: campgroundId }).exec();
 
+      const positiveReviewsCount = await this.reviewModel
+        .countDocuments({
+          campground: campgroundId,
+          rating: { $gte: POSITIVE_RATING_THRESHOLD },
+        })
+        .exec();
+
+      const recommendationPercentage = totalCount > 0 ? Math.round((positiveReviewsCount / totalCount) * 100) : 0;
+
       const pipeline: PipelineStage[] = [
         {
           $match: { campground: new mongoose.Types.ObjectId(campgroundId) },
@@ -56,6 +67,8 @@ export class ReviewsService {
               {
                 $addFields: {
                   totalCount,
+                  positiveReviewsCount,
+                  recommendationPercentage,
                   page: validPage,
                   totalPages: { $ceil: { $divide: ['$count', DEFAULT_PAGE_LIMIT] } },
                   limit: DEFAULT_PAGE_LIMIT,
