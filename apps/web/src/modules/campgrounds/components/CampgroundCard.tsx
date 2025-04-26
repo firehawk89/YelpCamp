@@ -1,23 +1,27 @@
 import { routes } from '@/app/routes';
 import { Campground } from '@/types/campground';
+import { User } from '@/types/user';
 import { cn, round } from '@/utils/misc';
-import Button, { buttonVariants } from '@repo/ui/button';
+import { buttonVariants } from '@repo/ui/button';
 import Card, { CardProps } from '@repo/ui/card';
-import { HeartIcon } from '@repo/ui/icons';
 import ImagePlaceholder from '@repo/ui/image-placeholder';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Link from 'next/link';
 
 import CampgroundLocation from './CampgroundLocation';
 import CampgroundRating from './CampgroundRating';
+import FavoriteButton from './FavoriteButton';
 import ReviewsChip from './ReviewsChip';
 
 interface CampgroundCardProps extends CardProps {
   campground: Campground;
+  user?: User | null;
   imageSrc?: string | StaticImport;
 }
 
-const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
+const CampgroundCard = ({ campground, user, ...props }: CampgroundCardProps) => {
+  const isFavoriteCampground = !!user?.favoriteCampgrounds.some((campgroundId) => campgroundId === campground._id);
+
   return (
     <Card className="relative max-sm:flex-col" component="article" size="compact" {...props}>
       <ImagePlaceholder className="flex-shrink-0 basis-1/3" />
@@ -39,11 +43,10 @@ const CampgroundCard = ({ campground, ...props }: CampgroundCardProps) => {
         </div>
 
         <div className="flex flex-col justify-between gap-4 sm:items-end">
-          <Button
+          <FavoriteButton
             className="max-sm:absolute max-sm:right-4 max-sm:top-4 max-sm:z-[5]"
-            color="destructive"
-            size="icon"
-            icon={<HeartIcon className="size-7" />}
+            campgroundId={campground._id}
+            isFavorite={isFavoriteCampground}
           />
 
           <div className="flex flex-col gap-2.5">
