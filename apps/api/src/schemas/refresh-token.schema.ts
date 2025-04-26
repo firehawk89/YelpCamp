@@ -2,6 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants/auth';
 
+import { User } from './user.schema';
+
 export type RefreshTokenDocument = HydratedDocument<RefreshToken>;
 
 @Schema({ timestamps: true })
@@ -9,7 +11,7 @@ export class RefreshToken {
   @Prop({ required: true, unique: true })
   token: string;
 
-  @Prop({ required: true, type: mongoose.Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: mongoose.Types.ObjectId, ref: User.name })
   userId: mongoose.Types.ObjectId;
 
   @Prop({

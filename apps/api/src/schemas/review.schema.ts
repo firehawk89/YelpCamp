@@ -9,6 +9,9 @@ import {
   MIN_REVIEW_TITLE_LENGTH,
 } from 'src/helpers/constants/validation';
 
+import { Campground } from './campground.schema';
+import { User } from './user.schema';
+
 export type ReviewDocument = HydratedDocument<Review>;
 
 @Schema({ timestamps: true })
@@ -16,19 +19,19 @@ export class Review {
   @Prop({ required: true, min: MIN_RATING, max: MAX_RATING })
   rating: number;
 
-  @Prop({ required: false, default: null, minlength: MIN_REVIEW_TITLE_LENGTH, maxlength: MAX_REVIEW_TITLE_LENGTH })
+  @Prop({ default: null, minlength: MIN_REVIEW_TITLE_LENGTH, maxlength: MAX_REVIEW_TITLE_LENGTH })
   title?: string;
 
   @Prop({ required: true, minlength: MIN_REVIEW_BODY_LENGTH, maxlength: MAX_REVIEW_BODY_LENGTH })
   body: string;
 
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'User', required: false })
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: User.name, default: [] })
   likedBy?: mongoose.Types.ObjectId[];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Campground', required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Campground.name, required: true })
   campground: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name, required: true })
   author: mongoose.Types.ObjectId;
 }
 

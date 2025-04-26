@@ -1,6 +1,12 @@
+import type { JwtPayload } from 'src/types/user';
+
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { User } from 'src/decorators/user.decorator';
 import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
+import { AddFavoriteCampgroundDTO } from 'src/dto/user/add-favorite-campground.dto';
 import { CreateUserDTO } from 'src/dto/user/create-user.dto';
+import { FavoriteCampgroundsFilterDTO } from 'src/dto/user/favorite-campgrounds-filter.dto';
+import { RemoveFavoriteCampgroundDTO } from 'src/dto/user/remove-favorite-campground.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { UsersFilterDTO } from 'src/dto/user/users-filter.dto';
 
@@ -24,14 +30,29 @@ export class UsersController {
     return this.usersService.getAll();
   }
 
-  @Get(':id/reviews')
-  getUserReviews(@Param('id') id: string, @Query() filter?: ReviewsFilterDTO) {
-    return this.reviewsService.getAllByUserId(id, filter);
-  }
-
   @Post()
   createUser(@Body() createUserDto: CreateUserDTO) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Get('favorites/campgrounds')
+  getFavoriteCampgrounds(@User() user: JwtPayload, @Query() filter?: FavoriteCampgroundsFilterDTO) {
+    return this.usersService.getFavoriteCampgrounds(user.userId, filter);
+  }
+
+  @Post('favorites/campgrounds')
+  addFavoriteCampground(@User() user: JwtPayload, @Body() addFavoriteCampgroundDto: AddFavoriteCampgroundDTO) {
+    return this.usersService.addFavoriteCampground(user.userId, addFavoriteCampgroundDto.campgroundId);
+  }
+
+  @Delete('favorites/campgrounds')
+  removeFavoriteCampground(@User() user: JwtPayload, @Body() removeFavoriteCampgroundDto: RemoveFavoriteCampgroundDTO) {
+    return this.usersService.removeFavoriteCampground(user.userId, removeFavoriteCampgroundDto.campgroundId);
+  }
+
+  @Get(':id/reviews')
+  getUserReviews(@Param('id') id: string, @Query() filter?: ReviewsFilterDTO) {
+    return this.reviewsService.getAllByUserId(id, filter);
   }
 
   @Patch(':id')
@@ -39,8 +60,8 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @Delete(':email')
-  deleteUser(@Param('email') email: string) {
-    return this.usersService.delete(email);
+  @Delete(':id')
+  deleteUser(@Param('id') id: string) {
+    return this.usersService.delete(id);
   }
 }

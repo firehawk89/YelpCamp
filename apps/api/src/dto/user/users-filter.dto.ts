@@ -1,8 +1,8 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsMongoId, IsOptional } from 'class-validator';
 
 export class UsersFilterDTO {
   @IsOptional()
-  @IsString({ message: 'ID must be a string' })
+  @IsMongoId({ message: 'Invalid user ID format' })
   id?: string;
 
   @IsOptional()
