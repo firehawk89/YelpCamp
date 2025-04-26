@@ -9,7 +9,7 @@ export interface ApiError {
   statusCode: number;
 }
 
-export interface PaginationMetadata {
+export interface BasePaginationMetadata {
   count: number;
   totalCount: number;
   page: number;
@@ -18,12 +18,14 @@ export interface PaginationMetadata {
   offset: number;
 }
 
-export interface PaginatedResponse<T> {
-  metadata: PaginationMetadata;
+export interface PaginatedResponse<T, M extends BasePaginationMetadata = BasePaginationMetadata> {
   data: T[];
+  metadata: M;
 }
 
-export type PaginatedApiResponse<T> = ApiResponse<PaginatedResponse<T>>;
+export type CustomPaginatedApiResponse<T, M extends BasePaginationMetadata> = ApiResponse<PaginatedResponse<T, M>>;
+
+export type PaginatedApiResponse<T> = CustomPaginatedApiResponse<T, BasePaginationMetadata>;
 
 export type SortOrder = 'asc' | 'desc';
 

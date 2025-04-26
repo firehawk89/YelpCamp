@@ -1,18 +1,15 @@
 'use server';
 
-import { ReviewFormFields } from '@/modules/campgrounds/components/Reviews/helpers';
-import { PaginatedApiResponse, PaginatedResponse } from '@/types/api';
-import { Review, ReviewsFilterDto } from '@/types/review';
+import { ReviewFormFields } from '@/modules/reviews/helpers';
+import { PaginatedResponse } from '@/types/api';
+import { Review, ReviewsApiResponse, ReviewsFilterDto, ReviewsMetadata } from '@/types/review';
 import { API_ROUTES } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';
 
-export const fetchCampgroundReviews = async (
-  campgroundId: string,
-  filters?: ReviewsFilterDto
-): PaginatedApiResponse<Review> => {
+export const fetchCampgroundReviews = async (campgroundId: string, filters?: ReviewsFilterDto): ReviewsApiResponse => {
   try {
     let searchParamsString = '';
 
@@ -29,7 +26,7 @@ export const fetchCampgroundReviews = async (
       return { error: 'Failed to fetch campground reviews' };
     }
 
-    const result: PaginatedResponse<Review> = await response.json();
+    const result: PaginatedResponse<Review, ReviewsMetadata> = await response.json();
 
     return { result };
   } catch (err) {

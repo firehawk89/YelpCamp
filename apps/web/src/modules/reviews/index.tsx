@@ -6,7 +6,7 @@ import { fetchCampgroundReviews } from '@/server/reviews';
 import { fetchUserReviews } from '@/server/user';
 import { PaginatedResponse } from '@/types/api';
 import { Campground } from '@/types/campground';
-import { Review } from '@/types/review';
+import { Review, ReviewsMetadata } from '@/types/review';
 import { User } from '@/types/user';
 import { HTMLAttributes, useCallback } from 'react';
 
@@ -14,7 +14,7 @@ import ReviewsHeader from './ReviewsHeader';
 import ReviewsList from './ReviewsList';
 
 interface ReviewsProps extends HTMLAttributes<HTMLDivElement> {
-  reviewsData?: PaginatedResponse<Review>;
+  reviewsData?: PaginatedResponse<Review, ReviewsMetadata>;
   user?: User | null;
   campground?: Campground;
   error?: string;
@@ -45,6 +45,8 @@ const Reviews = ({
     [campground?._id, mode, user?._id]
   );
 
+  console.log(reviewsData);
+
   const {
     data: reviews,
     currentPage,
@@ -61,6 +63,7 @@ const Reviews = ({
 
   return (
     <PaginatedContent
+      id="reviews"
       elementsCount={reviews.length}
       error={initialError || error}
       isLoading={isLoading}
@@ -72,7 +75,12 @@ const Reviews = ({
       {...props}
     >
       {mode === 'campground' && campground && (
-        <ReviewsHeader userId={user?._id} campground={campground} reviews={reviews} />
+        <ReviewsHeader
+          userId={user?._id}
+          campground={campground}
+          reviews={reviews}
+          reviewsMetadata={reviewsData?.metadata}
+        />
       )}
       <ReviewsList reviews={reviews} user={user} mode={mode} />
     </PaginatedContent>

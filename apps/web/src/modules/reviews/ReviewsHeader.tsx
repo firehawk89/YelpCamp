@@ -1,7 +1,7 @@
 import { Campground } from '@/types/campground';
-import { Review } from '@/types/review';
+import { Review, ReviewsMetadata } from '@/types/review';
 import { User } from '@/types/user';
-import { POSITIVE_RATING_THRESHOLD, POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@/utils/constants/misc';
+import { POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@/utils/constants/reviews';
 import { cn } from '@/utils/misc';
 import Divider from '@repo/ui/divider';
 import { ThumbDownIcon, ThumbUpIcon } from '@repo/ui/icons';
@@ -14,20 +14,15 @@ interface ReviewsHeaderProps extends HTMLAttributes<HTMLDivElement> {
   userId?: User['_id'];
   campground: Campground;
   reviews?: Review[];
+  reviewsMetadata?: ReviewsMetadata;
 }
 
-const ReviewsHeader = ({ userId, campground, reviews, className, ...props }: ReviewsHeaderProps) => {
-  const recommendationPercentage = useMemo(() => {
-    const totalReviews = reviews?.length ?? 0;
-    if (!reviews || totalReviews === 0) return totalReviews;
+const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className, ...props }: ReviewsHeaderProps) => {
+  const { recommendationPercentage } = reviewsMetadata ?? {};
 
-    const positiveReviews = reviews.filter((review) => review.rating >= POSITIVE_RATING_THRESHOLD);
-    const percentage = Math.round((positiveReviews.length / totalReviews) * 100);
-
-    return percentage;
-  }, [reviews]);
-
-  const isRecommended = recommendationPercentage >= POSITIVE_RATING_PERCENTAGE_THRESHOLD;
+  const isRecommended = recommendationPercentage
+    ? recommendationPercentage >= POSITIVE_RATING_PERCENTAGE_THRESHOLD
+    : false;
 
   const canUserAddReview = useMemo(() => {
     if (!userId) return false;
