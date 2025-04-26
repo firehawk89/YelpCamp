@@ -1,5 +1,5 @@
 import { routes } from '@/app/routes';
-import Reviews from '@/modules/campgrounds/components/Reviews';
+import Reviews from '@/modules/reviews';
 import { getSessionUser } from '@/server/session';
 import { fetchUserReviews } from '@/server/user';
 import { redirect } from 'next/navigation';

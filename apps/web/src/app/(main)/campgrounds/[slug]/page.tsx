@@ -1,7 +1,7 @@
 import CampgroundLocation from '@/modules/campgrounds/components/CampgroundLocation';
 import CampgroundRating from '@/modules/campgrounds/components/CampgroundRating';
-import Reviews from '@/modules/campgrounds/components/Reviews';
 import ReviewsChip from '@/modules/campgrounds/components/ReviewsChip';
+import Reviews from '@/modules/reviews';
 import { fetchCampground } from '@/server/campgrounds';
 import { fetchCampgroundReviews } from '@/server/reviews';
 import ImagePlaceholder from '@repo/ui/image-placeholder';

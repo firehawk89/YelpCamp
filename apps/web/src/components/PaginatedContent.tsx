@@ -1,4 +1,4 @@
-import LoadMoreButton from '@/modules/campgrounds/components/Reviews/LoadMoreButton';
+import LoadMoreButton from '@/components/LoadMoreButton';
 import { cn } from '@/utils/misc';
 import Alert from '@repo/ui/alert';
 import { HTMLAttributes } from 'react';

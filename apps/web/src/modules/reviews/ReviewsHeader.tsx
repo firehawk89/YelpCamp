@@ -7,7 +7,7 @@ import Divider from '@repo/ui/divider';
 import { ThumbDownIcon, ThumbUpIcon } from '@repo/ui/icons';
 import { HTMLAttributes, useMemo } from 'react';
 
-import CampgroundRating from '../CampgroundRating';
+import CampgroundRating from '../campgrounds/components/CampgroundRating';
 import AddReviewButton from './AddReviewButton';
 
 interface ReviewsHeaderProps extends HTMLAttributes<HTMLDivElement> {
