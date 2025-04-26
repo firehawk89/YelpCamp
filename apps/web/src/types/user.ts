@@ -9,6 +9,7 @@ export type User = {
   password: string;
   role: UserRole;
   avatar: string | null;
+  favoriteCampgrounds: string[];
   createdAt: string;
   updatedAt: string;
 };

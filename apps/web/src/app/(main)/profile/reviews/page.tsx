@@ -7,7 +7,9 @@ import { redirect } from 'next/navigation';
 export default async function ProfileReviews() {
   const user = await getSessionUser();
 
-  if (!user) return redirect(routes.signIn());
+  if (!user) {
+    return redirect(routes.signIn());
+  }
 
   const { result: reviews, error } = await fetchUserReviews(user._id);
 
