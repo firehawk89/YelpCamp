@@ -1,5 +1,8 @@
 export const MIN_PASSWORD_LENGTH: number = 8;
 
+export const MIN_USER_NAME_LENGTH: number = 2;
+export const MAX_USER_NAME_LENGTH: number = 50;
+
 export const MIN_RATING: number = 1;
 export const MAX_RATING: number = 5;
 

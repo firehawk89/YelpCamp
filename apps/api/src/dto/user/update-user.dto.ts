@@ -1,6 +1,6 @@
-import { IsEmail, IsOptional, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
 import { IsBase64Image } from 'src/decorators/isBase64Image.decorator';
-import { MIN_PASSWORD_LENGTH } from 'src/helpers/constants/validation';
+import { MAX_USER_NAME_LENGTH, MIN_PASSWORD_LENGTH, MIN_USER_NAME_LENGTH } from 'src/helpers/constants/validation';
 
 export class UpdateUserDTO {
   @IsOptional()
@@ -15,6 +15,18 @@ export class UpdateUserDTO {
     }
   )
   password?: string;
+
+  @IsOptional()
+  @IsString({ message: 'First name should be a string' })
+  @MinLength(MIN_USER_NAME_LENGTH, { message: `First name must be at least ${MIN_USER_NAME_LENGTH} characters long` })
+  @MaxLength(MAX_USER_NAME_LENGTH, { message: `First name must be less than ${MAX_USER_NAME_LENGTH} characters long` })
+  firstName?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Last name should be a string' })
+  @MinLength(MIN_USER_NAME_LENGTH, { message: `Last name must be at least ${MIN_USER_NAME_LENGTH} characters long` })
+  @MaxLength(MAX_USER_NAME_LENGTH, { message: `Last name must be less than ${MAX_USER_NAME_LENGTH} characters long` })
+  lastName?: string;
 
   @IsOptional()
   @IsBase64Image({ message: 'Avatar image should be in base64 format with the header' })

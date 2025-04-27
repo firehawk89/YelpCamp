@@ -9,20 +9,21 @@ import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
 import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants/auth';
 import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
-import { User } from 'src/schemas/user.schema';
 import { UserTokens } from 'src/types/user';
+
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(RefreshToken.name) private refreshTokenModel: Model<RefreshToken>,
-    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService
   ) {}
 
   async signIn(signInDto: SignInDTO): Promise<UserTokens> {
     try {
-      const foundUser = await this.userModel.findOne({ email: signInDto.email });
+      const foundUser = await this.usersService.getByEmail(signInDto.email, false);
       if (!foundUser) {
         throw new ConflictException("User doesn't exist");
       }
@@ -42,14 +43,17 @@ export class AuthService {
 
   async signUp(signUpDto: SignUpDTO): Promise<UserTokens> {
     try {
-      const existingUser = await this.userModel.findOne({ email: signUpDto.email });
+      const existingUser = await this.usersService.getByEmail(signUpDto.email, false);
       if (existingUser) {
         throw new ConflictException('User already exists');
       }
 
       const hashedPassword = await bcrypt.hash(signUpDto.password, 10);
 
-      const newUser = await this.userModel.create({ email: signUpDto.email, password: hashedPassword });
+      const newUser = await this.usersService.create({
+        email: signUpDto.email,
+        password: hashedPassword,
+      });
       const userTokens = await this.generateUserTokens(newUser._id.toString());
 
       await newUser.save();

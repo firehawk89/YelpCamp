@@ -57,7 +57,7 @@ export class UsersService {
     }
   }
 
-  async getByEmail(email: string): Promise<UserDocument> {
+  async getByEmail(email: string, throwError = true): Promise<UserDocument> {
     try {
       const isValidEmail = isEmail(email);
       if (!isValidEmail) {
@@ -65,7 +65,7 @@ export class UsersService {
       }
 
       const user = await this.userModel.findOne({ email }).exec();
-      if (!user) {
+      if (!user && throwError) {
         throw new NotFoundException("User doesn't exist");
       }
 
