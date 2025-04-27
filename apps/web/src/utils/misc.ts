@@ -33,3 +33,16 @@ export const generateList = <T>(length: number, generator: (index: number) => T)
 };
 
 export const round = (value: number, precision: number = 2) => parseFloat(value.toFixed(precision));
+
+export const parseErrorMessages = (error: unknown, defaultMessage?: string): string[] => {
+  if (error instanceof Error) {
+    const errorMessages = error.message.split(',');
+    return errorMessages.length > 1 ? errorMessages : [error.message];
+  }
+  return [defaultMessage || 'An unexpected error occurred'];
+};
+
+export const filterEmptyValues = <T extends object>(obj: T): Partial<T> =>
+  Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => value !== undefined && value !== null && value !== '')
+  ) as Partial<T>;

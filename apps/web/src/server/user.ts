@@ -1,5 +1,6 @@
 'use server';
 
+import { PersonalInfoFormFields } from '@/modules/profile/helpers';
 import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { Campground, CampgroundsFilterDto } from '@/types/campground';
 import { Review, ReviewsFilterDto } from '@/types/review';
@@ -82,6 +83,31 @@ export const updateUserAvatar = async (userId: string, avatar: string): Promise<
 
   if (!response.ok) {
     throw new Error((data as ApiError).message || 'Failed to update user avatar');
+  }
+
+  return data as User;
+};
+
+export const updateUserPersonalInfo = async (
+  userId: string,
+  personalInfo: Partial<PersonalInfoFormFields>
+): Promise<User> => {
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    throw new Error('Failed to update user personal info - access token is missing');
+  }
+
+  const response = await fetch(`${API_ROUTES.USERS}/${userId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify(personalInfo),
+  });
+
+  const data: User | ApiError = await response.json();
+  revalidateTag('user');
+
+  if (!response.ok) {
+    throw new Error((data as ApiError).message || 'Failed to update user personal info');
   }
 
   return data as User;
