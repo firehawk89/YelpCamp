@@ -16,41 +16,42 @@ const useAuthActions = <T extends AuthFormFields>({ onSignIn, onSignUp, onLogout
   const router = useRouter();
   const [error, setError] = useState<Error | null>(null);
 
-  const handleSignIn = useCallback(
-    async (formData: T) => {
+  const handleAuthAction = useCallback(
+    async (
+      formData: T | null,
+      action: (data: T) => Promise<unknown>,
+      onSuccess?: (data: T) => void,
+      errorMessage?: string
+    ) => {
+      setError(null);
       try {
-        await signIn(formData);
-        onSignIn?.(formData);
+        if (formData === null) {
+          await action({} as T);
+        } else {
+          await action(formData);
+          onSuccess?.(formData);
+        }
         router.replace(routes.campgrounds());
       } catch (error) {
-        setError(error instanceof Error ? error : new Error('An error occurred while signing in.'));
+        setError(error instanceof Error ? error : new Error(errorMessage || 'An error occurred.'));
       }
     },
-    [onSignIn, router]
+    [router]
+  );
+
+  const handleSignIn = useCallback(
+    (formData: T) => handleAuthAction(formData, signIn, onSignIn, 'An error occurred while signing in.'),
+    [handleAuthAction, onSignIn]
   );
 
   const handleSignUp = useCallback(
-    async (formData: T) => {
-      try {
-        await signUp(formData);
-        onSignUp?.(formData);
-        router.replace(routes.campgrounds());
-      } catch (error) {
-        setError(error instanceof Error ? error : new Error('An error occurred while signing up.'));
-      }
-    },
-    [onSignUp, router]
+    (formData: T) => handleAuthAction(formData, signUp, onSignUp, 'An error occurred while signing up.'),
+    [handleAuthAction, onSignUp]
   );
 
   const handleLogout = useCallback(async () => {
-    try {
-      await logout();
-      onLogout?.();
-      router.replace(routes.campgrounds());
-    } catch (error) {
-      setError(error instanceof Error ? error : new Error('An error occurred while logging out.'));
-    }
-  }, [onLogout, router]);
+    handleAuthAction(null, logout, onLogout, 'An error occurred while logging out.');
+  }, [handleAuthAction, onLogout]);
 
   return { error, handleSignIn, handleSignUp, handleLogout };
 };

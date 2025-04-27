@@ -1,4 +1,5 @@
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const MIN_PASSWORD_LENGTH = 8;
 
 export const MIN_RATING: number = 1;
 export const MAX_RATING: number = 5;
@@ -11,3 +12,6 @@ export const MAX_REVIEW_BODY_LENGTH = 1800;
 
 export const MIN_AVATAR_DIMENSION = 400;
 export const MAX_AVATAR_SIZE_KB = 512;
+
+export const MIN_USER_NAME_LENGTH = 2;
+export const MAX_USER_NAME_LENGTH = 50;

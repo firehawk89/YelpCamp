@@ -13,9 +13,9 @@ import PasswordInput from '@repo/ui/password-input';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-import { AuthFormFields, authFormSchema } from './helpers';
+import { AuthFormFields, authFormSchema } from '../helpers';
 
-const SignUpForm = ({ className, ...props }: CardProps) => {
+const SignInForm = ({ className, ...props }: CardProps) => {
   const {
     register,
     handleSubmit,
@@ -33,7 +33,7 @@ const SignUpForm = ({ className, ...props }: CardProps) => {
       )}
 
       <Card className={cn('w-full max-w-96 gap-3', className)} orientation="vertical" {...props}>
-        <h1 className="text-xl font-semibold">Sign Up</h1>
+        <h1 className="text-xl font-semibold">Sign In</h1>
 
         <Divider />
 
@@ -42,18 +42,27 @@ const SignUpForm = ({ className, ...props }: CardProps) => {
             <Input {...register('email')} id="email" type="text" />
           </InputWrapper>
 
-          <InputWrapper label="Password" inputId="password" error={errors.password?.message}>
+          <InputWrapper
+            label="Password"
+            inputId="password"
+            error={errors.password?.message}
+            helperElement={
+              <Link className="text-accent text-sm hover:underline" href="/forgot-password">
+                Forgot Password?
+              </Link>
+            }
+          >
             <PasswordInput {...register('password')} id="password" />
           </InputWrapper>
 
           <Button className="mt-1.5" type="submit" isLoading={isSubmitting} variant="accent">
-            Sign Up
+            Sign In
           </Button>
 
           <p className="mt-1 text-center">
-            Already with us?{' '}
-            <Link className="text-accent ml-1 hover:underline" href="/sign-in">
-              Sign In!
+            Not with us yet?{' '}
+            <Link className="text-accent ml-1 hover:underline" href="/sign-up">
+              Sign Up!
             </Link>
           </p>
         </form>
@@ -62,4 +71,4 @@ const SignUpForm = ({ className, ...props }: CardProps) => {
   );
 };
 
-export default SignUpForm;
+export default SignInForm;

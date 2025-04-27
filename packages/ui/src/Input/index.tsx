@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/utils/misc';
 import { InputHTMLAttributes, useState } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
@@ -6,7 +8,7 @@ import Button from '../Button';
 import { EyeIcon } from '../icons';
 
 export const inputVariants = tv({
-  base: 'w-full rounded-lg outline-none transition-colors',
+  base: 'w-full rounded-lg outline-none transition-all',
   variants: {
     variant: {
       default: 'border border-neutral-300 focus:shadow',

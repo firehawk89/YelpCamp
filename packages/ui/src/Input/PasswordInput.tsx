@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/utils/misc';
 import { useState } from 'react';
 
