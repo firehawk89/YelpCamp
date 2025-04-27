@@ -27,7 +27,7 @@ const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: 
     <li className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex justify-between">
         <div className="flex items-center gap-2">
-          {!isUserProfileReview && <Avatar src={user?.avatar} />}
+          {!isUserProfileReview && <Avatar src={author?.avatar} />}
 
           <div className="flex flex-col gap-0.5">
             {isUserProfileReview ? (

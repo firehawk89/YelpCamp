@@ -18,7 +18,7 @@ export const reviewFormSchema = z
       .max(MAX_REVIEW_TITLE_LENGTH, {
         message: `Title must be at most ${MAX_REVIEW_TITLE_LENGTH} characters long`,
       })
-      .nullable()
+      .optional()
       .or(z.literal('')) // Treat empty string as null
       .transform((val) => (val === '' ? null : val)),
 

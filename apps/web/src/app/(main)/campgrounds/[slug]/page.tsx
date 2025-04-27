@@ -1,9 +1,10 @@
 import CampgroundLocation from '@/modules/campgrounds/components/CampgroundLocation';
 import CampgroundRating from '@/modules/campgrounds/components/CampgroundRating';
 import ReviewsChip from '@/modules/campgrounds/components/ReviewsChip';
-import Reviews from '@/modules/reviews';
+import Reviews from '@/modules/reviews/components';
 import { fetchCampground } from '@/server/campgrounds';
 import { fetchCampgroundReviews } from '@/server/reviews';
+import { getSessionUser } from '@/server/session';
 import ImagePlaceholder from '@repo/ui/image-placeholder';
 
 interface CampgroundPageProps {
@@ -11,6 +12,7 @@ interface CampgroundPageProps {
 }
 
 export default async function Campground({ params }: CampgroundPageProps) {
+  const user = await getSessionUser();
   const { slug } = await params;
 
   const { result: campground, error: campgroundError } = await fetchCampground(slug);
@@ -47,7 +49,7 @@ export default async function Campground({ params }: CampgroundPageProps) {
       </div>
 
       <div className="lg:mx-auto lg:w-[75%]">
-        <Reviews reviewsData={reviews} campground={campground} error={reviewsError} mode="campground" />
+        <Reviews reviewsData={reviews} campground={campground} user={user} error={reviewsError} mode="campground" />
       </div>
     </div>
   );

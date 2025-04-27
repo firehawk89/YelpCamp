@@ -3,12 +3,13 @@ import { Campground } from './campground';
 import { User } from './user';
 
 export interface ReviewAuthor {
-  _id: string;
+  _id: User['_id'];
   email: User['email'];
+  avatar: User['avatar'];
 }
 
 export interface ReviewCampground {
-  _id: string;
+  _id: Campground['_id'];
   title: Campground['title'];
   slug: Campground['slug'];
 }

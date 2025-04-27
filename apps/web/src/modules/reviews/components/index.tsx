@@ -45,8 +45,6 @@ const Reviews = ({
     [campground?._id, mode, user?._id]
   );
 
-  console.log(reviewsData);
-
   const {
     data: reviews,
     currentPage,
@@ -58,6 +56,7 @@ const Reviews = ({
     fetchPageData: fetchNewPage,
     defaultErrorMessage: 'Failed to load more reviews',
   });
+  console.log('reviews', { reviews, user });
 
   const { totalPages = 0 } = reviewsData?.metadata ?? {};
 

@@ -12,7 +12,7 @@ import InputWrapper from '@repo/ui/input-wrapper';
 import { FormHTMLAttributes } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import { ReviewFormFields, reviewFormSchema } from './helpers';
+import { ReviewFormFields, reviewFormSchema } from '../helpers';
 
 interface ReviewFormProps extends FormHTMLAttributes<HTMLFormElement> {
   campground: Campground;
@@ -36,7 +36,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
       await createReview(campground._id, formData);
       onClose();
     } catch (error) {
-      console.error('Error submitting review:', error);
+      console.error('Failed to submit a review', error);
     }
   };
 

@@ -7,7 +7,7 @@ import Divider from '@repo/ui/divider';
 import { ThumbDownIcon, ThumbUpIcon } from '@repo/ui/icons';
 import { HTMLAttributes, useMemo } from 'react';
 
-import CampgroundRating from '../campgrounds/components/CampgroundRating';
+import CampgroundRating from '../../campgrounds/components/CampgroundRating';
 import AddReviewButton from './AddReviewButton';
 
 interface ReviewsHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -24,9 +24,12 @@ const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className
     ? recommendationPercentage >= POSITIVE_RATING_PERCENTAGE_THRESHOLD
     : false;
 
+  console.log('reviews', { reviews, userId });
+
   const canUserAddReview = useMemo(() => {
     if (!userId) return false;
     const isAlreadyReviewed = reviews?.some((review) => review.author._id === userId);
+    console.log('isAlreadyReviewed', { isAlreadyReviewed });
     return !isAlreadyReviewed;
   }, [reviews, userId]);
 

@@ -1,5 +1,5 @@
 import { routes } from '@/app/routes';
-import Reviews from '@/modules/reviews';
+import Reviews from '@/modules/reviews/components';
 import { getSessionUser } from '@/server/session';
 import { fetchUserReviews } from '@/server/user';
 import { redirect } from 'next/navigation';
