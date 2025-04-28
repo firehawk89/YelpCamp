@@ -5,7 +5,7 @@ import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { Campground, CampgroundsFilterDto } from '@/types/campground';
 import { Review, ReviewsFilterDto } from '@/types/review';
 import { User } from '@/types/user';
-import { API_ROUTES } from '@/utils/constants/misc';
+import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { USER_ID_PARAM } from '@/utils/constants/params';
 import { getSearchParamsString } from '@/utils/misc';
 import { revalidateTag } from 'next/cache';
@@ -20,7 +20,7 @@ export const fetchUser = async (userId: string): Promise<User> => {
 
   const response = await fetch(`${API_ROUTES.USERS}?${USER_ID_PARAM}=${userId}`, {
     headers: { Authorization: `Bearer ${accessToken}` },
-    next: { tags: ['user'] },
+    next: { tags: [NEXT_TAGS.USER] },
   });
 
   const data: User | ApiError = await response.json();
@@ -49,7 +49,7 @@ export const fetchUserReviews = async (userId: string, filters?: ReviewsFilterDt
       `${API_ROUTES.USERS}/${userId}/reviews${searchParamsString ? `?${searchParamsString}` : ''}`,
       {
         headers: { Authorization: `Bearer ${accessToken}` },
-        next: { tags: ['user'] },
+        next: { tags: [NEXT_TAGS.USER] },
       }
     );
 
@@ -84,7 +84,7 @@ export const updateUserAvatar = async (userId: string, avatar: string): Promise<
     throw new Error((data as ApiError).message || 'Failed to update user avatar');
   }
 
-  revalidateTag('user');
+  revalidateTag(NEXT_TAGS.USER);
 
   return data as User;
 };
@@ -110,7 +110,7 @@ export const updateUserPersonalInfo = async (
     throw new Error((data as ApiError).message || 'Failed to update user personal info');
   }
 
-  revalidateTag('user');
+  revalidateTag(NEXT_TAGS.USER);
 
   return data as User;
 };
@@ -134,7 +134,7 @@ export const updateUserPassword = async (userId: string, passwordData: ChangePas
   }
 
   await deleteSessionCookies();
-  revalidateTag('user');
+  revalidateTag(NEXT_TAGS.USER);
 
   return data as User;
 };
@@ -157,7 +157,7 @@ export const addFavoriteCampground = async (campgroundId: string): Promise<User>
     throw new Error((data as ApiError).message || 'Failed to add favorite campground');
   }
 
-  revalidateTag('user');
+  revalidateTag(NEXT_TAGS.USER);
 
   return data as User;
 };
@@ -180,7 +180,7 @@ export const removeFavoriteCampground = async (campgroundId: string): Promise<Us
     throw new Error((data as ApiError).message || 'Failed to remove favorite campground');
   }
 
-  revalidateTag('user');
+  revalidateTag(NEXT_TAGS.USER);
 
   return data as User;
 };

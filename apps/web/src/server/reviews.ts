@@ -3,7 +3,7 @@
 import { ReviewFormFields } from '@/modules/reviews/helpers';
 import { PaginatedResponse } from '@/types/api';
 import { Review, ReviewsApiResponse, ReviewsFilterDto, ReviewsMetadata } from '@/types/review';
-import { API_ROUTES } from '@/utils/constants/misc';
+import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
 import { revalidateTag } from 'next/cache';
 
@@ -19,7 +19,7 @@ export const fetchCampgroundReviews = async (campgroundId: string, filters?: Rev
 
     const response = await fetch(
       `${API_ROUTES.CAMPGROUNDS}/${campgroundId}/reviews${searchParamsString ? `?${searchParamsString}` : ''}`,
-      { next: { tags: ['reviews'] } }
+      { next: { tags: [NEXT_TAGS.REVIEWS] } }
     );
 
     if (!response.ok) {
@@ -53,7 +53,7 @@ export const createReview = async (campgroundId: string, reviewData: ReviewFormF
     }
 
     const review: Review = await response.json();
-    revalidateTag('reviews');
+    revalidateTag(NEXT_TAGS.REVIEWS);
 
     return review;
   } catch (err) {
@@ -79,7 +79,7 @@ export const likeReview = async (reviewId: string): Promise<Review> => {
     }
 
     const review: Review = await response.json();
-    revalidateTag('reviews');
+    revalidateTag(NEXT_TAGS.REVIEWS);
 
     return review;
   } catch (err) {
@@ -105,7 +105,7 @@ export const unlikeReview = async (reviewId: string): Promise<Review> => {
     }
 
     const review: Review = await response.json();
-    revalidateTag('reviews');
+    revalidateTag(NEXT_TAGS.REVIEWS);
 
     return review;
   } catch (err) {

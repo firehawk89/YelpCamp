@@ -6,3 +6,8 @@ export const API_ROUTES = {
   USERS: `${API_URL}/users`,
   REVIEWS: `${API_URL}/reviews`,
 };
+
+export const NEXT_TAGS = {
+  USER: 'user',
+  REVIEWS: 'reviews',
+};
