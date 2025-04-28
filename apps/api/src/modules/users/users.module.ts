@@ -6,6 +6,7 @@ import { User, UserSchema } from 'src/schemas/user.schema';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { ReviewsService } from '../reviews/reviews.service';
+import { TokensModule } from '../tokens/tokens.module';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -16,8 +17,10 @@ import { UsersService } from './users.service';
       { name: Review.name, schema: ReviewSchema },
       { name: Campground.name, schema: CampgroundSchema },
     ]),
+    TokensModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, CloudinaryService, ReviewsService],
+  exports: [UsersService],
 })
 export class UsersModule {}

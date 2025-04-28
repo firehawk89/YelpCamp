@@ -7,6 +7,7 @@ import { AddFavoriteCampgroundDTO } from 'src/dto/user/add-favorite-campground.d
 import { CreateUserDTO } from 'src/dto/user/create-user.dto';
 import { FavoriteCampgroundsFilterDTO } from 'src/dto/user/favorite-campgrounds-filter.dto';
 import { RemoveFavoriteCampgroundDTO } from 'src/dto/user/remove-favorite-campground.dto';
+import { UpdateUserPasswordDTO } from 'src/dto/user/update-user-password.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { UsersFilterDTO } from 'src/dto/user/users-filter.dto';
 
@@ -58,6 +59,11 @@ export class UsersController {
   @Patch(':id')
   updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDTO) {
     return this.usersService.update(id, updateUserDto);
+  }
+
+  @Patch(':id/password')
+  updateUserPassword(@Param('id') id: string, @Body() updateUserPasswordDto: UpdateUserPasswordDTO) {
+    return this.usersService.updatePassword(id, updateUserPasswordDto);
   }
 
   @Delete(':id')

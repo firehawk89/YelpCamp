@@ -4,21 +4,24 @@ import { isEmail } from 'class-validator';
 import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CreateUserDTO } from 'src/dto/user/create-user.dto';
 import { FavoriteCampgroundsFilterDTO } from 'src/dto/user/favorite-campgrounds-filter.dto';
+import { UpdateUserPasswordDTO } from 'src/dto/user/update-user-password.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_ORDER, DEFAULT_SORT_FIELD } from 'src/helpers/constants/defaults';
 import { DEFAULT_PAGE } from 'src/helpers/constants/defaults';
+import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { PaginatedResponse } from 'src/types/api';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-
+import { TokenService } from '../tokens/tokens.service';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly tokenService: TokenService
   ) {}
 
   async create(createUserDto: CreateUserDTO): Promise<UserDocument> {
@@ -92,6 +95,38 @@ export class UsersService {
       }
 
       return this.userModel.findByIdAndUpdate(id, { ...updateUserDto }, { new: true }).exec();
+    } catch (error) {
+      handleError(error, UsersService.name);
+    }
+  }
+
+  async updatePassword(userId: string, updateUserPasswordDto: UpdateUserPasswordDTO): Promise<UserDocument> {
+    try {
+      const user = await this.userModel.findById(userId).exec();
+      if (!user) {
+        throw new NotFoundException("User doesn't exist");
+      }
+
+      const { oldPassword, newPassword, confirmedNewPassword } = updateUserPasswordDto;
+
+      const isPasswordCorrect = await comparePassword(oldPassword, user.password);
+      if (!isPasswordCorrect) {
+        throw new BadRequestException('Old password is invalid');
+      }
+
+      if (newPassword !== confirmedNewPassword) {
+        throw new BadRequestException('New password and confirmed new password do not match');
+      }
+
+      const hashedNewPassword = await hashPassword(newPassword);
+
+      const updatedUser = await this.userModel
+        .findByIdAndUpdate(userId, { password: hashedNewPassword }, { new: true })
+        .exec();
+
+      await this.tokenService.invalidateUserTokens(userId);
+
+      return updatedUser;
     } catch (error) {
       handleError(error, UsersService.name);
     }
