@@ -4,7 +4,7 @@ import PaginatedContent from '@/components/PaginatedContent';
 import { usePaginatedData } from '@/hooks/usePaginatedData';
 import { fetchCampgroundReviews } from '@/server/reviews';
 import { fetchUserReviews } from '@/server/user';
-import { PaginatedResponse } from '@/types/api';
+import { BasePaginationMetadata, PaginatedResponse } from '@/types/api';
 import { Campground } from '@/types/campground';
 import { Review, ReviewsMetadata } from '@/types/review';
 import { User } from '@/types/user';
@@ -14,7 +14,7 @@ import ReviewsHeader from './ReviewsHeader';
 import ReviewsList from './ReviewsList';
 
 interface ReviewsProps extends HTMLAttributes<HTMLDivElement> {
-  reviewsData?: PaginatedResponse<Review, ReviewsMetadata>;
+  reviewsData?: PaginatedResponse<Review, BasePaginationMetadata | ReviewsMetadata>;
   user?: User | null;
   campground?: Campground;
   error?: string;
@@ -78,7 +78,7 @@ const Reviews = ({
           userId={user?._id}
           campground={campground}
           reviews={reviews}
-          reviewsMetadata={reviewsData?.metadata}
+          reviewsMetadata={reviewsData?.metadata as ReviewsMetadata}
         />
       )}
       <ReviewsList reviews={reviews} user={user} mode={mode} />

@@ -1,4 +1,6 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import config from '@/app/config';
+
+export const API_URL = config.api.url;
 
 export const API_ROUTES = {
   AUTH: `${API_URL}/auth`,
