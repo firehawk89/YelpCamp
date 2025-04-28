@@ -1,6 +1,6 @@
 'use server';
 
-import { PersonalInfoFormFields } from '@/modules/profile/helpers';
+import { ChangePasswordFormFields, PersonalInfoFormFields } from '@/modules/profile/helpers';
 import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { Campground, CampgroundsFilterDto } from '@/types/campground';
 import { Review, ReviewsFilterDto } from '@/types/review';
@@ -10,7 +10,7 @@ import { USER_ID_PARAM } from '@/utils/constants/params';
 import { getSearchParamsString } from '@/utils/misc';
 import { revalidateTag } from 'next/cache';
 
-import { getAccessToken } from './session';
+import { deleteSessionCookies, getAccessToken } from './session';
 
 export const fetchUser = async (userId: string): Promise<User> => {
   const accessToken = await getAccessToken();
@@ -79,11 +79,12 @@ export const updateUserAvatar = async (userId: string, avatar: string): Promise<
   });
 
   const data: User | ApiError = await response.json();
-  revalidateTag('user');
 
   if (!response.ok) {
     throw new Error((data as ApiError).message || 'Failed to update user avatar');
   }
+
+  revalidateTag('user');
 
   return data as User;
 };
@@ -104,11 +105,36 @@ export const updateUserPersonalInfo = async (
   });
 
   const data: User | ApiError = await response.json();
-  revalidateTag('user');
 
   if (!response.ok) {
     throw new Error((data as ApiError).message || 'Failed to update user personal info');
   }
+
+  revalidateTag('user');
+
+  return data as User;
+};
+
+export const updateUserPassword = async (userId: string, passwordData: ChangePasswordFormFields): Promise<User> => {
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    throw new Error('Failed to update user password - access token is missing');
+  }
+
+  const response = await fetch(`${API_ROUTES.USERS}/${userId}/password`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify(passwordData),
+  });
+
+  const data: User | ApiError = await response.json();
+
+  if (!response.ok) {
+    throw new Error((data as ApiError).message || 'Failed to update user password');
+  }
+
+  await deleteSessionCookies();
+  revalidateTag('user');
 
   return data as User;
 };
@@ -126,11 +152,12 @@ export const addFavoriteCampground = async (campgroundId: string): Promise<User>
   });
 
   const data: User | ApiError = await response.json();
-  revalidateTag('user');
 
   if (!response.ok) {
     throw new Error((data as ApiError).message || 'Failed to add favorite campground');
   }
+
+  revalidateTag('user');
 
   return data as User;
 };
@@ -148,11 +175,12 @@ export const removeFavoriteCampground = async (campgroundId: string): Promise<Us
   });
 
   const data: User | ApiError = await response.json();
-  revalidateTag('user');
 
   if (!response.ok) {
     throw new Error((data as ApiError).message || 'Failed to remove favorite campground');
   }
+
+  revalidateTag('user');
 
   return data as User;
 };

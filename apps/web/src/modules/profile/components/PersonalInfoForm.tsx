@@ -12,7 +12,7 @@ import { FormHTMLAttributes, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { PersonalInfoFormFields, personalInfoFormSchema } from '../helpers';
-// import ChangePasswordModal from './ChangePasswordModal';
+import ChangePasswordModal from './ChangePasswordModal';
 
 interface PersonalInfoFormProps extends FormHTMLAttributes<HTMLFormElement> {
   user: User | null;
@@ -20,7 +20,7 @@ interface PersonalInfoFormProps extends FormHTMLAttributes<HTMLFormElement> {
 
 const PersonalInfoForm = ({ user, className, ...props }: PersonalInfoFormProps) => {
   const [saveErrors, setSaveErrors] = useState<string[] | null>(null);
-  //   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
 
   const {
     register,
@@ -35,8 +35,6 @@ const PersonalInfoForm = ({ user, className, ...props }: PersonalInfoFormProps) 
     },
     resolver: zodResolver(personalInfoFormSchema),
   });
-
-  console.log('user', { user, isDirty });
 
   const onSubmit: SubmitHandler<PersonalInfoFormFields> = async (data) => {
     if (!user?._id) return;
@@ -66,7 +64,7 @@ const PersonalInfoForm = ({ user, className, ...props }: PersonalInfoFormProps) 
         ))}
 
       <form className={cn('flex flex-col gap-4', className)} onSubmit={handleSubmit(onSubmit)} {...props}>
-        <div className="flex gap-6">
+        <div className="flex flex-col gap-4 md:flex-row md:gap-6">
           <div className="flex w-full flex-col gap-4">
             <InputWrapper inputId="firstName" label="First Name" error={errors.firstName?.message}>
               <Input {...register('firstName')} id="firstName" type="text" placeholder="First Name" />
@@ -88,7 +86,7 @@ const PersonalInfoForm = ({ user, className, ...props }: PersonalInfoFormProps) 
               helperElement={
                 <button
                   className="text-info text-sm hover:underline"
-                  //   onClick={() => setIsChangePasswordModalOpen(true)}
+                  onClick={() => setIsChangePasswordModalOpen(true)}
                   type="button"
                 >
                   Change Password
@@ -112,13 +110,13 @@ const PersonalInfoForm = ({ user, className, ...props }: PersonalInfoFormProps) 
         </Button>
       </form>
 
-      {/* {user && (
+      {user && (
         <ChangePasswordModal
           user={user}
           isOpen={isChangePasswordModalOpen}
           onClose={() => setIsChangePasswordModalOpen(false)}
         />
-      )} */}
+      )}
     </>
   );
 };
