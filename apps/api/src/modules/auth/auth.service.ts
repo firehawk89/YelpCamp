@@ -1,24 +1,20 @@
-import { BadRequestException, ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
-import * as bcrypt from 'bcrypt';
-import { randomUUID } from 'crypto';
-import { Model } from 'mongoose';
 import { SignInDTO } from 'src/dto/auth/sign-in.dto';
 import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
-import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants/auth';
+import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
-import { RefreshToken } from 'src/schemas/refresh-token.schema';
 import { UserTokens } from 'src/types/user';
 
+import { TokenService } from '../tokens/tokens.service';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(RefreshToken.name) private refreshTokenModel: Model<RefreshToken>,
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly tokenService: TokenService
   ) {}
 
   async signIn(signInDto: SignInDTO): Promise<UserTokens> {
@@ -28,7 +24,7 @@ export class AuthService {
         throw new ConflictException("User doesn't exist");
       }
 
-      const isPasswordCorrect = await bcrypt.compare(signInDto.password, foundUser.password);
+      const isPasswordCorrect = await comparePassword(signInDto.password, foundUser.password);
       if (!isPasswordCorrect) {
         throw new BadRequestException('Invalid password');
       }
@@ -48,7 +44,7 @@ export class AuthService {
         throw new ConflictException('User already exists');
       }
 
-      const hashedPassword = await bcrypt.hash(signUpDto.password, 10);
+      const hashedPassword = await hashPassword(signUpDto.password);
 
       const newUser = await this.usersService.create({
         email: signUpDto.email,
@@ -65,7 +61,7 @@ export class AuthService {
 
   async logout(userId: string): Promise<{ message: string }> {
     try {
-      await this.refreshTokenModel.deleteMany({ userId }).exec();
+      await this.tokenService.invalidateUserTokens(userId);
       return { message: 'User logged out successfully' };
     } catch (error) {
       handleError(error, AuthService.name);
@@ -74,22 +70,8 @@ export class AuthService {
 
   async validateRefreshToken(refreshToken: string): Promise<UserTokens> {
     try {
-      if (!refreshToken) {
-        throw new BadRequestException('Refresh token is required');
-      }
-
-      const foundRefreshToken = await this.refreshTokenModel.findOne({
-        token: refreshToken,
-        expiryDate: { $gte: new Date() },
-      });
-
-      if (!foundRefreshToken) {
-        throw new ForbiddenException('Refresh token is expired or invalid');
-      }
-
-      await this.refreshTokenModel.deleteOne({ _id: foundRefreshToken._id });
-
-      return this.generateUserTokens(foundRefreshToken.userId.toString());
+      const userId = await this.tokenService.validateRefreshToken(refreshToken);
+      return this.generateUserTokens(userId);
     } catch (error) {
       handleError(error, AuthService.name);
     }
@@ -97,15 +79,7 @@ export class AuthService {
 
   private async generateUserTokens(userId: string): Promise<UserTokens> {
     const accessToken = this.jwtService.sign({ userId });
-    const refreshToken = await this.generateRefreshToken(userId);
+    const refreshToken = await this.tokenService.generateRefreshToken(userId);
     return { accessToken, refreshToken };
-  }
-
-  private async generateRefreshToken(userId: string): Promise<string> {
-    const refreshToken = randomUUID();
-    await this.refreshTokenModel
-      .updateOne({ userId }, { $set: { token: refreshToken, expiryDate: REFRESH_TOKEN_EXPIRY_DATE } }, { upsert: true })
-      .exec();
-    return refreshToken;
   }
 }
