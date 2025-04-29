@@ -14,12 +14,14 @@ const UserInfo = ({ user }: UserInfoProps) => {
   return (
     <Card component="aside" className="flex h-fit shrink-0 basis-1/4 flex-col gap-5">
       <UserAvatar user={user} />
+
       <div className="flex flex-col gap-1">
         {showUserName && (
           <p className="text-center text-lg font-medium">
             {user.firstName} {user.lastName}
           </p>
         )}
+
         <p className="text-center text-sm text-neutral-500">Joined on {formatDate(new Date(user.createdAt))}</p>
       </div>
     </Card>

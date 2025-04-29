@@ -12,7 +12,7 @@ const Header = async ({ className, ...props }: HTMLAttributes<HTMLDivElement>) =
   const user = await getSessionUser();
 
   return (
-    <header className={cn('bg-white py-2.5 lg:py-5', className)} {...props}>
+    <header className={cn('bg-white py-2 lg:py-3', className)} {...props}>
       <div className="container">
         <nav className={cn('flex items-center justify-between gap-3')}>
           <Logo className="basis-1/3" />
