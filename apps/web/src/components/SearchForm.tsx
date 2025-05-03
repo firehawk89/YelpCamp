@@ -38,7 +38,7 @@ const SearchForm = ({ className, label, ...props }: SearchFormProps) => {
     }
     const newSearchParamsString = getUpdatedSearchParamsString(params);
 
-    router.push(routes.campgrounds(newSearchParamsString));
+    router.push(routes.campgrounds.all(newSearchParamsString));
   };
 
   return (

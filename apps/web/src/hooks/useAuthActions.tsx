@@ -31,7 +31,7 @@ const useAuthActions = <T extends AuthFormFields>({ onSignIn, onSignUp, onLogout
           await action(formData);
           onSuccess?.(formData);
         }
-        router.replace(routes.campgrounds());
+        router.replace(routes.campgrounds.all());
       } catch (error) {
         setError(error instanceof Error ? error : new Error(errorMessage || 'An error occurred.'));
       }

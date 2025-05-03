@@ -56,7 +56,6 @@ const Reviews = ({
     fetchPageData: fetchNewPage,
     defaultErrorMessage: 'Failed to load more reviews',
   });
-  console.log('reviews', { reviews, user });
 
   const { totalPages = 0 } = reviewsData?.metadata ?? {};
 

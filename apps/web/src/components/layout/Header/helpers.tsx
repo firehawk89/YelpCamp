@@ -13,7 +13,7 @@ export interface MenuItem {
 
 export const defaultMenuItems: MenuItem[] = [
   { path: routes.home(), label: 'Home' },
-  { path: routes.campgrounds(), label: 'Campgrounds' },
+  { path: routes.campgrounds.all(), label: 'Campgrounds' },
 ];
 
 export const authMenuItems: MenuItem[] = [

@@ -25,7 +25,7 @@ const Hero = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
         </p>
 
         <div className="flex flex-col gap-4 sm:flex-row">
-          <Link className={buttonVariants({ variant: 'accent', size: 'lg' })} href={routes.campgrounds()}>
+          <Link className={buttonVariants({ variant: 'accent', size: 'lg' })} href={routes.campgrounds.all()}>
             Explore Campgrounds
           </Link>
 

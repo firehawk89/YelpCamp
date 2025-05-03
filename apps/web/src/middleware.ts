@@ -13,7 +13,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 const publicRoutes = [routes.signIn(), routes.signUp];
-const protectedRoutes = [routes.profile()];
+const protectedRoutes = [routes.profile(), routes.campgrounds.new()];
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
 
   if (accessTokenData?.userId) {
     if (isPublicRoute) {
-      const url = new URL(routes.campgrounds(), request.nextUrl);
+      const url = new URL(routes.campgrounds.all(), request.nextUrl);
       return NextResponse.redirect(url);
     }
 

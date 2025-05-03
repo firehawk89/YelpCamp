@@ -32,7 +32,7 @@ const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: 
           <div className="flex flex-col gap-0.5">
             {isUserProfileReview ? (
               <h2 className="text-lg font-semibold">
-                <Link href={routes.campgrounds(review.campground.slug)} className="text-accent">
+                <Link href={routes.campground(review.campground.slug)} className="text-accent">
                   {review.campground.title}
                 </Link>{' '}
                 review

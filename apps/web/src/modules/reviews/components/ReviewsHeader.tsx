@@ -24,12 +24,9 @@ const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className
     ? recommendationPercentage >= POSITIVE_RATING_PERCENTAGE_THRESHOLD
     : false;
 
-  console.log('reviews', { reviews, userId });
-
   const canUserAddReview = useMemo(() => {
     if (!userId) return false;
     const isAlreadyReviewed = reviews?.some((review) => review.author._id === userId);
-    console.log('isAlreadyReviewed', { isAlreadyReviewed });
     return !isAlreadyReviewed;
   }, [reviews, userId]);
 
