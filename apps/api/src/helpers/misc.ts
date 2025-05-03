@@ -13,3 +13,5 @@ export const handleError = (error: unknown, context: string, throwError: boolean
     throw error;
   }
 };
+
+export const sample = <T>(array: T[]): T => array[Math.floor(Math.random() * array.length)];

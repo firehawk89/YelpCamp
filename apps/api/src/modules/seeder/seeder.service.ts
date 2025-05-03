@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MAX_SEEDED_CAMPGROUNDS, MAX_SEEDED_REVIEWS } from 'src/helpers/constants/misc';
 import { MAX_RATING, MIN_RATING } from 'src/helpers/constants/validation';
-import { generateSlug, handleError } from 'src/helpers/misc';
+import { generateSlug, handleError, sample } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
+import { Location } from 'src/schemas/location.schema';
+import { Price } from 'src/schemas/price.schema';
 import { Review, ReviewDocument } from 'src/schemas/review.schema';
 import { User } from 'src/schemas/user.schema';
 import countriesJson from 'src/seeds/countries.json';
 import placesJson from 'src/seeds/places.json';
+import { Currency } from 'src/types/misc';
 
 @Injectable()
 export class SeederService {
@@ -19,10 +22,6 @@ export class SeederService {
     @InjectModel(User.name) private readonly userModel: Model<User>
   ) {}
 
-  private sample(array: string[]): string {
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
   private getRandomRating(): number {
     return Math.floor(Math.random() * MAX_RATING) + MIN_RATING;
   }
@@ -32,17 +31,19 @@ export class SeederService {
       const { cities } = countriesJson;
       const { descriptors, places } = placesJson;
 
+      const { id: authorId } = await this.userModel.findOne();
+
       this.logger.log('Seeding campgrounds...');
       await this.campgroundModel.deleteMany();
 
       const campgrounds: CampgroundDocument[] = [];
 
       for (let i = 0; i < MAX_SEEDED_CAMPGROUNDS; i++) {
-        let title = `${this.sample(descriptors)} ${this.sample(places)}`;
+        let title = `${sample(descriptors)} ${sample(places)}`;
         let isTitleUnique = campgrounds.every((camp) => camp.title !== title);
 
         while (!isTitleUnique) {
-          title = `${this.sample(descriptors)} ${this.sample(places)}`;
+          title = `${sample(descriptors)} ${sample(places)}`;
           isTitleUnique = campgrounds.every((camp) => camp.title !== title);
         }
 
@@ -51,20 +52,30 @@ export class SeederService {
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, eius excepturi rerum autem molestias temporibus ratione omnis corporis ullam in hic laborum! Atque eaque repellendus dolore fugit, porro soluta maiores!';
 
         const randomCityIndex = Math.floor(Math.random() * cities.length);
-        const randomLocation = `${cities[randomCityIndex].city}, ${cities[randomCityIndex].state}`;
+        const randomCity = cities[randomCityIndex];
+        const randomAddress = `${randomCity.city}, ${randomCity.state}`;
+        const randomLocation: Location = {
+          full_address: randomAddress,
+          coordinates: {
+            longitude: randomCity.longitude,
+            latitude: randomCity.latitude,
+          },
+        };
 
-        //   const randomPrice = Math.floor(Math.random() * 20) + 10;
-        const randomPrice = parseFloat((Math.random() * 20).toFixed(6)) + 0.1;
+        const randomPriceValue = (Math.random() * 5000).toFixed(2);
+        const randomCurrency = sample(Object.keys(Currency));
+        const randomPrice: Price = {
+          value: Number(randomPriceValue),
+          currency: randomCurrency,
+        };
+
         const randomRating = this.getRandomRating();
 
-        const camp = new this.campgroundModel({
+        const campground = new this.campgroundModel({
           title,
           slug,
+          description,
           location: randomLocation,
-          // geometry: {
-          //   type: 'Point',
-          //   coordinates: [cities[randomNum].longitude, cities[randomNum].latitude],
-          // },
           price: randomPrice,
           // images: [
           //   {
@@ -77,11 +88,10 @@ export class SeederService {
           //   },
           // ],
           rating: randomRating,
-          // author: '6492df50719e6da0f4cafedd', // Replace with your user ID
-          description,
+          author: authorId,
         });
 
-        campgrounds.push(camp);
+        campgrounds.push(campground);
       }
 
       await this.campgroundModel.insertMany(campgrounds);
@@ -98,7 +108,7 @@ export class SeederService {
       this.logger.log('Seeding reviews...');
       await this.reviewModel.deleteMany();
 
-      const { id: testAuthorId } = await this.userModel.findOne();
+      const { id: authorId } = await this.userModel.findOne();
       const reviews: ReviewDocument[] = [];
 
       for (const campground of campgrounds) {
@@ -116,7 +126,7 @@ export class SeederService {
             campground: campgroundId,
             rating: randomRating,
             body: randomBody,
-            author: testAuthorId,
+            author: authorId,
           });
 
           reviews.push(review);
