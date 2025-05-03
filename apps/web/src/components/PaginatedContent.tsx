@@ -30,7 +30,7 @@ const PaginatedContent = ({
   ...props
 }: PaginatedContentProps) => {
   const hasData = elementsCount > 0;
-  const hasMore = currentPage < totalPages;
+  const hasMore = totalPages > 1 && currentPage < totalPages;
   const showEmptyState = !error && !hasData;
   const showContent = !error && hasData;
 

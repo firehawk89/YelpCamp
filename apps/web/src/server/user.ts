@@ -140,6 +140,36 @@ export const updateUserPassword = async (userId: string, passwordData: ChangePas
   return data as User;
 };
 
+export const fetchUserFavoriteCampgrounds = async (filter?: CampgroundsFilterDto): PaginatedApiResponse<Campground> => {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      throw new Error('Failed to get user favorite campgrounds - access token is missing');
+    }
+
+    const searchParamsString = filter ? getSearchParamsString<CampgroundsFilterDto>(filter) : '';
+
+    const response = await fetch(
+      `${API_ROUTES.USERS}/favorites/campgrounds${searchParamsString ? `?${searchParamsString}` : ''}`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        next: { tags: [NEXT_TAGS.FAVORITE_CAMPGROUNDS] },
+      }
+    );
+
+    const data: PaginatedResponse<Campground> | ApiError = await response.json();
+
+    if (!response.ok || 'error' in data) {
+      throw new Error((data as ApiError).message || 'Failed to get user favorite campgrounds');
+    }
+
+    return { result: data as PaginatedResponse<Campground> };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to get user favorite campgrounds';
+    return { error: errorMessage };
+  }
+};
+
 export const addFavoriteCampground = async (campgroundId: string): Promise<User> => {
   const accessToken = await getAccessToken();
   if (!accessToken) {
@@ -159,6 +189,7 @@ export const addFavoriteCampground = async (campgroundId: string): Promise<User>
   }
 
   revalidateTag(NEXT_TAGS.USER);
+  revalidateTag(NEXT_TAGS.FAVORITE_CAMPGROUNDS);
 
   return data as User;
 };
@@ -182,35 +213,7 @@ export const removeFavoriteCampground = async (campgroundId: string): Promise<Us
   }
 
   revalidateTag(NEXT_TAGS.USER);
+  revalidateTag(NEXT_TAGS.FAVORITE_CAMPGROUNDS);
 
   return data as User;
-};
-
-export const fetchUserFavoriteCampgrounds = async (filter?: CampgroundsFilterDto): PaginatedApiResponse<Campground> => {
-  try {
-    const accessToken = await getAccessToken();
-    if (!accessToken) {
-      throw new Error('Failed to get user favorite campgrounds - access token is missing');
-    }
-
-    const searchParamsString = filter ? getSearchParamsString<CampgroundsFilterDto>(filter) : '';
-
-    const response = await fetch(
-      `${API_ROUTES.USERS}/favorites/campgrounds${searchParamsString ? `?${searchParamsString}` : ''}`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
-
-    const data: PaginatedResponse<Campground> | ApiError = await response.json();
-
-    if (!response.ok || 'error' in data) {
-      throw new Error((data as ApiError).message || 'Failed to get user favorite campgrounds');
-    }
-
-    return { result: data as PaginatedResponse<Campground> };
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to get user favorite campgrounds';
-    return { error: errorMessage };
-  }
 };

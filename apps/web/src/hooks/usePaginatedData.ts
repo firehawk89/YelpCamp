@@ -68,10 +68,8 @@ export function usePaginatedData<T extends { _id: string }>({
   );
 
   useEffect(() => {
-    if (initialData?.data?.length) {
-      setData(initialData.data);
-      setCurrentPage(initialData.metadata?.page || DEFAULT_PAGE);
-    }
+    setData(initialData?.data ?? []);
+    setCurrentPage(initialData?.metadata?.page || DEFAULT_PAGE);
   }, [initialData]);
 
   return {

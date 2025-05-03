@@ -6,7 +6,7 @@ export class Coordinates {
   @Prop({ required: true, type: Number, min: LONGITUDE_RANGE.MIN, max: LONGITUDE_RANGE.MAX })
   longitude: number;
 
-  @Prop({ required: true, type: Number, min: LATITUDE_RANGE.MAX, max: LATITUDE_RANGE.MAX })
+  @Prop({ required: true, type: Number, min: LATITUDE_RANGE.MIN, max: LATITUDE_RANGE.MAX })
   latitude: number;
 }
 

@@ -33,7 +33,6 @@ const FavoriteCampgrounds = ({ user, campgroundsData, error: initialError, ...pr
     currentPage,
     isLoading,
     error,
-
     fetchNextPage,
   } = usePaginatedData<Campground>({
     initialData: campgroundsData,

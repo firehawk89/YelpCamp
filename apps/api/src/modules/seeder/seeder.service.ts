@@ -31,10 +31,13 @@ export class SeederService {
       const { cities } = countriesJson;
       const { descriptors, places } = placesJson;
 
-      const { id: authorId } = await this.userModel.findOne();
+      const user = await this.userModel.findOne();
+      const { id: authorId } = user;
 
       this.logger.log('Seeding campgrounds...');
+
       await this.campgroundModel.deleteMany();
+      await this.userModel.updateMany({}, { $set: { favoriteCampgrounds: [] } });
 
       const campgrounds: CampgroundDocument[] = [];
 
