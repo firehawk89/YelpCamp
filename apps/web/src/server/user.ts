@@ -2,13 +2,13 @@
 
 import { ChangePasswordFormFields } from '@/modules/profile/schemas/change-password.schema';
 import { PersonalInfoFormFields } from '@/modules/profile/schemas/form.schema';
-import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { Campground, CampgroundsFilterDto } from '@/types/campground';
 import { Review, ReviewsFilterDto } from '@/types/review';
 import { User } from '@/types/user';
 import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { USER_ID_PARAM } from '@/utils/constants/params';
 import { getSearchParamsString } from '@/utils/misc';
+import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@repo/types';
 import { revalidateTag } from 'next/cache';
 
 import { deleteSessionCookies, getAccessToken } from './session';

@@ -1,5 +1,5 @@
-import { PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { DEFAULT_PAGE } from '@/utils/constants/defaults';
+import { PaginatedApiResponse, PaginatedResponse } from '@repo/types';
 import { useCallback, useEffect, useState } from 'react';
 
 interface UsePaginatedDataProps<T> {

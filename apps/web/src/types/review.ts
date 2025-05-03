@@ -1,4 +1,5 @@
-import { BasePaginationMetadata, CustomPaginatedApiResponse } from './api';
+import { CustomPaginatedApiResponse, ReviewsMetadata } from '@repo/types';
+
 import { Campground } from './campground';
 import { User } from './user';
 
@@ -28,11 +29,6 @@ export interface Review {
 
 export interface ReviewsFilterDto {
   page?: string;
-}
-
-export interface ReviewsMetadata extends BasePaginationMetadata {
-  positiveReviewsCount: number;
-  recommendationPercentage: number;
 }
 
 export type ReviewsApiResponse = CustomPaginatedApiResponse<Review, ReviewsMetadata>;

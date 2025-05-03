@@ -1,7 +1,7 @@
 'use client';
 
 import { routes } from '@/app/routes';
-import { AuthFormFields } from '@/modules/auth/helpers';
+import { AuthFormFields } from '@/modules/auth/schemas/form.schema';
 import { logout, signIn, signUp } from '@/server/auth';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';

@@ -1,9 +1,9 @@
 'use server';
 
-import { ApiError, ApiResponse, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { Campground, CampgroundsFilterDto, CreateCampgroundDTO } from '@/types/campground';
 import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
+import { ApiError, ApiResponse, PaginatedApiResponse, PaginatedResponse } from '@repo/types';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';
@@ -15,6 +15,7 @@ export const fetchCampgrounds = async (filter: CampgroundsFilterDto): PaginatedA
     const response = await fetch(`${API_ROUTES.CAMPGROUNDS}${searchParamsString ? `?${searchParamsString}` : ''}`, {
       next: { tags: [NEXT_TAGS.CAMPGROUNDS] },
     });
+
     if (!response.ok) {
       return { error: 'Failed to fetch campgrounds' };
     }

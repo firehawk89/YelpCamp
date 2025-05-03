@@ -1,5 +1,4 @@
-import type { SortOrder } from 'src/types/api';
-
+import { type SortOrder } from '@repo/types';
 import { IsOptional, IsString, Matches } from 'class-validator';
 import { Campground } from 'src/schemas/campground.schema';
 

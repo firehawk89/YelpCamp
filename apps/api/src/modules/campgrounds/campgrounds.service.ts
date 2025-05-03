@@ -1,5 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginatedResponse } from '@repo/types';
 import { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
@@ -12,7 +13,6 @@ import {
 } from 'src/helpers/constants/defaults';
 import { generateSlug, handleError } from 'src/helpers/misc';
 import { Campground } from 'src/schemas/campground.schema';
-import { PaginatedResponse } from 'src/types/api';
 
 @Injectable()
 export class CampgroundsService {

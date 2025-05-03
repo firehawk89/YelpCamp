@@ -1,5 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginatedResponse } from '@repo/types';
 import { isEmail } from 'class-validator';
 import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CreateUserDTO } from 'src/dto/user/create-user.dto';
@@ -12,7 +13,6 @@ import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
 import { User, UserDocument } from 'src/schemas/user.schema';
-import { PaginatedResponse } from 'src/types/api';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { TokenService } from '../tokens/tokens.service';

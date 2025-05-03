@@ -1,4 +1,4 @@
-import { Currency } from '@/types/misc';
+import { Currency } from '@repo/types';
 import { SelectOption } from '@repo/ui/select';
 
 export const CURRENCY_OPTIONS: SelectOption[] = [

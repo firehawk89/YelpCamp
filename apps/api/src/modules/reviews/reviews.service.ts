@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginatedResponse, ReviewsMetadata } from '@repo/types';
 import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
@@ -14,7 +15,6 @@ import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review, ReviewDocument } from 'src/schemas/review.schema';
-import { PaginatedResponse } from 'src/types/api';
 
 @Injectable()
 export class ReviewsService {
@@ -104,7 +104,7 @@ export class ReviewsService {
         },
       ];
 
-      const [result] = await this.reviewModel.aggregate<PaginatedResponse<Review>>(pipeline).exec();
+      const [result] = await this.reviewModel.aggregate<PaginatedResponse<Review, ReviewsMetadata>>(pipeline).exec();
       result.metadata = { ...result.metadata[0], count: result.data.length };
 
       return result;

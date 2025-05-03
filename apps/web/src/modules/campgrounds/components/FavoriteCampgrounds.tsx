@@ -4,9 +4,9 @@ import PaginatedContent from '@/components/PaginatedContent';
 import { usePaginatedData } from '@/hooks/usePaginatedData';
 import CampgroundsList from '@/modules/campgrounds/components/CampgroundsList';
 import { fetchUserFavoriteCampgrounds } from '@/server/user';
-import { PaginatedResponse } from '@/types/api';
 import { Campground } from '@/types/campground';
 import { User } from '@/types/user';
+import { PaginatedResponse } from '@repo/types';
 import { HTMLAttributes, useCallback } from 'react';
 
 interface FavoriteCampgroundsProps extends HTMLAttributes<HTMLDivElement> {

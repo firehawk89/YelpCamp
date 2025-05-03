@@ -1,10 +1,10 @@
 'use server';
 
 import { ReviewFormFields } from '@/modules/reviews/helpers';
-import { PaginatedResponse } from '@/types/api';
-import { Review, ReviewsApiResponse, ReviewsFilterDto, ReviewsMetadata } from '@/types/review';
+import { Review, ReviewsApiResponse, ReviewsFilterDto } from '@/types/review';
 import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
+import { PaginatedResponse, ReviewsMetadata } from '@repo/types';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';

@@ -1,9 +1,8 @@
 'use server';
 
 import { AuthFormFields } from '@/modules/auth/schemas/form.schema';
-import { ApiError } from '@/types/api';
-import { UserTokens } from '@/types/user';
 import { API_ROUTES } from '@/utils/constants/misc';
+import { ApiError, UserTokens } from '@repo/types';
 
 import { decryptToken, deleteSessionCookies, getAccessToken, setSessionCookies } from './session';
 

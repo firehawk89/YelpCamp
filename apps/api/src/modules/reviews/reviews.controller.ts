@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { type JwtPayload } from '@repo/types';
 import { User } from 'src/decorators/user.decorator';
-import { type JwtPayload } from 'src/types/user';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { ReviewsService } from './reviews.service';

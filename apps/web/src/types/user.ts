@@ -1,7 +1,4 @@
-export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user',
-}
+import { UserRole } from '@repo/types';
 
 export type User = {
   _id: string;
@@ -14,9 +11,4 @@ export type User = {
   favoriteCampgrounds: string[];
   createdAt: string;
   updatedAt: string;
-};
-
-export type UserTokens = {
-  accessToken: string;
-  refreshToken: string;
 };

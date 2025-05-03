@@ -1,7 +1,7 @@
 import { CampgroundFormFields } from '@/modules/campgrounds/schemas/form.schema';
+import { Currency } from '@repo/types';
 
 import { SortOptions } from './api';
-import { Currency } from './misc';
 
 export interface CampgroundPrice {
   value: number;

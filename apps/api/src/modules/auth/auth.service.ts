@@ -1,10 +1,10 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UserTokens } from '@repo/types';
 import { SignInDTO } from 'src/dto/auth/sign-in.dto';
 import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
 import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
-import { UserTokens } from 'src/types/user';
 
 import { TokenService } from '../tokens/tokens.service';
 import { UsersService } from '../users/users.service';

@@ -1,6 +1,6 @@
 import { Campground } from '@/types/campground';
-import { CurrencySignMap } from '@/types/misc';
 import { cn, round } from '@/utils/misc';
+import { CurrencySignMap } from '@repo/types';
 import { HTMLAttributes } from 'react';
 
 interface CampgroundPriceProps extends HTMLAttributes<HTMLParagraphElement> {

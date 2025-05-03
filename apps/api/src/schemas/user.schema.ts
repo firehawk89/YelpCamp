@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { UserRole } from '@repo/types';
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { MAX_USER_NAME_LENGTH, MIN_PASSWORD_LENGTH, MIN_USER_NAME_LENGTH } from 'src/helpers/constants/validation';
-import { UserRole } from 'src/types/user';
 
 import { Campground } from './campground.schema';
 

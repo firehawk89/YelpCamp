@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Currency } from 'src/types/misc';
+import { Currency } from '@repo/types';
 
 @Schema({ _id: false })
 export class Price {

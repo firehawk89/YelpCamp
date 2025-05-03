@@ -1,6 +1,5 @@
-import type { JwtPayload } from 'src/types/user';
-
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { type JwtPayload } from '@repo/types';
 import { User } from 'src/decorators/user.decorator';
 import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
 import { AddFavoriteCampgroundDTO } from 'src/dto/user/add-favorite-campground.dto';

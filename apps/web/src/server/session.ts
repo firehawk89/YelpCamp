@@ -2,8 +2,8 @@
 
 import config from '@/app/config';
 import { fetchUser } from '@/server/user';
-import { UserTokens } from '@/types/user';
 import { ACCESS_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME } from '@/utils/constants/auth';
+import { UserTokens } from '@repo/types';
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 

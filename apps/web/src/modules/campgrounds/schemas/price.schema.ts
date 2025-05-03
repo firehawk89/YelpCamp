@@ -1,5 +1,5 @@
-import { Currency } from '@/types/misc';
 import { MIN_CAMPGROUND_PRICE, MAX_CAMPGROUND_PRICE } from '@/utils/constants/validation';
+import { Currency } from '@repo/types';
 import { z } from 'zod';
 
 const allowedCurrencies = Object.keys(Currency).join(', ');

@@ -1,5 +1,5 @@
+import { Currency } from '@repo/types';
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
-import { Currency } from 'src/types/misc';
 
 class PriceDTO {
   @IsNotEmpty({ message: 'Price is required' })

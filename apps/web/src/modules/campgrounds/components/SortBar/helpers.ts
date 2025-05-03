@@ -1,5 +1,5 @@
-import { SortOrder } from '@/types/api';
 import { Campground } from '@/types/campground';
+import { SortOrder } from '@repo/types';
 import { SelectOption } from '@repo/ui/select';
 
 export const DEFAULT_SORT_BY_OPTION: SelectOption<keyof Campground> = { value: 'createdAt', label: 'Relevance' };

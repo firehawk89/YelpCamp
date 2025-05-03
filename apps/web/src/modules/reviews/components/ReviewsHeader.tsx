@@ -1,8 +1,9 @@
 import { Campground } from '@/types/campground';
-import { Review, ReviewsMetadata } from '@/types/review';
+import { Review } from '@/types/review';
 import { User } from '@/types/user';
 import { POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@/utils/constants/reviews';
 import { cn } from '@/utils/misc';
+import { ReviewsMetadata } from '@repo/types';
 import Divider from '@repo/ui/divider';
 import { ThumbDownIcon, ThumbUpIcon } from '@repo/ui/icons';
 import { HTMLAttributes, useMemo } from 'react';

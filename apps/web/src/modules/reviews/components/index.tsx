@@ -4,17 +4,17 @@ import PaginatedContent from '@/components/PaginatedContent';
 import { usePaginatedData } from '@/hooks/usePaginatedData';
 import { fetchCampgroundReviews } from '@/server/reviews';
 import { fetchUserReviews } from '@/server/user';
-import { BasePaginationMetadata, PaginatedResponse } from '@/types/api';
 import { Campground } from '@/types/campground';
-import { Review, ReviewsMetadata } from '@/types/review';
+import { Review } from '@/types/review';
 import { User } from '@/types/user';
+import { PaginatedResponse, PaginationMetadata, ReviewsMetadata } from '@repo/types';
 import { HTMLAttributes, useCallback } from 'react';
 
 import ReviewsHeader from './ReviewsHeader';
 import ReviewsList from './ReviewsList';
 
 interface ReviewsProps extends HTMLAttributes<HTMLDivElement> {
-  reviewsData?: PaginatedResponse<Review, BasePaginationMetadata | ReviewsMetadata>;
+  reviewsData?: PaginatedResponse<Review, PaginationMetadata | ReviewsMetadata>;
   user?: User | null;
   campground?: Campground;
   error?: string;

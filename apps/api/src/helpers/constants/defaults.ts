@@ -1,4 +1,4 @@
-import { SortOrder } from 'src/types/api';
+import { SortOrder } from '@repo/types';
 
 export const DEFAULT_PAGE: number = 1;
 export const DEFAULT_PAGE_LIMIT: number = 4;

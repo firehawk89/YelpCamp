@@ -1,7 +1,6 @@
 'use client';
 
 import config from '@/app/config';
-import GeocoderInput from '@/components/GeocoderInput';
 import { Campground } from '@/types/campground';
 import { cn } from '@/utils/misc';
 import { HTMLAttributes } from 'react';
@@ -24,8 +23,6 @@ const CampgroundsMap = ({ className, ...props }: CampgroundsMapProps) => {
         mapStyle="mapbox://styles/mapbox/outdoors-v12"
         mapboxAccessToken={config.mapbox.accessToken}
       />
-
-      <GeocoderInput />
     </div>
   );
 };
