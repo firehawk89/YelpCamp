@@ -19,6 +19,7 @@
     "@mapbox/search-js-core": "^1.0.0",
     "@mapbox/search-js-react": "^1.0.0",
     "@repo/ui": "workspace:*",
+    "@repo/types": "workspace:*",
     "@types/mapbox-gl": "^3.4.1",
     "jose": "^6.0.10",
     "mapbox-gl": "^3.11.0",
