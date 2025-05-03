@@ -13,7 +13,7 @@ import PasswordInput from '@repo/ui/password-input';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-import { AuthFormFields, authFormSchema } from '../helpers';
+import { AuthFormFields, authFormSchema } from '../schemas/form.schema';
 
 const SignUpForm = ({ className, ...props }: CardProps) => {
   const {

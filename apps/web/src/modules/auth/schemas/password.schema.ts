@@ -8,12 +8,3 @@ export const getPasswordSchema = (passwordLabel: string = 'Password') =>
     .regex(/[a-z]/, { message: `${passwordLabel} must contain at least one lowercase letter` })
     .regex(/[A-Z]/, { message: `${passwordLabel} must contain at least one uppercase letter` })
     .regex(/[0-9]/, { message: `${passwordLabel} must contain at least one number` });
-
-export const authFormSchema = z
-  .object({
-    email: z.string({ required_error: 'Email is required' }).email({ message: 'Invalid email address' }),
-    password: getPasswordSchema(),
-  })
-  .required();
-
-export type AuthFormFields = z.infer<typeof authFormSchema>;
