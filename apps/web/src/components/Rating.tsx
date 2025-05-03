@@ -1,8 +1,8 @@
 'use client';
 
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { MAX_RATING } from '@/utils/constants/validation';
 import { cn, generateList } from '@/utils/misc';
+import { MAX_REVIEW_RATING } from '@repo/constants';
 import { StarIcon } from '@repo/ui/icons';
 import Tooltip from '@repo/ui/tooltip';
 import { HTMLAttributes, useCallback, useMemo, useState } from 'react';
@@ -17,7 +17,7 @@ interface RatingProps extends Omit<HTMLAttributes<HTMLUListElement>, 'onChange'>
 
 const Rating = ({
   rating,
-  maxStars = MAX_RATING,
+  maxStars = MAX_REVIEW_RATING,
   selectable = false,
   starClassName,
   className,
@@ -82,7 +82,7 @@ const Rating = ({
 
         return selectable ? (
           <li key={i}>
-            <Tooltip label={`${ratingValue}${ratingValue < MAX_RATING ? '+' : ''}`}>{ratingButton}</Tooltip>
+            <Tooltip label={`${ratingValue}${ratingValue < MAX_REVIEW_RATING ? '+' : ''}`}>{ratingButton}</Tooltip>
           </li>
         ) : (
           <li key={i}>{ratingButton}</li>

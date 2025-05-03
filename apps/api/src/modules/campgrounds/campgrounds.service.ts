@@ -1,16 +1,11 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { DEFAULT_PAGE, DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from '@repo/constants';
 import { PaginatedResponse } from '@repo/types';
 import { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
-import {
-  DEFAULT_PAGE_LIMIT,
-  DEFAULT_SORT_FIELD,
-  DEFAULT_PAGE,
-  DEFAULT_SORT_ORDER,
-} from 'src/helpers/constants/defaults';
 import { generateSlug, handleError } from 'src/helpers/misc';
 import { Campground } from 'src/schemas/campground.schema';
 

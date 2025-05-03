@@ -1,10 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
 import {
   MAX_REVIEW_BODY_LENGTH,
   MAX_REVIEW_TITLE_LENGTH,
   MIN_REVIEW_BODY_LENGTH,
   MIN_REVIEW_TITLE_LENGTH,
-} from 'src/helpers/constants/validation';
+} from '@repo/constants';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
 
 export class CreateReviewDTO {
   @IsOptional()

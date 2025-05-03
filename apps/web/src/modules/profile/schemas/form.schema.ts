@@ -1,4 +1,4 @@
-import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '@/utils/constants/validation';
+import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '@repo/constants';
 import { z } from 'zod';
 
 export const personalInfoFormSchema = z

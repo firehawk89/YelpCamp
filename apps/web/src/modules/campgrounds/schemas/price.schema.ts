@@ -1,4 +1,4 @@
-import { MIN_CAMPGROUND_PRICE, MAX_CAMPGROUND_PRICE } from '@/utils/constants/validation';
+import { MAX_CAMPGROUND_PRICE, MIN_CAMPGROUND_PRICE } from '@repo/constants';
 import { Currency } from '@repo/types';
 import { z } from 'zod';
 

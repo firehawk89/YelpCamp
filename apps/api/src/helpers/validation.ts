@@ -1,6 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-
-import { ALLOWED_IMAGE_FORMATS, MAX_IMAGE_SIZE_KB } from './constants/validation';
+import { ALLOWED_IMAGE_FORMATS, MAX_IMAGE_SIZE_KB } from '@repo/constants';
 
 export const validateBase64Image = (base64Image: string): void => {
   const mimeTypeMatch = base64Image.match(/^data:(image\/([a-zA-Z]+));base64,/);

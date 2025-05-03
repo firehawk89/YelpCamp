@@ -1,8 +1,8 @@
 'use client';
 
-import { DEFAULT_PAGE } from '@/utils/constants/defaults';
 import { PAGE_PARAM } from '@/utils/constants/params';
 import { cn } from '@/utils/misc';
+import { DEFAULT_PAGE } from '@repo/constants';
 import Button, { ButtonProps } from '@repo/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback } from 'react';

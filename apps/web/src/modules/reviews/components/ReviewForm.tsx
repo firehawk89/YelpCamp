@@ -3,16 +3,16 @@
 import Rating from '@/components/Rating';
 import { createReview } from '@/server/reviews';
 import { Campground } from '@/types/campground';
-import { MAX_REVIEW_BODY_LENGTH, MAX_REVIEW_TITLE_LENGTH } from '@/utils/constants/validation';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { MAX_REVIEW_BODY_LENGTH, MAX_REVIEW_TITLE_LENGTH } from '@repo/constants';
 import Button from '@repo/ui/button';
 import Input, { inputVariants } from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
 import { FormHTMLAttributes } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import { ReviewFormFields, reviewFormSchema } from '../helpers';
+import { ReviewFormFields, reviewFormSchema } from '../schemas/form.schema';
 
 interface ReviewFormProps extends FormHTMLAttributes<HTMLFormElement> {
   campground: Campground;

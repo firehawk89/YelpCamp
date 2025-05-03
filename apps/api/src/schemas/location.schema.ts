@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { LATITUDE_RANGE, LONGITUDE_RANGE } from 'src/helpers/constants/validation';
+import { LATITUDE_RANGE, LONGITUDE_RANGE } from '@repo/constants';
 
 @Schema({ _id: false })
 export class Coordinates {

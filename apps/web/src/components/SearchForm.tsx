@@ -1,8 +1,8 @@
 'use client';
 
-import { DEFAULT_PAGE } from '@/utils/constants/defaults';
 import { PAGE_PARAM, SEARCH_PARAM } from '@/utils/constants/params';
 import { cn } from '@/utils/misc';
+import { DEFAULT_PAGE } from '@repo/constants';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
 import Input from '@repo/ui/input';

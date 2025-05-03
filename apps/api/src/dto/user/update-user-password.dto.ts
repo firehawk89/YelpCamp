@@ -1,5 +1,5 @@
+import { MIN_PASSWORD_LENGTH } from '@repo/constants';
 import { IsNotEmpty, IsStrongPassword } from 'class-validator';
-import { MIN_PASSWORD_LENGTH } from 'src/helpers/constants/validation';
 
 export class UpdateUserPasswordDTO {
   @IsNotEmpty()

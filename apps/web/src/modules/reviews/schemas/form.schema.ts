@@ -1,11 +1,11 @@
 import {
-  MAX_RATING,
-  MIN_REVIEW_TITLE_LENGTH,
-  MAX_REVIEW_TITLE_LENGTH,
   MAX_REVIEW_BODY_LENGTH,
-  MIN_RATING,
+  MAX_REVIEW_RATING,
+  MAX_REVIEW_TITLE_LENGTH,
   MIN_REVIEW_BODY_LENGTH,
-} from '@/utils/constants/validation';
+  MIN_REVIEW_RATING,
+  MIN_REVIEW_TITLE_LENGTH,
+} from '@repo/constants';
 import { z } from 'zod';
 
 export const reviewFormSchema = z
@@ -33,11 +33,11 @@ export const reviewFormSchema = z
 
     rating: z
       .number({ required_error: 'Rating is required' })
-      .min(MIN_RATING, {
-        message: `Rating must be at least ${MIN_RATING}`,
+      .min(MIN_REVIEW_RATING, {
+        message: `Rating must be at least ${MIN_REVIEW_RATING}`,
       })
-      .max(MAX_RATING, {
-        message: `Rating must be at most ${MAX_RATING}`,
+      .max(MAX_REVIEW_RATING, {
+        message: `Rating must be at most ${MAX_REVIEW_RATING}`,
       }),
   })
   .required();

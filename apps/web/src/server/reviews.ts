@@ -1,6 +1,6 @@
 'use server';
 
-import { ReviewFormFields } from '@/modules/reviews/helpers';
+import { ReviewFormFields } from '@/modules/reviews/schemas/form.schema';
 import { Review, ReviewsApiResponse, ReviewsFilterDto } from '@/types/review';
 import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';

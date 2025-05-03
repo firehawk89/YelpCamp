@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE } from '@/utils/constants/defaults';
+import { DEFAULT_PAGE } from '@repo/constants';
 import { PaginatedApiResponse, PaginatedResponse } from '@repo/types';
 import { useCallback, useEffect, useState } from 'react';
 

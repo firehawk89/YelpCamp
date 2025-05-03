@@ -1,5 +1,7 @@
+import { ACCESS_TOKEN_EXPIRATION_MILLISECONDS, REFRESH_TOKEN_EXPIRATION_MILLISECONDS } from '@repo/constants';
+
 export const ACCESS_TOKEN_COOKIE_NAME = 'accessToken';
 export const REFRESH_TOKEN_COOKIE_NAME = 'refreshToken';
 
-export const ACCESS_TOKEN_EXPIRATION_DATE = new Date(Date.now() + 1000 * 60 * 15);
-export const REFRESH_TOKEN_EXPIRATION_DATE = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
+export const ACCESS_TOKEN_EXPIRATION_DATE = new Date(Date.now() + ACCESS_TOKEN_EXPIRATION_MILLISECONDS);
+export const REFRESH_TOKEN_EXPIRATION_DATE = new Date(Date.now() + REFRESH_TOKEN_EXPIRATION_MILLISECONDS);

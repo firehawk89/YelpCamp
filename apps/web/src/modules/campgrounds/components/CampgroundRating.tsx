@@ -1,6 +1,6 @@
 import { Campground } from '@/types/campground';
-import { MAX_RATING } from '@/utils/constants/validation';
 import { cn, round } from '@/utils/misc';
+import { MAX_REVIEW_RATING } from '@repo/constants';
 import { StarIcon } from '@repo/ui/icons';
 import { HTMLAttributes } from 'react';
 
@@ -15,7 +15,7 @@ const CampgroundRating = ({ rating, className, ...props }: CampgroundRatingProps
     {rating ? (
       <>
         <span className="text-lg">{round(rating)}</span>
-        <span className="text-neutral-500">/{MAX_RATING}</span>
+        <span className="text-neutral-500">/{MAX_REVIEW_RATING}</span>
       </>
     ) : (
       <span className="text-sm text-neutral-500">No rating yet</span>

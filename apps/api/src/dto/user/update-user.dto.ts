@@ -1,6 +1,6 @@
+import { MAX_USER_NAME_LENGTH, MIN_PASSWORD_LENGTH, MIN_USER_NAME_LENGTH } from '@repo/constants';
 import { IsEmail, IsOptional, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
 import { IsBase64Image } from 'src/decorators/isBase64Image.decorator';
-import { MAX_USER_NAME_LENGTH, MIN_PASSWORD_LENGTH, MIN_USER_NAME_LENGTH } from 'src/helpers/constants/validation';
 
 export class UpdateUserDTO {
   @IsOptional()

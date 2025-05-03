@@ -1,15 +1,14 @@
 import {
-  MAX_REVIEW_BODY_LENGTH,
-  MIN_CAMPGROUND_TITLE_LENGTH,
-  MAX_CAMPGROUND_TITLE_LENGTH,
-  MIN_CAMPGROUND_DESCRIPTION_LENGTH,
   CAMPGROUND_SLUG_REGEX,
-} from '@/utils/constants/validation';
+  MAX_CAMPGROUND_TITLE_LENGTH,
+  MAX_REVIEW_BODY_LENGTH,
+  MIN_CAMPGROUND_DESCRIPTION_LENGTH,
+  MIN_CAMPGROUND_TITLE_LENGTH,
+} from '@repo/constants';
 import { z } from 'zod';
 
 import { locationSchema } from './location.schema';
 import { priceSchema } from './price.schema';
-
 export const campgroundFormSchema = z
   .object({
     title: z

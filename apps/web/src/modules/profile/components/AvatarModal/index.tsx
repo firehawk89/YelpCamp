@@ -4,7 +4,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import Modal from '@/components/Modal';
 import { updateUserAvatar } from '@/server/user';
 import { User } from '@/types/user';
-import { MAX_AVATAR_SIZE_KB, MIN_AVATAR_DIMENSION } from '@/utils/constants/validation';
+import { MAX_AVATAR_SIZE_KB, MIN_AVATAR_DIMENSION } from '@repo/constants';
 import Alert from '@repo/ui/alert';
 import { CardProps } from '@repo/ui/card';
 import Tooltip from '@repo/ui/tooltip';

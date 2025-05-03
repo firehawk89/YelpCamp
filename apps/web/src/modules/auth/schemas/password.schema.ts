@@ -1,4 +1,4 @@
-import { MIN_PASSWORD_LENGTH } from '@/utils/constants/validation';
+import { MIN_PASSWORD_LENGTH } from '@repo/constants';
 import { z } from 'zod';
 
 export const getPasswordSchema = (passwordLabel: string = 'Password') =>

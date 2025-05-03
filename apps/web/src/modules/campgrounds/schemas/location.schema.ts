@@ -1,4 +1,4 @@
-import { LATITUDE_RANGE, LONGITUDE_RANGE, MIN_CAMPGROUND_LOCATION_LENGTH } from '@/utils/constants/validation';
+import { LATITUDE_RANGE, LONGITUDE_RANGE, MIN_CAMPGROUND_LOCATION_LENGTH } from '@repo/constants';
 import { z } from 'zod';
 
 export const locationSchema = z.object(

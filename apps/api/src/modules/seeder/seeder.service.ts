@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { MAX_REVIEW_RATING, MIN_REVIEW_RATING } from '@repo/constants';
 import { Currency } from '@repo/types';
 import { Model } from 'mongoose';
 import { MAX_SEEDED_CAMPGROUNDS, MAX_SEEDED_REVIEWS } from 'src/helpers/constants/misc';
-import { MAX_RATING, MIN_RATING } from 'src/helpers/constants/validation';
 import { generateSlug, handleError, sample } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
 import { Location } from 'src/schemas/location.schema';
@@ -23,7 +23,7 @@ export class SeederService {
   ) {}
 
   private getRandomRating(): number {
-    return Math.floor(Math.random() * MAX_RATING) + MIN_RATING;
+    return Math.floor(Math.random() * MAX_REVIEW_RATING) + MIN_REVIEW_RATING;
   }
 
   async seedCampgrounds(): Promise<CampgroundDocument[]> {

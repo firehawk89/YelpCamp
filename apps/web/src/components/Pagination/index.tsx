@@ -1,8 +1,8 @@
 'use client';
 
-import { DEFAULT_PAGE } from '@/utils/constants/defaults';
 import { PAGE_PARAM } from '@/utils/constants/params';
 import { cn, generateList } from '@/utils/misc';
+import { DEFAULT_PAGE } from '@repo/constants';
 import { usePathname, useRouter } from 'next/navigation';
 import { HTMLAttributes, useMemo, useCallback } from 'react';
 import { routes } from 'src/app/routes';

@@ -2,8 +2,8 @@
 
 import { routes } from '@/app/routes';
 import useCustomSearchParams from '@/hooks/useCustomSearchParams';
-import { DEFAULT_PAGE } from '@/utils/constants/defaults';
 import { PAGE_PARAM, RATING_PARAM, SORT_BY_PARAM, SORT_ORDER_PARAM } from '@/utils/constants/params';
+import { DEFAULT_PAGE } from '@repo/constants';
 import { usePathname, useRouter } from 'next/navigation';
 
 import {

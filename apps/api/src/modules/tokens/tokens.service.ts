@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import crypto from 'crypto';
 import { Model } from 'mongoose';
-import { REFRESH_TOKEN_EXPIRY_DATE } from 'src/helpers/constants/auth';
+import { REFRESH_TOKEN_EXPIRATION_DATE } from 'src/helpers/constants/auth';
 import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
 
@@ -24,7 +24,7 @@ export class TokenService {
       await this.refreshTokenModel
         .updateOne(
           { userId },
-          { $set: { token: refreshToken, expiryDate: REFRESH_TOKEN_EXPIRY_DATE } },
+          { $set: { token: refreshToken, expiryDate: REFRESH_TOKEN_EXPIRATION_DATE } },
           { upsert: true }
         )
         .exec();
