@@ -1,0 +1,5 @@
+export const POSITIVE_RATING_THRESHOLD = 4;
+export const POSITIVE_RATING_PERCENTAGE_THRESHOLD = 70;
+
+export const LONGITUDE_RANGE = { MIN: -180, MAX: 180 };
+export const LATITUDE_RANGE = { MIN: -90, MAX: 90 };
