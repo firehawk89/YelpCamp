@@ -12,4 +12,5 @@ export const API_ROUTES = {
 export const NEXT_TAGS = {
   USER: 'user',
   REVIEWS: 'reviews',
+  CAMPGROUNDS: 'campgrounds',
 };

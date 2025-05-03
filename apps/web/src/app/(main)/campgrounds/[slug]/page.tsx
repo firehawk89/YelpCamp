@@ -1,3 +1,4 @@
+import CampgroundForm from '@/modules/campgrounds/components/CampgroundForm';
 import CampgroundLocation from '@/modules/campgrounds/components/CampgroundLocation';
 import CampgroundRating from '@/modules/campgrounds/components/CampgroundRating';
 import ReviewsChip from '@/modules/campgrounds/components/ReviewsChip';
@@ -14,6 +15,10 @@ interface CampgroundPageProps {
 export default async function Campground({ params }: CampgroundPageProps) {
   const user = await getSessionUser();
   const { slug } = await params;
+
+  if (slug === 'new') {
+    return <CampgroundForm user={user} />;
+  }
 
   const { result: campground, error: campgroundError } = await fetchCampground(slug);
 
