@@ -13,6 +13,7 @@ export const buttonVariants = tv({
       outline: 'bg-transparent border border-neutral-500 hover:bg-neutral-500',
       accent: 'bg-accent hover:bg-opacity-80',
       info: 'bg-info hover:bg-opacity-80',
+      warning: 'bg-warning hover:bg-opacity-80',
       success: 'bg-success hover:bg-opacity-80',
       destructive: 'bg-danger hover:bg-opacity-80',
     },
@@ -27,8 +28,8 @@ export const buttonVariants = tv({
       accent: 'text-accent',
       info: 'text-info',
       warning: 'text-warning',
-      destructive: 'text-danger',
       success: 'text-success',
+      destructive: 'text-danger',
     },
   },
   defaultVariants: {
@@ -47,6 +48,10 @@ export const buttonVariants = tv({
     },
     {
       variant: 'success',
+      className: 'text-white',
+    },
+    {
+      variant: 'warning',
       className: 'text-white',
     },
     {
@@ -72,6 +77,11 @@ export const buttonVariants = tv({
       variant: 'outline',
       color: 'success',
       className: 'border-success hover:bg-success hover:text-white',
+    },
+    {
+      variant: 'outline',
+      color: 'warning',
+      className: 'border-warning hover:bg-warning hover:text-white',
     },
     {
       variant: 'outline',

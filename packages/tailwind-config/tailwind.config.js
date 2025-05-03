@@ -14,7 +14,7 @@ export default {
       colors: {
         accent: '#f97316',
         info: '#3b82f6',
-        warning: '#f4bb1b',
+        warning: '#e3ad18',
         danger: '#f13637',
         success: '#3dc13c',
       },

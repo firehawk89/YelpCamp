@@ -8,7 +8,7 @@ import Button from '../Button';
 import { EyeIcon } from '../icons';
 
 export const inputVariants = tv({
-  base: 'w-full rounded-lg outline-none transition-all',
+  base: 'w-full rounded-lg outline-none transition-all bg-white',
   variants: {
     variant: {
       default: 'border border-neutral-300 focus:shadow',
