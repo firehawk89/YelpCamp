@@ -14,3 +14,6 @@ export const MAX_REVIEW_TITLE_LENGTH: number = 100;
 
 export const ALLOWED_IMAGE_FORMATS = ['jpeg', 'png', 'jpg'];
 export const MAX_IMAGE_SIZE_KB = 512;
+
+export const LONGITUDE_RANGE = { MIN: -180, MAX: 180 };
+export const LATITUDE_RANGE = { MIN: -90, MAX: 90 };

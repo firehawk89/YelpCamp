@@ -1,5 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+
+import { Location, LocationSchema } from './location.schema';
+import { Price, PriceSchema } from './price.schema';
 
 export type CampgroundDocument = HydratedDocument<Campground>;
 
@@ -8,20 +11,20 @@ export class Campground {
   @Prop({ required: true })
   title: string;
 
-  //   @Prop({ type: [ImageSchema] })
-  //   images: Image[];
-
   @Prop({ required: true, unique: true })
   slug: string;
 
-  @Prop({ required: true, min: 0 })
-  price: number;
+  //   @Prop({ type: [ImageSchema] })
+  //   images: Image[];
+
+  @Prop({ required: true, type: PriceSchema })
+  price: Price;
 
   @Prop({ required: false, default: null })
   description?: string;
 
-  @Prop({ required: true })
-  location: string;
+  @Prop({ required: true, type: LocationSchema })
+  location: Location;
 
   @Prop({ required: false, min: 1, max: 5, default: null })
   rating?: number;
@@ -29,26 +32,8 @@ export class Campground {
   @Prop({ required: false, default: 0 })
   reviewsCount?: number;
 
-  //   @Prop({
-  //     raw: { type: { type: String, enum: ['Point'], required: true }, coordinates: { type: [Number], required: true } }
-  //   })
-  //   geometry: {
-  //     type: string;
-  //     coordinates: number[];
-  //   };
-
-  //   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  //   author: User;
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null })
+  author: mongoose.Types.ObjectId;
 }
 
 export const CampgroundSchema = SchemaFactory.createForClass(Campground);
-
-// campgroundSchema.post('findOneAndDelete', async function (doc) {
-//   if (doc) {
-//     await Review.deleteMany({
-//       _id: {
-//         $in: doc.reviews
-//       }
-//     });
-//   }
-// });
