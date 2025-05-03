@@ -1,17 +1,17 @@
 'use client';
 
+import ErrorAlertList from '@/components/ErrorAlertList';
 import { updateUserPersonalInfo } from '@/server/user';
 import { User } from '@/types/user';
 import { cn, parseErrorMessages } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Alert from '@repo/ui/alert';
 import Button from '@repo/ui/button';
 import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
 import { FormHTMLAttributes, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { PersonalInfoFormFields, personalInfoFormSchema } from '../helpers';
+import { PersonalInfoFormFields, personalInfoFormSchema } from './../schemas/form.schema';
 import ChangePasswordModal from './ChangePasswordModal';
 
 interface PersonalInfoFormProps extends FormHTMLAttributes<HTMLFormElement> {
@@ -56,12 +56,7 @@ const PersonalInfoForm = ({ user, className, ...props }: PersonalInfoFormProps) 
 
   return (
     <>
-      {saveErrors?.length &&
-        saveErrors.map((error) => (
-          <Alert key={error} className="w-full" color="danger">
-            {error}
-          </Alert>
-        ))}
+      <ErrorAlertList errors={saveErrors} />
 
       <form className={cn('flex flex-col gap-4', className)} onSubmit={handleSubmit(onSubmit)} {...props}>
         <div className="flex flex-col gap-4 md:flex-row md:gap-6">

@@ -27,12 +27,15 @@ const AppError = ({ className, code = ErrorType.InternalServerError, title, mess
         {code && <span className="text-[5rem] leading-none md:text-[8rem]">{code}</span>}
         <h1 className="text-xl font-medium md:text-3xl">{title}</h1>
       </div>
-      <div className="flex flex-col items-center gap-6">
+
+      <div className="flex flex-col items-center gap-3">
         <p className="md:text-lg">{message}</p>
-        <div className="flex items-center gap-5">
+
+        <div className="flex items-center gap-3">
           <Link className={buttonVariants({ variant: 'accent' })} href="/">
             Go to Homepage
           </Link>
+
           <Button onClick={onTryAgain} variant="info">
             Try again
           </Button>

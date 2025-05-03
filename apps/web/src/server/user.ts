@@ -1,6 +1,7 @@
 'use server';
 
-import { ChangePasswordFormFields, PersonalInfoFormFields } from '@/modules/profile/helpers';
+import { ChangePasswordFormFields } from '@/modules/profile/schemas/change-password.schema';
+import { PersonalInfoFormFields } from '@/modules/profile/schemas/form.schema';
 import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@/types/api';
 import { Campground, CampgroundsFilterDto } from '@/types/campground';
 import { Review, ReviewsFilterDto } from '@/types/review';

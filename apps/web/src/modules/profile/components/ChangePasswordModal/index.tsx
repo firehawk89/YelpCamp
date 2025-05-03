@@ -1,12 +1,12 @@
 'use client';
 
 import { routes } from '@/app/routes';
+import ErrorAlertList from '@/components/ErrorAlertList';
 import Modal from '@/components/Modal';
 import { updateUserPassword } from '@/server/user';
 import { User } from '@/types/user';
 import { cn, parseErrorMessages } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Alert from '@repo/ui/alert';
 import Button from '@repo/ui/button';
 import { CardProps } from '@repo/ui/card';
 import InputWrapper from '@repo/ui/input-wrapper';
@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { ChangePasswordFormFields, changePasswordFormSchema } from '../../helpers';
+import { ChangePasswordFormFields, changePasswordFormSchema } from '../../schemas/change-password.schema';
 
 interface ChangePasswordModalProps extends Omit<CardProps, 'orientation'> {
   user: User;
@@ -63,12 +63,7 @@ const ChangePasswordModal = ({ user, isOpen, onClose, className, ...props }: Cha
       {...props}
     >
       <div className="flex flex-col gap-5">
-        {saveErrors?.length &&
-          saveErrors.map((error) => (
-            <Alert color="danger" className="w-full" key={error}>
-              {error}
-            </Alert>
-          ))}
+        <ErrorAlertList errors={saveErrors} />
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <InputWrapper inputId="oldPassword" label="Old Password" error={errors.oldPassword?.message}>
