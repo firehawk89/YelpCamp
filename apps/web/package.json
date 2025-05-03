@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.2",
+    "@mapbox/search-js-core": "^1.0.0",
     "@mapbox/search-js-react": "^1.0.0",
     "@repo/ui": "workspace:*",
     "@types/mapbox-gl": "^3.4.1",
