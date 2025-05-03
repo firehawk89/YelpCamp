@@ -14,7 +14,12 @@ interface SortControlsProps extends HTMLAttributes<HTMLDivElement> {
 const SortControl = ({ label, options, selectedOption, className, handleSort, ...props }: SortControlsProps) => (
   <div className={cn('flex items-center gap-2.5', className)} {...props}>
     <span>{label}</span>
-    <Select options={options} selectedOption={selectedOption} onChange={handleSort} />
+    <Select
+      selectedOptionClassName="text-accent"
+      options={options}
+      selectedOption={selectedOption}
+      onChange={handleSort}
+    />
   </div>
 );
 

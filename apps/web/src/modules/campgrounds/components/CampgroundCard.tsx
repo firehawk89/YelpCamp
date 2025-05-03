@@ -1,7 +1,7 @@
 import { routes } from '@/app/routes';
 import { Campground } from '@/types/campground';
 import { User } from '@/types/user';
-import { cn, round } from '@/utils/misc';
+import { cn } from '@/utils/misc';
 import { buttonVariants } from '@repo/ui/button';
 import Card, { CardProps } from '@repo/ui/card';
 import ImagePlaceholder from '@repo/ui/image-placeholder';
@@ -9,6 +9,7 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Link from 'next/link';
 
 import CampgroundLocation from './CampgroundLocation';
+import CampgroundPrice from './CampgroundPrice';
 import CampgroundRating from './CampgroundRating';
 import FavoriteButton from './FavoriteButton';
 import ReviewsChip from './ReviewsChip';
@@ -50,10 +51,7 @@ const CampgroundCard = ({ campground, user, ...props }: CampgroundCardProps) => 
           />
 
           <div className="flex flex-col gap-2.5">
-            <p className="flex items-center max-sm:justify-center max-sm:gap-2 sm:flex-col sm:items-end">
-              <span className="text-lg font-semibold text-black">{round(campground.price)} $</span>
-              <span className="text-neutral-500">per night</span>
-            </p>
+            <CampgroundPrice price={campground.price} />
 
             <Link
               className={cn('justify-center', buttonVariants({ variant: 'accent' }))}

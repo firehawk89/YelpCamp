@@ -26,7 +26,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
 
   return (
     <div className="flex gap-5">
-      <CampgroundsFilterBar className="hidden lg:block xl:basis-1/4" />
+      <CampgroundsFilterBar className="max-lg:hidden xl:basis-1/4" />
 
       <div className="flex flex-1 flex-col gap-10">
         {/* <CampgroundsMap campgrounds={campgrounds} /> */}
