@@ -7,6 +7,7 @@ import Card from '@repo/ui/card';
 import { AnimatePresence, motion } from 'motion/react';
 
 import CampgroundCard, { CampgroundCardProps } from '../CampgroundCard';
+import CampgroundCardSkeleton from '../CampgroundCard/Skeleton';
 
 interface CampgroundPopupProps extends Omit<CampgroundCardProps, 'campground' | 'preview'> {
   campgroundSlug: Campground['slug'] | null;
@@ -24,12 +25,13 @@ const CampgroundPopup = ({ campgroundSlug, className, ...props }: CampgroundPopu
           animate={{ opacity: 1, y: isMobile ? 0 : 10 }}
           exit={{ opacity: 0, y: 5 }}
           transition={{ duration: 0.15 }}
-          className="font-primary absolute w-full max-w-xl text-sm max-md:bottom-0 md:left-1/2"
+          className="font-primary absolute w-full text-sm max-md:bottom-0 md:left-1/2 md:max-w-xl"
         >
-          {(isLoading || error) && (
+          {isLoading && <CampgroundCardSkeleton className="w-full max-md:rounded-none" preview />}
+
+          {!isLoading && error && (
             <Card>
-              {isLoading && <p className="w-full text-center">Loading...</p>}
-              {!isLoading && error && <ErrorAlertList errors={parseErrorMessages(error)} />}
+              <ErrorAlertList errors={parseErrorMessages(error)} />
             </Card>
           )}
 

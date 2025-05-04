@@ -9,11 +9,11 @@ import ImagePlaceholder from '@repo/ui/image-placeholder';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Link from 'next/link';
 
-import CampgroundLocation from './CampgroundLocation';
-import CampgroundPrice from './CampgroundPrice';
-import CampgroundRating from './CampgroundRating';
-import FavoriteButton from './FavoriteButton';
-import ReviewsChip from './ReviewsChip';
+import CampgroundLocation from '../CampgroundLocation';
+import CampgroundPrice from '../CampgroundPrice';
+import CampgroundRating from '../CampgroundRating';
+import FavoriteButton from '../FavoriteButton';
+import ReviewsChip from '../ReviewsChip';
 
 export interface CampgroundCardProps extends CardProps {
   campground: Campground;
@@ -51,7 +51,7 @@ const CampgroundCard = ({ campground, user, preview, onClose, className, ...prop
           </div>
 
           {campground.description && (
-            <p className={cn('line-clamp-4 text-neutral-700', { 'line-clamp-3 max-md:hidden': preview })}>
+            <p className={cn('line-clamp-4 text-neutral-700', { 'line-clamp-3 max-sm:hidden': preview })}>
               {campground.description}
             </p>
           )}
