@@ -29,6 +29,11 @@ export class CampgroundsController {
     return this.campgroundsService.create(createCampgroundDto);
   }
 
+  @Get('locations')
+  getCampgroundLocations() {
+    return this.campgroundsService.getLocations();
+  }
+
   @Get(':slug')
   getCampgroundBySlug(@Param('slug') slug: string) {
     return this.campgroundsService.getBySlug(slug);

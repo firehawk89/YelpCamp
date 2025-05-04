@@ -8,6 +8,7 @@ import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { generateSlug, handleError } from 'src/helpers/misc';
 import { Campground } from 'src/schemas/campground.schema';
+import { CampgroundLocation } from 'src/schemas/location.schema';
 
 @Injectable()
 export class CampgroundsService {
@@ -83,6 +84,30 @@ export class CampgroundsService {
       result.metadata = { ...result.metadata[0], count: result.data.length };
 
       return result;
+    } catch (error) {
+      handleError(error, CampgroundsService.name);
+    }
+  }
+
+  async getLocations(): Promise<CampgroundLocation[]> {
+    try {
+      const locations = await this.campgroundModel
+        .aggregate([
+          {
+            $project: {
+              _id: 0,
+              full_address: '$location.full_address',
+              coordinates: '$location.coordinates',
+              campground: {
+                _id: '$_id',
+                slug: '$slug',
+              },
+            },
+          },
+        ])
+        .exec();
+
+      return locations;
     } catch (error) {
       handleError(error, CampgroundsService.name);
     }

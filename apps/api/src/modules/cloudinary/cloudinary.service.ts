@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ALLOWED_IMAGE_FORMATS } from '@repo/constants';
 import { v2 as cloudinaryV2, UploadApiOptions } from 'cloudinary';
 import { handleError } from 'src/helpers/misc';
 import { validateBase64Image } from 'src/helpers/validation';
+
+const AVATARS_FOLDER_NAME = 'CampZone/UserAvatars';
 
 @Injectable()
 export class CloudinaryService {
@@ -20,8 +23,8 @@ export class CloudinaryService {
 
       const uploadOptions: UploadApiOptions = {
         resource_type: 'image',
-        allowed_formats: ['jpg', 'png', 'jpeg'],
-        folder: 'CampZone/UserAvatars',
+        allowed_formats: ALLOWED_IMAGE_FORMATS,
+        folder: AVATARS_FOLDER_NAME,
         overwrite: true,
         ...options,
       };

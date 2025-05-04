@@ -1,5 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { LATITUDE_RANGE, LONGITUDE_RANGE } from '@repo/constants';
+import { ObjectId } from 'mongoose';
+
+import { Campground } from './campground.schema';
 
 @Schema({ _id: false })
 export class Coordinates {
@@ -22,3 +25,5 @@ export class Location {
 }
 
 export const LocationSchema = SchemaFactory.createForClass(Location);
+
+export type CampgroundLocation = Location & { campground: { _id: ObjectId; slug: Campground['slug'] } };
