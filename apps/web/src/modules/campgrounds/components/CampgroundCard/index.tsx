@@ -25,7 +25,7 @@ export interface CampgroundCardProps extends CardProps {
 
 const CampgroundCard = ({ campground, user, preview, onClose, className, ...props }: CampgroundCardProps) => {
   const isFavoriteCampground = !!user?.favoriteCampgrounds.some((campgroundId) => campgroundId === campground._id);
-
+  console.log('isFavoriteCampground', isFavoriteCampground);
   return (
     <Card
       className={cn('relative overflow-hidden', { 'max-sm:flex-col': !preview }, className)}

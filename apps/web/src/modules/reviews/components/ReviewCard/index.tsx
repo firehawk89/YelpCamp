@@ -8,9 +8,9 @@ import Avatar from '@repo/ui/avatar';
 import Link from 'next/link';
 import { HTMLAttributes } from 'react';
 
-import LikeReviewButton from './LikeReviewButton';
+import LikeReviewButton from '../LikeReviewButton';
 
-interface ReviewProps extends HTMLAttributes<HTMLLIElement> {
+interface ReviewProps extends HTMLAttributes<HTMLDivElement> {
   review: Review;
   user?: User | null;
   mode?: 'campground' | 'user';
@@ -24,7 +24,7 @@ const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: 
   const likesCount = likedBy.length;
 
   return (
-    <li className={cn('flex flex-col gap-2', className)} {...props}>
+    <div className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex justify-between">
         <div className="flex items-center gap-2">
           {!isUserProfileReview && <Avatar src={author?.avatar} />}
@@ -40,6 +40,7 @@ const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: 
             ) : (
               <span>{author.email}</span>
             )}
+
             <Rating rating={rating} starClassName="size-5" />
           </div>
         </div>
@@ -58,7 +59,7 @@ const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: 
         {!!title && <h3 className="text-lg font-medium">{title}</h3>}
         <p>{body}</p>
       </div>
-    </li>
+    </div>
   );
 };
 
