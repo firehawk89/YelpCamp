@@ -13,5 +13,6 @@ export const NEXT_TAGS = {
   USER: 'user',
   REVIEWS: 'reviews',
   CAMPGROUNDS: 'campgrounds',
+  CAMPGROUND_LOCATIONS: 'campground-locations',
   FAVORITE_CAMPGROUNDS: 'favorite-campgrounds',
 };

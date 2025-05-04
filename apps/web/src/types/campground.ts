@@ -14,6 +14,10 @@ export interface CampgroundLocation {
     longitude: number;
     latitude: number;
   };
+  campground?: {
+    _id: string;
+    slug: string;
+  };
 }
 
 export interface Campground {

@@ -1,6 +1,6 @@
 'use server';
 
-import { Campground, CampgroundsFilterDto, CreateCampgroundDTO } from '@/types/campground';
+import { Campground, CampgroundLocation, CampgroundsFilterDto, CreateCampgroundDTO } from '@/types/campground';
 import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
 import { ApiError, ApiResponse, PaginatedApiResponse, PaginatedResponse } from '@repo/types';
@@ -29,9 +29,32 @@ export const fetchCampgrounds = async (filter: CampgroundsFilterDto): PaginatedA
   }
 };
 
-export const fetchCampground = async (slug: string): ApiResponse<Campground> => {
+export const fetchCampgroundLocations = async (): ApiResponse<CampgroundLocation[]> => {
   try {
-    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${slug}`);
+    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/locations`, {
+      next: { tags: [NEXT_TAGS.CAMPGROUND_LOCATIONS] },
+    });
+
+    if (!response.ok) {
+      const data: ApiError = await response.json();
+      throw new Error(data.message || 'Failed to fetch campground locations');
+    }
+
+    const result: CampgroundLocation[] = await response.json();
+
+    return { result };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to fetch campground locations';
+    return { error: errorMessage };
+  }
+};
+
+export const fetchCampground = async (slugOrUrl: string): ApiResponse<Campground> => {
+  try {
+    const apiBaseUrl = API_ROUTES.CAMPGROUNDS;
+    const url = slugOrUrl.startsWith(apiBaseUrl) ? slugOrUrl : `${apiBaseUrl}/${slugOrUrl}`;
+
+    const response = await fetch(url);
     if (!response.ok) {
       return { error: 'Failed to fetch a campground' };
     }
