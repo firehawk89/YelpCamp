@@ -6,15 +6,16 @@ import { HTMLAttributes } from 'react';
 
 interface CampgroundRatingProps extends HTMLAttributes<HTMLParagraphElement> {
   rating: Campground['rating'];
+  preview?: boolean;
 }
 
-const CampgroundRating = ({ rating, className, ...props }: CampgroundRatingProps) => (
+const CampgroundRating = ({ rating, preview, className, ...props }: CampgroundRatingProps) => (
   <p className={cn('flex items-center gap-1', className)} {...props}>
     <StarIcon className={cn('text-accent', { 'fill-accent': rating })} />
 
     {rating ? (
       <>
-        <span className="text-lg">{round(rating)}</span>
+        <span className={cn({ 'text-lg': !preview })}>{round(rating)}</span>
         <span className="text-neutral-500">/{MAX_REVIEW_RATING}</span>
       </>
     ) : (

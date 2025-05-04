@@ -6,9 +6,10 @@ import { HTMLAttributes } from 'react';
 interface CampgroundPriceProps extends HTMLAttributes<HTMLParagraphElement> {
   price: Campground['price'];
   className?: string;
+  preview?: boolean;
 }
 
-const CampgroundPrice = ({ price, className, ...props }: CampgroundPriceProps) => {
+const CampgroundPrice = ({ price, preview, className, ...props }: CampgroundPriceProps) => {
   const isFree = price?.value === 0;
   const formattedPrice = isFree ? 'Free' : `${round(price.value)} ${CurrencySignMap[price.currency]}`;
 
@@ -17,7 +18,7 @@ const CampgroundPrice = ({ price, className, ...props }: CampgroundPriceProps) =
       className={cn('flex items-center max-sm:justify-center max-sm:gap-2 sm:flex-col sm:items-end', className)}
       {...props}
     >
-      <span className="text-lg font-semibold text-black">{formattedPrice}</span>
+      <span className={cn('text-lg font-semibold text-black', { 'text-base': preview })}>{formattedPrice}</span>
       {!isFree && <span className="text-neutral-500">per night</span>}
     </p>
   );

@@ -1,22 +1,31 @@
 'use client';
 
+import { routes } from '@/app/routes';
 import { addFavoriteCampground, removeFavoriteCampground } from '@/server/user';
 import { Campground } from '@/types/campground';
 import { cn } from '@/utils/misc';
 import Button, { ButtonProps } from '@repo/ui/button';
 import { HeartIcon } from '@repo/ui/icons';
+import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
 interface FavoriteButtonProps extends ButtonProps {
   campgroundId: Campground['_id'];
   isFavorite: boolean;
+  isLoggedIn?: boolean;
 }
 
-const FavoriteButton = ({ campgroundId, isFavorite, className, ...props }: FavoriteButtonProps) => {
+const FavoriteButton = ({ campgroundId, isFavorite, isLoggedIn, className, ...props }: FavoriteButtonProps) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const toggleFavorite = useCallback(async () => {
     if (!campgroundId || isLoading) return;
+
+    if (!isLoggedIn) {
+      router.push(routes.signIn());
+      return;
+    }
 
     setIsLoading(true);
 
@@ -31,7 +40,7 @@ const FavoriteButton = ({ campgroundId, isFavorite, className, ...props }: Favor
     } finally {
       setIsLoading(false);
     }
-  }, [campgroundId, isFavorite, isLoading]);
+  }, [campgroundId, isFavorite, isLoading, isLoggedIn, router]);
 
   return (
     <Button
