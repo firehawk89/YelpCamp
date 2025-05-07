@@ -1,13 +1,16 @@
 'use client';
 
 import ErrorAlertList from '@/components/ErrorAlertList';
+import MultiImageInput from '@/components/MultiImageInput';
 import PriceInput from '@/components/PriceInput';
+import useImageFileSelect from '@/hooks/useImageFileSelect';
 import { createCampground } from '@/server/campgrounds';
 import { CreateCampgroundDTO } from '@/types/campground';
 import { User } from '@/types/user';
 import { cn, parseErrorMessages } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MAX_CAMPGROUND_DESCRIPTION_LENGTH } from '@repo/constants';
+import Alert from '@repo/ui/alert';
 import Button from '@repo/ui/button';
 import Input, { inputVariants } from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
@@ -32,6 +35,9 @@ interface CampgroundFormProps extends Omit<HTMLAttributes<HTMLFormElement>, 'onS
 
 const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
   const router = useRouter();
+
+  const [images, setImages] = useState<string[] | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
 
   const [includeSlug, setIncludeSlug] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<SelectOption | undefined>(CURRENCY_OPTIONS[0]);
@@ -63,6 +69,25 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
     }
   };
 
+  const handleAddImage = (imageUrl: string) => {
+    const isAdded = images?.some((img) => img === imageUrl);
+    if (!isAdded) {
+      setImages((prev) => (prev ? [...prev, imageUrl] : [imageUrl]));
+      setImageError(null);
+    }
+  };
+
+  const handleRemoveImage = (imageUrl: string) => {
+    setImages((prev) => prev?.filter((img) => img !== imageUrl) || null);
+    setImageError(null);
+  };
+
+  const { handleSelectFile } = useImageFileSelect({
+    onImageSourceAdd: handleAddImage,
+    error: imageError,
+    setError: setImageError,
+  });
+
   const onSubmit: SubmitHandler<CampgroundFormFields> = useCallback(
     async (data) => {
       if (!user?._id) return;
@@ -76,6 +101,7 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
           price,
           location,
           description,
+          images,
           author: user._id,
         };
         if (includeSlug) {
@@ -91,7 +117,7 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
         setSaveErrors(errorMessages);
       }
     },
-    [includeSlug, reset, router, user?._id]
+    [images, includeSlug, reset, router, user?._id]
   );
 
   return (
@@ -128,6 +154,21 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
               <Input id="slug" {...register('slug')} type="text" placeholder="campground-url-slug" />
             </InputWrapper>
           )}
+
+          <InputWrapper label="Images" inputId="images">
+            {imageError && (
+              <Alert className="mb-2 w-full" color="danger">
+                {imageError}
+              </Alert>
+            )}
+
+            <MultiImageInput
+              images={images ?? []}
+              onAddImage={handleSelectFile}
+              onImageRemove={handleRemoveImage}
+              isError={!!imageError}
+            />
+          </InputWrapper>
 
           <div className="flex gap-4">
             <InputWrapper

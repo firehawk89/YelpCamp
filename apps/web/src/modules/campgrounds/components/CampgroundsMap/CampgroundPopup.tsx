@@ -38,7 +38,7 @@ const CampgroundPopup = ({ campgroundSlug, className, ...props }: CampgroundPopu
           animate="show"
           exit="hidden"
           transition={{ duration: 0.15 }}
-          className="font-primary absolute w-full text-sm max-md:bottom-0 md:left-1/2 md:max-w-xl"
+          className="font-primary absolute w-full text-sm max-md:bottom-0 md:left-1/2 md:max-w-lg"
         >
           {isLoading && <CampgroundCardSkeleton className="w-full max-md:rounded-none" preview />}
 

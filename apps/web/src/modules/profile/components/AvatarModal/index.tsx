@@ -11,10 +11,10 @@ import Tooltip from '@repo/ui/tooltip';
 import { InfoIcon } from 'node_modules/@repo/ui/src/icons/InfoIcon';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import ImageArea from '../../../../components/ImageArea';
+import useImageFileSelect from '../../../../hooks/useImageFileSelect';
 import { useImageCrop } from '../../hooks/useImageCrop';
-import useImageFileSelect from '../../hooks/useImageFileSelect';
 import AvatarModalActionButtons from './ActionButtons';
-import ImageArea from './ImageArea';
 import ImageCropper from './ImageCropper';
 
 interface AvatarEditModalProps extends Omit<CardProps, 'orientation'> {
@@ -31,7 +31,12 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { imageSource, setImageSource, handleSelectFile } = useImageFileSelect({ error, setError });
+  const { imageSource, setImageSource, handleSelectFile } = useImageFileSelect({
+    maxFileSize: MAX_AVATAR_SIZE_KB,
+    minDimension: MIN_AVATAR_DIMENSION,
+    error,
+    setError,
+  });
   const { crop, setCrop, handleImageLoad, generateCroppedImage } = useImageCrop({ setError });
 
   const onImageDrop = useCallback(
@@ -115,7 +120,7 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
         )}
 
         {!imageSource && (
-          <ImageArea onClick={() => imageInputRef.current?.click()} onImageDrop={onImageDrop} error={error} />
+          <ImageArea onClick={() => imageInputRef.current?.click()} onImageDrop={onImageDrop} isError={!!error} />
         )}
 
         <input

@@ -8,7 +8,7 @@ interface CampgroundLocationProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const CampgroundLocation = ({ location, className, ...props }: CampgroundLocationProps) => (
-  <div className={cn('flex items-center gap-1 text-neutral-500', className)} {...props}>
+  <div className={cn('flex gap-1 text-neutral-500', className)} {...props}>
     <MapPinIcon />
     <span>{location.full_address}</span>
   </div>
