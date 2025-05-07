@@ -19,7 +19,7 @@ import { UsersModule } from './modules/users/users.module';
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({ uri: config.get<string>('database.url') }),
+      useFactory: async (config: ConfigService) => ({ uri: config.get<string>('database.url.prod') }),
       inject: [ConfigService],
     }),
     JwtModule.registerAsync({
