@@ -1,3 +1,0 @@
-import { REFRESH_TOKEN_EXPIRATION_MILLISECONDS } from '@repo/constants';
-
-export const REFRESH_TOKEN_EXPIRATION_DATE = new Date(Date.now() + REFRESH_TOKEN_EXPIRATION_MILLISECONDS);

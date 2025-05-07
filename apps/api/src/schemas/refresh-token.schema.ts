@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { REFRESH_TOKEN_EXPIRATION_MILLISECONDS } from '@repo/constants';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { REFRESH_TOKEN_EXPIRATION_DATE } from 'src/helpers/constants/auth';
 
 import { User } from './user.schema';
 
@@ -15,7 +15,7 @@ export class RefreshToken {
   userId: mongoose.Types.ObjectId;
 
   @Prop({
-    default: REFRESH_TOKEN_EXPIRATION_DATE,
+    default: () => new Date(Date.now() + REFRESH_TOKEN_EXPIRATION_MILLISECONDS),
     index: { expires: 0 },
   })
   expiryDate: Date;

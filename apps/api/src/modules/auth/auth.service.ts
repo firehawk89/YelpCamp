@@ -71,7 +71,8 @@ export class AuthService {
   async validateRefreshToken(refreshToken: string): Promise<UserTokens> {
     try {
       const userId = await this.tokenService.validateRefreshToken(refreshToken);
-      return this.generateUserTokens(userId);
+      const accessToken = this.jwtService.sign({ userId });
+      return { accessToken, refreshToken };
     } catch (error) {
       handleError(error, AuthService.name);
     }
