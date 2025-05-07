@@ -60,19 +60,8 @@ const Reviews = ({
   const { totalPages = 0 } = reviewsData?.metadata ?? {};
 
   return (
-    <PaginatedContent
-      id="reviews"
-      elementsCount={reviews.length}
-      error={initialError || error}
-      isLoading={isLoading}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={fetchNextPage}
-      emptyStateMessage="No reviews yet"
-      pagination={false}
-      {...props}
-    >
-      {mode === 'campground' && campground && (
+    <div className="flex w-full flex-col gap-6">
+      {mode === 'campground' && !!campground && (
         <ReviewsHeader
           userId={user?._id}
           campground={campground}
@@ -80,8 +69,22 @@ const Reviews = ({
           reviewsMetadata={reviewsData?.metadata as ReviewsMetadata}
         />
       )}
-      <ReviewsList reviews={reviews} user={user} mode={mode} />
-    </PaginatedContent>
+
+      <PaginatedContent
+        id="reviews"
+        elementsCount={reviews.length}
+        error={initialError || error}
+        isLoading={isLoading}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={fetchNextPage}
+        emptyStateMessage="No reviews yet"
+        pagination={false}
+        {...props}
+      >
+        <ReviewsList reviews={reviews} user={user} mode={mode} />
+      </PaginatedContent>
+    </div>
   );
 };
 
