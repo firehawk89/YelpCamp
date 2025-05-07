@@ -22,6 +22,7 @@ export const buttonVariants = tv({
       sm: 'px-2 py-1 text-sm gap-1',
       lg: 'px-4 py-2 text-lg gap-2',
       icon: 'p-1.5',
+      'icon-sm': 'p-1',
     },
     color: {
       default: 'text-neutral-700',
@@ -111,7 +112,10 @@ const Button = ({
   ...props
 }: ButtonProps) => (
   <button
-    className={cn(buttonVariants({ variant, size: icon ? 'icon' : size, color }), className)}
+    className={cn(
+      buttonVariants({ variant, size: icon ? (size === 'icon-sm' ? 'icon-sm' : 'icon') : size, color }),
+      className
+    )}
     type={type}
     disabled={isLoading || disabled}
     {...props}

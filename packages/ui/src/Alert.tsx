@@ -21,6 +21,7 @@ export const alertVariants = tv({
     },
     size: {
       default: 'px-5 py-3',
+      sm: 'px-4 py-2',
     },
   },
   defaultVariants: {
