@@ -7,6 +7,7 @@ import Card, { CardProps } from '@repo/ui/card';
 import { CloseIcon } from '@repo/ui/icons';
 import ImagePlaceholder from '@repo/ui/image-placeholder';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import CampgroundLocation from '../CampgroundLocation';
@@ -25,7 +26,8 @@ export interface CampgroundCardProps extends CardProps {
 
 const CampgroundCard = ({ campground, user, preview, onClose, className, ...props }: CampgroundCardProps) => {
   const isFavoriteCampground = !!user?.favoriteCampgrounds.some((campgroundId) => campgroundId === campground._id);
-  console.log('isFavoriteCampground', isFavoriteCampground);
+  const image = campground.images?.[0];
+
   return (
     <Card
       className={cn('relative overflow-hidden', { 'max-sm:flex-col': !preview }, className)}
@@ -33,14 +35,26 @@ const CampgroundCard = ({ campground, user, preview, onClose, className, ...prop
       size="compact"
       {...props}
     >
-      <ImagePlaceholder className={cn('flex-shrink-0 basis-1/3', { 'max-w-40': preview })} />
+      {image?.url ? (
+        <div className={cn('relative aspect-[1.43/1] w-full flex-shrink-0 basis-1/3', { 'max-w-44': preview })}>
+          <Image
+            className="object-cover object-center"
+            src={image.url}
+            alt={image.fileName ?? `campground-${campground._id}-image`}
+            fill
+          />
+        </div>
+      ) : (
+        <ImagePlaceholder className={cn('aspect-[1.43/1] flex-shrink-0 basis-1/3', { 'max-w-40': preview })} />
+      )}
 
       <div
         className={cn('flex flex-grow gap-4 p-4 max-sm:flex-col', { 'max-sm:flex-col': !preview, 'p-2.5': preview })}
       >
         <div className="flex flex-1 flex-col gap-2">
-          <Link href={routes.campground(campground.slug)}>
+          <Link href={routes.campground(campground.slug)} className="flex justify-between gap-2">
             <h2 className={cn('text-2xl font-medium', { 'text-lg font-semibold': preview })}>{campground.title}</h2>
+            {preview && <Button className="-mr-1.5 -mt-1.5 sm:hidden" onClick={onClose} icon={<CloseIcon />} />}
           </Link>
 
           {!preview && <CampgroundLocation location={campground.location} />}
@@ -58,7 +72,7 @@ const CampgroundCard = ({ campground, user, preview, onClose, className, ...prop
         </div>
 
         <div className="flex flex-col justify-between gap-4 sm:items-end">
-          {preview && <Button className="absolute right-1 top-1.5" onClick={onClose} icon={<CloseIcon />} />}
+          {preview && <Button className="-mr-1.5 -mt-1.5 max-sm:hidden" onClick={onClose} icon={<CloseIcon />} />}
 
           {!preview && (
             <FavoriteButton

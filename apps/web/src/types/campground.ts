@@ -20,10 +20,17 @@ export interface CampgroundLocation {
   };
 }
 
+export interface CampgroundImage {
+  _id: string;
+  url: string;
+  fileName?: string;
+}
+
 export interface Campground {
   _id: string;
   title: string;
   slug: string;
+  images: CampgroundImage[] | null;
   description?: string;
   price: CampgroundPrice;
   location: CampgroundLocation;
@@ -43,5 +50,6 @@ export type CreateCampgroundDTO = Pick<
   CampgroundFormFields,
   'title' | 'slug' | 'description' | 'location' | 'price'
 > & {
+  images: string[] | null;
   author: string;
 };
