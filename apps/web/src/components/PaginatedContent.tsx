@@ -35,7 +35,7 @@ const PaginatedContent = ({
   const showContent = !error && hasData;
 
   return (
-    <div className={cn('flex w-full min-w-80 flex-col gap-6', className)} {...props}>
+    <div className={cn('flex w-full min-w-80 flex-col gap-5', className)} {...props}>
       {showEmptyState && (
         <Alert className="w-full" color="info">
           {emptyStateMessage}

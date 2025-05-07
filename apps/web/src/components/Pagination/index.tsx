@@ -1,5 +1,6 @@
 'use client';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { PAGE_PARAM } from '@/utils/constants/params';
 import { cn, generateList } from '@/utils/misc';
 import { DEFAULT_PAGE } from '@repo/constants';
@@ -10,7 +11,10 @@ import useCustomSearchParams from 'src/hooks/useCustomSearchParams';
 
 import PaginationButton from './PaginationButton';
 
-const MAX_SHOWN_PAGES: number = 3;
+const MAX_SHOWN_PAGES = {
+  DESKTOP: 3,
+  MOBILE: 2,
+};
 
 interface PaginationProps extends HTMLAttributes<HTMLDivElement> {
   page?: number;
@@ -21,21 +25,20 @@ interface PaginationProps extends HTMLAttributes<HTMLDivElement> {
 const Pagination = ({ page, totalPages, onPageChange, className, ...props }: PaginationProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const { searchParams, getUpdatedSearchParamsString } = useCustomSearchParams();
 
+  const maxShownPages = isMobile ? MAX_SHOWN_PAGES.MOBILE : MAX_SHOWN_PAGES.DESKTOP;
   const currentPage = page ?? (Number(searchParams.get(PAGE_PARAM)) || DEFAULT_PAGE);
 
   const { startPage, endPage } = useMemo(() => {
-    const start = Math.max(
-      1,
-      Math.min(currentPage - Math.floor(MAX_SHOWN_PAGES / 2), totalPages - MAX_SHOWN_PAGES + 1)
-    );
+    const start = Math.max(1, Math.min(currentPage - Math.floor(maxShownPages / 2), totalPages - maxShownPages + 1));
 
-    const end = Math.min(totalPages, start + MAX_SHOWN_PAGES - 1);
+    const end = Math.min(totalPages, start + maxShownPages - 1);
 
     return { startPage: start, endPage: end };
-  }, [currentPage, totalPages]);
+  }, [currentPage, totalPages, maxShownPages]);
 
   const handlePageChange = useCallback(
     (page: number) => {
