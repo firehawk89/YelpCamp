@@ -5,11 +5,14 @@ export type ImageDocument = HydratedDocument<Image>;
 
 @Schema()
 export class Image {
-  @Prop()
+  @Prop({ required: true })
   url: string;
 
-  @Prop()
-  filename: string;
+  @Prop({ required: false, default: null })
+  fileName?: string;
+
+  @Prop({ required: false, default: null, select: false })
+  embedding?: number[];
 }
 
 export const ImageSchema = SchemaFactory.createForClass(Image);

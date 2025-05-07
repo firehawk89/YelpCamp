@@ -6,13 +6,21 @@ import { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
+import { CAMPGROUND_IMAGES_FOLDER_NAME } from 'src/helpers/constants/misc';
+import { getImageEmbedding } from 'src/helpers/embeddings';
 import { generateSlug, handleError } from 'src/helpers/misc';
 import { Campground } from 'src/schemas/campground.schema';
+import { Image } from 'src/schemas/image.schema';
 import { CampgroundLocation } from 'src/schemas/location.schema';
+
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class CampgroundsService {
-  constructor(@InjectModel(Campground.name) private campgroundModel: Model<Campground>) {}
+  constructor(
+    @InjectModel(Campground.name) private campgroundModel: Model<Campground>,
+    private readonly cloudinaryService: CloudinaryService
+  ) {}
 
   async create(createCampgroundDto: CreateCampgroundDTO): Promise<Campground> {
     try {
@@ -27,6 +35,27 @@ export class CampgroundsService {
       }
 
       const newCampground = new this.campgroundModel(createCampgroundDto);
+
+      const campgroundId = newCampground.id;
+      const campgroundImages: Image[] = [];
+
+      // TODO: Generate image embedding for all images
+      if (createCampgroundDto.images.length) {
+        const base64Image = createCampgroundDto.images[0];
+        const imageFileName = `campground-${campgroundId}-image-0`;
+
+        const campgroundImageUrl = await this.cloudinaryService.uploadImage(base64Image, {
+          public_id: imageFileName,
+          folder: `${CAMPGROUND_IMAGES_FOLDER_NAME}/${campgroundId}`,
+        });
+
+        const imageEmbedding = await getImageEmbedding(campgroundImageUrl);
+
+        campgroundImages.push({ url: campgroundImageUrl, fileName: imageFileName, embedding: imageEmbedding });
+      }
+
+      newCampground.images = campgroundImages;
+
       return newCampground.save();
     } catch (error) {
       handleError(error, CampgroundsService.name);

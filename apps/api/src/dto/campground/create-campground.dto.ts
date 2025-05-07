@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, ValidateNested, IsMongoId } from 'class-validator';
+import { IsBase64ImageArray } from 'src/decorators/isBase64ImageArray.decorator';
 
 import LocationDTO from './location.dto';
 import PriceDTO from './price.dto';
@@ -12,6 +13,10 @@ export class CreateCampgroundDTO {
   @IsOptional()
   @IsString({ message: 'Slug should be a string' })
   slug?: string;
+
+  @IsOptional()
+  @IsBase64ImageArray()
+  images?: string[];
 
   @ValidateNested()
   @Type(() => PriceDTO)
