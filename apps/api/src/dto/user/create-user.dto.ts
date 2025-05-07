@@ -1,5 +1,6 @@
 import { MIN_PASSWORD_LENGTH } from '@repo/constants';
-import { IsBase64, IsEmail, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator';
+import { IsBase64Image } from 'src/decorators/isBase64Image.decorator';
 
 export class CreateUserDTO {
   @IsNotEmpty({ message: 'Email is required' })
@@ -16,6 +17,6 @@ export class CreateUserDTO {
   password: string;
 
   @IsOptional()
-  @IsBase64({}, { message: 'Avatar image should be in base64 format' })
+  @IsBase64Image()
   avatar?: string;
 }

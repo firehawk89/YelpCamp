@@ -29,6 +29,6 @@ export class UpdateUserDTO {
   lastName?: string;
 
   @IsOptional()
-  @IsBase64Image({ message: 'Avatar image should be in base64 format with the header' })
+  @IsBase64Image()
   avatar?: string;
 }

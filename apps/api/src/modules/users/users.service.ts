@@ -9,6 +9,7 @@ import { CreateUserDTO } from 'src/dto/user/create-user.dto';
 import { FavoriteCampgroundsFilterDTO } from 'src/dto/user/favorite-campgrounds-filter.dto';
 import { UpdateUserPasswordDTO } from 'src/dto/user/update-user-password.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
+import { AVATAR_IMAGES_FOLDER_NAME } from 'src/helpers/constants/misc';
 import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
@@ -16,6 +17,7 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { TokenService } from '../tokens/tokens.service';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -134,7 +136,10 @@ export class UsersService {
 
   private async updateAvatar(userId: string, avatar: string): Promise<UserDocument> {
     try {
-      const avatarImageUrl = await this.cloudinaryService.uploadImage(avatar, { public_id: `avatar-${userId}` });
+      const avatarImageUrl = await this.cloudinaryService.uploadImage(avatar, {
+        public_id: `avatar-${userId}`,
+        folder: AVATAR_IMAGES_FOLDER_NAME,
+      });
       return this.userModel.findByIdAndUpdate(userId, { avatar: avatarImageUrl }, { new: true }).exec();
     } catch (error) {
       handleError(error, UsersService.name);
