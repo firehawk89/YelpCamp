@@ -7,6 +7,8 @@ import { fetchCampground } from '@/server/campgrounds';
 import { fetchCampgroundReviews } from '@/server/reviews';
 import { getSessionUser } from '@/server/session';
 import ImagePlaceholder from '@repo/ui/image-placeholder';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 interface CampgroundPageProps {
   params: Promise<{ slug: string }>;
@@ -22,13 +24,15 @@ export default async function Campground({ params }: CampgroundPageProps) {
 
   const { result: campground, error: campgroundError } = await fetchCampground(slug);
 
+  if (!campground) {
+    notFound();
+  }
+
   if (campgroundError) {
     throw new Error(typeof campgroundError === 'string' ? campgroundError : campgroundError.join(', '));
   }
 
-  if (!campground) {
-    throw new Error('Campground not found');
-  }
+  const image = campground.images?.[0];
 
   const { result: reviews, error: reviewsError } = await fetchCampgroundReviews(campground._id);
 
@@ -47,13 +51,20 @@ export default async function Campground({ params }: CampgroundPageProps) {
           <CampgroundLocation location={campground.location} />
         </div>
 
-        <div className="flex flex-col gap-3 text-center lg:w-[75%]">
-          <ImagePlaceholder className="mx-auto aspect-video w-full shrink-0 rounded-lg" />
+        <div className="flex w-full flex-col gap-3 text-center lg:w-[70%]">
+          {image ? (
+            <div className="relative mx-auto aspect-video w-full shrink-0 overflow-hidden rounded-lg">
+              <Image src={image?.url} alt={image.fileName ?? `campground-${campground._id}-image`} fill />
+            </div>
+          ) : (
+            <ImagePlaceholder className="mx-auto aspect-video w-full shrink-0 rounded-lg" />
+          )}
+
           {campground.description && <p className="text-neutral-700">{campground.description}</p>}
         </div>
       </div>
 
-      <div className="lg:mx-auto lg:w-[75%]">
+      <div className="w-full lg:mx-auto lg:w-[70%]">
         <Reviews reviewsData={reviews} campground={campground} user={user} error={reviewsError} mode="campground" />
       </div>
     </div>

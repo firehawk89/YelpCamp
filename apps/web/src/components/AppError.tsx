@@ -36,9 +36,11 @@ const AppError = ({ className, code = ErrorType.InternalServerError, title, mess
             Go to Homepage
           </Link>
 
-          <Button onClick={onTryAgain} variant="info">
-            Try again
-          </Button>
+          {!!onTryAgain && (
+            <Button onClick={onTryAgain} variant="info">
+              Try again
+            </Button>
+          )}
         </div>
       </div>
     </div>
