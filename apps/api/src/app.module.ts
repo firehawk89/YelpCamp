@@ -4,12 +4,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ACCESS_TOKEN_EXPIRATION_SECONDS } from '@repo/constants';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import config from './config';
 import { AuthModule } from './modules/auth/auth.module';
 import { CampgroundsModule } from './modules/campgrounds/campgrounds.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { ImagesModule } from './modules/images/images.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { SeederModule } from './modules/seeder/seeder.module';
 import { UsersModule } from './modules/users/users.module';
@@ -37,8 +36,7 @@ import { UsersModule } from './modules/users/users.module';
     CampgroundsModule,
     ReviewsModule,
     CloudinaryModule,
+    ImagesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

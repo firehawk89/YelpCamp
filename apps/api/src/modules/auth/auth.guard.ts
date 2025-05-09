@@ -19,12 +19,11 @@ export class AuthGuard implements CanActivate {
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(token);
       request['user'] = payload;
+      return true;
     } catch (error) {
       handleError(error, AuthGuard.name, false);
       throw new UnauthorizedException('Failed to verify access token');
     }
-
-    return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
