@@ -1,28 +1,26 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DEFAULT_PAGE, DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from '@repo/constants';
-import { PaginatedResponse } from '@repo/types';
-import { isValidObjectId, Model, PipelineStage } from 'mongoose';
+import { ImageType, PaginatedResponse } from '@repo/types';
+import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
-import { CAMPGROUND_IMAGES_FOLDER_NAME } from 'src/helpers/constants/misc';
-import { getImageEmbedding } from 'src/helpers/embeddings';
+import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
 import { generateSlug, handleError } from 'src/helpers/misc';
-import { Campground } from 'src/schemas/campground.schema';
-import { Image } from 'src/schemas/image.schema';
+import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
 import { CampgroundLocation } from 'src/schemas/location.schema';
 
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImagesService } from '../images/images.service';
 
 @Injectable()
 export class CampgroundsService {
   constructor(
     @InjectModel(Campground.name) private campgroundModel: Model<Campground>,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly imagesService: ImagesService
   ) {}
 
-  async create(createCampgroundDto: CreateCampgroundDTO): Promise<Campground> {
+  async create(createCampgroundDto: CreateCampgroundDTO): Promise<CampgroundDocument> {
     try {
       const foundCampground = await this.campgroundModel.findOne({ title: createCampgroundDto.title }).exec();
       if (foundCampground) {
@@ -35,26 +33,22 @@ export class CampgroundsService {
       }
 
       const newCampground = new this.campgroundModel(createCampgroundDto);
-
-      const campgroundId = newCampground.id;
-      const campgroundImages: Image[] = [];
+      const imageIds: mongoose.Types.ObjectId[] = [];
 
       // TODO: Generate image embedding for all images
       if (createCampgroundDto.images.length) {
-        const base64Image = createCampgroundDto.images[0];
-        const imageFileName = `campground-${campgroundId}-image-0`;
+        const imageData: UploadImageDTO = {
+          image: createCampgroundDto.images[0],
+          type: ImageType.CAMPGROUND,
+          folderPath: newCampground.slug,
+        };
 
-        const campgroundImageUrl = await this.cloudinaryService.uploadImage(base64Image, {
-          public_id: imageFileName,
-          folder: `${CAMPGROUND_IMAGES_FOLDER_NAME}/${campgroundId}`,
-        });
+        const image = await this.imagesService.uploadImage(imageData);
 
-        const imageEmbedding = await getImageEmbedding(campgroundImageUrl);
-
-        campgroundImages.push({ url: campgroundImageUrl, fileName: imageFileName, embedding: imageEmbedding });
+        imageIds.push(image._id);
       }
 
-      newCampground.images = campgroundImages;
+      newCampground.images = imageIds;
 
       return newCampground.save();
     } catch (error) {
@@ -62,7 +56,7 @@ export class CampgroundsService {
     }
   }
 
-  async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<Campground>> {
+  async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<CampgroundDocument>> {
     try {
       const { sortBy = DEFAULT_SORT_FIELD, sortOrder = DEFAULT_SORT_ORDER, page, search, rating } = filter ?? {};
 
@@ -104,13 +98,27 @@ export class CampgroundsService {
                 },
               },
             ],
-            data: [{ $skip: skip }, { $limit: DEFAULT_PAGE_LIMIT }],
+            data: [
+              { $skip: skip },
+              { $limit: DEFAULT_PAGE_LIMIT },
+              {
+                $lookup: {
+                  from: 'images',
+                  localField: 'images',
+                  foreignField: '_id',
+                  pipeline: [{ $project: { url: 1, filename: 1, type: 1 } }],
+                  as: 'images',
+                },
+              },
+            ],
           },
         }
       );
 
-      const [result] = await this.campgroundModel.aggregate<PaginatedResponse<Campground>>(pipeline).exec();
+      const [result] = await this.campgroundModel.aggregate<PaginatedResponse<CampgroundDocument>>(pipeline).exec();
       result.metadata = { ...result.metadata[0], count: result.data.length };
+
+      console.log(result);
 
       return result;
     } catch (error) {
@@ -142,14 +150,14 @@ export class CampgroundsService {
     }
   }
 
-  async getById(id: string): Promise<Campground> {
+  async getById(id: string): Promise<CampgroundDocument> {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
         throw new BadRequestException('Invalid campground ID');
       }
 
-      const campground = await this.campgroundModel.findById(id).exec();
+      const campground = await this.campgroundModel.findById(id).populate('images').exec();
       if (!campground) {
         throw new NotFoundException("Campground doesn't exist");
       }
@@ -160,9 +168,9 @@ export class CampgroundsService {
     }
   }
 
-  async getBySlug(slug: string): Promise<Campground> {
+  async getBySlug(slug: string): Promise<CampgroundDocument> {
     try {
-      const campground = await this.campgroundModel.findOne({ slug }).exec();
+      const campground = await this.campgroundModel.findOne({ slug }).populate('images').exec();
 
       if (!campground) {
         throw new NotFoundException("Campground with given slug doesn't exist");
@@ -174,7 +182,7 @@ export class CampgroundsService {
     }
   }
 
-  async update(slug: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<Campground> {
+  async update(slug: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<CampgroundDocument> {
     try {
       const campground = await this.campgroundModel.findOne({ slug }).exec();
       if (!campground) {
@@ -187,7 +195,7 @@ export class CampgroundsService {
     }
   }
 
-  async delete(id: string): Promise<Campground> {
+  async delete(id: string): Promise<CampgroundDocument> {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {

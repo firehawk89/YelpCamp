@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-import { Image, ImageSchema } from './image.schema';
+import { Image } from './image.schema';
 import { Location, LocationSchema } from './location.schema';
 import { Price, PriceSchema } from './price.schema';
 
@@ -15,8 +15,8 @@ export class Campground {
   @Prop({ required: true, unique: true })
   slug: string;
 
-  @Prop({ required: false, type: [ImageSchema], default: null })
-  images?: Image[];
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: Image.name, default: [] })
+  images: mongoose.Types.ObjectId[];
 
   @Prop({ required: true, type: PriceSchema })
   price: Price;

@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Campground, CampgroundSchema } from 'src/schemas/campground.schema';
 import { Review, ReviewSchema } from 'src/schemas/review.schema';
 
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImagesModule } from '../images/images.module';
 import { ReviewsService } from '../reviews/reviews.service';
 import { CampgroundsController } from './campgrounds.controller';
 import { CampgroundsService } from './campgrounds.service';
@@ -14,8 +14,9 @@ import { CampgroundsService } from './campgrounds.service';
       { name: Campground.name, schema: CampgroundSchema },
       { name: Review.name, schema: ReviewSchema },
     ]),
+    ImagesModule,
   ],
-  providers: [CampgroundsService, ReviewsService, CloudinaryService],
+  providers: [CampgroundsService, ReviewsService],
   controllers: [CampgroundsController],
 })
 export class CampgroundsModule {}
