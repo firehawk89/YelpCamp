@@ -140,6 +140,7 @@ export class UsersService {
         public_id: `avatar-${userId}`,
         folder: AVATAR_IMAGES_FOLDER_NAME,
       });
+
       return this.userModel.findByIdAndUpdate(userId, { avatar: avatarImageUrl }, { new: true }).exec();
     } catch (error) {
       handleError(error, UsersService.name);
