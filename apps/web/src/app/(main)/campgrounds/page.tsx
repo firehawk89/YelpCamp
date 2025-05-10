@@ -1,4 +1,5 @@
 import Pagination from '@/components/Pagination';
+import CampgroundSearchForm from '@/modules/campgrounds/components/CampgroundSearchForm';
 import CampgroundsList from '@/modules/campgrounds/components/CampgroundsList';
 import CampgroundsMap from '@/modules/campgrounds/components/CampgroundsMap/CampgroundsMap';
 import CampgroundsFilterBar from '@/modules/campgrounds/components/FilterBar';
@@ -19,7 +20,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
   const { result: campgroundsData, error: campgroundsError } = await fetchCampgrounds(filter);
   const { data: campgrounds, metadata: campgroundsMetadata } = campgroundsData ?? {};
 
-  const { result: campgroundLocations, error: campgroundLocationsError } = await fetchCampgroundLocations();
+  const { result: campgroundLocations, error: campgroundLocationsError } = await fetchCampgroundLocations(filter);
 
   const error = campgroundsError || campgroundLocationsError;
 
@@ -36,7 +37,9 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
       <div className="flex gap-5">
         <CampgroundsFilterBar className="max-lg:hidden xl:basis-1/4" />
 
-        <div className="flex flex-1 flex-col gap-10">
+        <div className="flex flex-1 flex-col gap-6">
+          <CampgroundSearchForm user={user} searchImage={filter.searchImage} />
+
           {!campgrounds?.length && (
             <Alert className="w-full text-center" color="info">
               Sorry, we couldn't find any campgrounds.

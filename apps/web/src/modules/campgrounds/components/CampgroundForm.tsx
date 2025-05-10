@@ -37,7 +37,6 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
   const router = useRouter();
 
   const [images, setImages] = useState<string[] | null>(null);
-  const [imageError, setImageError] = useState<string | null>(null);
 
   const [includeSlug, setIncludeSlug] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<SelectOption | undefined>(CURRENCY_OPTIONS[0]);
@@ -73,7 +72,6 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
     const isAdded = images?.some((img) => img === imageUrl);
     if (!isAdded) {
       setImages((prev) => (prev ? [...prev, imageUrl] : [imageUrl]));
-      setImageError(null);
     }
   };
 
@@ -82,10 +80,8 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
     setImageError(null);
   };
 
-  const { handleSelectFile } = useImageFileSelect({
+  const { handleSelectFile, imageError, setImageError } = useImageFileSelect({
     onImageSourceAdd: handleAddImage,
-    error: imageError,
-    setError: setImageError,
   });
 
   const onSubmit: SubmitHandler<CampgroundFormFields> = useCallback(
