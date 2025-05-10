@@ -5,8 +5,7 @@ interface Options {
   maxFileSize?: number;
   minDimension?: number;
   onImageSourceAdd?: (imageUrl: string) => void;
-  error: string | null;
-  setError: (error: string | null) => void;
+  onImageError?: (error: string | null) => void;
 }
 
 const getFileSizeInKB = (file: File) => file.size / 1024;
@@ -15,10 +14,19 @@ const useImageFileSelect = ({
   maxFileSize = MAX_IMAGE_SIZE_KB,
   minDimension = MIN_IMAGE_DIMENSION,
   onImageSourceAdd,
-  error,
-  setError,
+  onImageError,
 }: Options) => {
+  const [imageError, setImageError] = useState<string | null>(null);
   const [imageSource, setImageSource] = useState<string | null>(null);
+
+  const handleImageError = useCallback(
+    (error: string | null) => {
+      setImageSource(null);
+      setImageError(error);
+      onImageError?.(error);
+    },
+    [onImageError]
+  );
 
   const handleSelectFile = useCallback(
     (file?: File) => {
@@ -27,8 +35,7 @@ const useImageFileSelect = ({
       const fileSize = getFileSizeInKB(file);
 
       if (fileSize > maxFileSize) {
-        setImageSource(null);
-        setError(`Image size exceeds the limit of ${maxFileSize} KB. Please select other image.`);
+        handleImageError(`Image size exceeds the limit of ${maxFileSize} KB. Please select other image.`);
         return;
       }
 
@@ -40,13 +47,12 @@ const useImageFileSelect = ({
         image.src = imageUrl;
 
         image.onload = () => {
-          if (error) setError(null);
+          if (imageError) handleImageError(null);
 
           const { naturalWidth, naturalHeight } = image;
 
           if (naturalWidth < minDimension || naturalHeight < minDimension) {
-            setImageSource(null);
-            setError(`Image dimensions are too small. Minimum size is ${minDimension}x${minDimension} pixels.`);
+            handleImageError(`Image dimensions are too small. Minimum size is ${minDimension}x${minDimension} pixels.`);
             return;
           }
 
@@ -57,10 +63,10 @@ const useImageFileSelect = ({
 
       reader.readAsDataURL(file);
     },
-    [error, maxFileSize, minDimension, onImageSourceAdd, setError]
+    [handleImageError, imageError, maxFileSize, minDimension, onImageSourceAdd]
   );
 
-  return { imageSource, setImageSource, handleSelectFile };
+  return { imageSource, setImageSource, handleSelectFile, imageError, setImageError, onImageError };
 };
 
 export default useImageFileSelect;

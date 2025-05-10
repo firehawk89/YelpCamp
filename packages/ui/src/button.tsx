@@ -112,10 +112,7 @@ const Button = ({
   ...props
 }: ButtonProps) => (
   <button
-    className={cn(
-      buttonVariants({ variant, size: icon ? (size === 'icon-sm' ? 'icon-sm' : 'icon') : size, color }),
-      className
-    )}
+    className={cn(buttonVariants({ variant, size: icon && !size ? 'icon' : size, color }), className)}
     type={type}
     disabled={isLoading || disabled}
     {...props}

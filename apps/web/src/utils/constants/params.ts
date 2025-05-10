@@ -1,4 +1,5 @@
 export const SEARCH_PARAM: string = 'search';
+export const SEARCH_IMAGE_PARAM: string = 'searchImage';
 export const PAGE_PARAM: string = 'page';
 
 export const USER_ID_PARAM: string = 'id';
