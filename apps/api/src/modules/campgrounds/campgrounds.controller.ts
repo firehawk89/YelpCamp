@@ -30,8 +30,8 @@ export class CampgroundsController {
   }
 
   @Get('locations')
-  getCampgroundLocations() {
-    return this.campgroundsService.getLocations();
+  getCampgroundLocations(@Query() filter?: CampgroundsFilterDTO) {
+    return this.campgroundsService.getLocations(filter);
   }
 
   @Get(':slug')

@@ -34,16 +34,21 @@ export class CampgroundsService {
 
       const newCampground = new this.campgroundModel(createCampgroundDto);
       const imageIds: mongoose.Types.ObjectId[] = [];
+      const imageEmbeddings: number[][] = [];
 
       // TODO: Generate image embedding for all images
       if (createCampgroundDto.images.length) {
         const imageData: UploadImageDTO = {
           image: createCampgroundDto.images[0],
           type: ImageType.CAMPGROUND,
-          folderPath: newCampground.slug,
+          subFolder: newCampground.slug,
+          campgroundId: newCampground.id,
         };
 
-        const image = await this.imagesService.uploadImage(imageData);
+        const image = await this.imagesService.create(imageData);
+        if (image.embedding) {
+          imageEmbeddings.push(image.embedding);
+        }
 
         imageIds.push(image._id);
       }
@@ -58,7 +63,14 @@ export class CampgroundsService {
 
   async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<CampgroundDocument>> {
     try {
-      const { sortBy = DEFAULT_SORT_FIELD, sortOrder = DEFAULT_SORT_ORDER, page, search, rating } = filter ?? {};
+      const {
+        sortBy = DEFAULT_SORT_FIELD,
+        sortOrder = DEFAULT_SORT_ORDER,
+        page,
+        search,
+        searchImage: searchImageId,
+        rating,
+      } = filter ?? {};
 
       const pageNumber = +page;
       const validPage = isNaN(pageNumber) || pageNumber < 1 ? DEFAULT_PAGE : pageNumber;
@@ -72,6 +84,20 @@ export class CampgroundsService {
         pipeline.push({
           $match: { title: { $regex: search, $options: 'i' } },
         });
+      }
+
+      if (searchImageId) {
+        const similarImages = await this.imagesService.getSimilarCampgroundImages(searchImageId);
+        const campgroundIds = similarImages.map((img) => img.campgroundId).filter(Boolean);
+
+        if (campgroundIds.length) {
+          const campgroundObjectIds = campgroundIds.map((id) => new mongoose.Types.ObjectId(id));
+          pipeline.push({
+            $match: {
+              _id: { $in: campgroundObjectIds },
+            },
+          });
+        }
       }
 
       if (rating) {
@@ -106,7 +132,7 @@ export class CampgroundsService {
                   from: 'images',
                   localField: 'images',
                   foreignField: '_id',
-                  pipeline: [{ $project: { url: 1, filename: 1, type: 1 } }],
+                  pipeline: [{ $project: { url: 1, fileName: 1, type: 1 } }],
                   as: 'images',
                 },
               },
@@ -118,31 +144,38 @@ export class CampgroundsService {
       const [result] = await this.campgroundModel.aggregate<PaginatedResponse<CampgroundDocument>>(pipeline).exec();
       result.metadata = { ...result.metadata[0], count: result.data.length };
 
-      console.log(result);
-
       return result;
     } catch (error) {
       handleError(error, CampgroundsService.name);
     }
   }
 
-  async getLocations(): Promise<CampgroundLocation[]> {
+  async getLocations(filter?: CampgroundsFilterDTO): Promise<CampgroundLocation[]> {
     try {
-      const locations = await this.campgroundModel
-        .aggregate([
-          {
-            $project: {
-              _id: 0,
-              full_address: '$location.full_address',
-              coordinates: '$location.coordinates',
-              campground: {
-                _id: '$_id',
-                slug: '$slug',
-              },
-            },
+      const { search } = filter ?? {};
+
+      const pipeline: PipelineStage[] = [];
+
+      if (search) {
+        pipeline.push({
+          $match: { title: { $regex: search, $options: 'i' } },
+        });
+      }
+
+      pipeline.push({
+        $project: {
+          _id: 0,
+          full_address: '$location.full_address',
+          coordinates: '$location.coordinates',
+          campground: {
+            _id: '$_id',
+            slug: '$slug',
+            name: '$name',
           },
-        ])
-        .exec();
+        },
+      });
+
+      const locations = await this.campgroundModel.aggregate(pipeline).exec();
 
       return locations;
     } catch (error) {
