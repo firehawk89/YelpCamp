@@ -28,16 +28,13 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
   const imageRef = useRef<HTMLImageElement | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { imageSource, setImageSource, handleSelectFile } = useImageFileSelect({
+  const { imageSource, setImageSource, handleSelectFile, imageError, setImageError } = useImageFileSelect({
     maxFileSize: MAX_AVATAR_SIZE_KB,
     minDimension: MIN_AVATAR_DIMENSION,
-    error,
-    setError,
   });
-  const { crop, setCrop, handleImageLoad, generateCroppedImage } = useImageCrop({ setError });
+  const { crop, setCrop, handleImageLoad, generateCroppedImage } = useImageCrop({ setError: setImageError });
 
   const onImageDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -50,12 +47,12 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
     const croppedImage = generateCroppedImage(imageRef.current);
 
     if (!croppedImage) {
-      setError('Failed to save cropped image. Please try again.');
+      setImageError('Failed to save cropped image. Please try again.');
       return;
     }
 
     setIsLoading(true);
-    setError(null);
+    setImageError(null);
 
     try {
       await updateUserAvatar(user._id, croppedImage);
@@ -63,21 +60,21 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
       onSave?.(croppedImage);
       onClose();
     } catch {
-      setError('An error occurred when trying to update an avatar. Please try again.');
+      setImageError('An error occurred when trying to update an avatar. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  }, [generateCroppedImage, onClose, onSave, user._id]);
+  }, [generateCroppedImage, onClose, onSave, setImageError, user._id]);
 
   const resetModalState = useCallback(() => {
     setCrop(undefined);
     setImageSource(null);
-    setError(null);
+    setImageError(null);
 
     if (imageInputRef.current) {
       imageInputRef.current.value = '';
     }
-  }, [setCrop, setImageSource]);
+  }, [setCrop, setImageError, setImageSource]);
 
   useEffect(() => {
     if (isOpen) {
@@ -113,14 +110,14 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
       {...props}
     >
       <div className="flex flex-col gap-5">
-        {error && (
+        {imageError && (
           <Alert color="danger" className="w-full">
-            {error}
+            {imageError}
           </Alert>
         )}
 
         {!imageSource && (
-          <ImageArea onClick={() => imageInputRef.current?.click()} onImageDrop={onImageDrop} isError={!!error} />
+          <ImageArea onClick={() => imageInputRef.current?.click()} onImageDrop={onImageDrop} isError={!!imageError} />
         )}
 
         <input
