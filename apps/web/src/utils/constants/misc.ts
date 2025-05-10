@@ -7,6 +7,7 @@ export const API_ROUTES = {
   CAMPGROUNDS: `${API_URL}/campgrounds`,
   USERS: `${API_URL}/users`,
   REVIEWS: `${API_URL}/reviews`,
+  IMAGES: `${API_URL}/images`,
 };
 
 export const NEXT_TAGS = {
