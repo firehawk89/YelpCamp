@@ -2,6 +2,7 @@ import { CampgroundFormFields } from '@/modules/campgrounds/schemas/form.schema'
 import { Currency } from '@repo/types';
 
 import { SortOptions } from './api';
+import { Image } from './media';
 
 export interface CampgroundPrice {
   value: number;
@@ -20,17 +21,11 @@ export interface CampgroundLocation {
   };
 }
 
-export interface CampgroundImage {
-  _id: string;
-  url: string;
-  fileName?: string;
-}
-
 export interface Campground {
   _id: string;
   title: string;
   slug: string;
-  images: CampgroundImage[] | null;
+  images: Image[] | null;
   description?: string;
   price: CampgroundPrice;
   location: CampgroundLocation;
@@ -44,6 +39,7 @@ export interface CampgroundsFilterDto extends SortOptions {
   page?: string;
   search?: string;
   rating?: string;
+  searchImage?: string;
 }
 
 export type CreateCampgroundDTO = Pick<
