@@ -26,7 +26,6 @@ const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className
     : false;
 
   const canUserAddReview = useMemo(() => {
-    if (!userId) return false;
     const isAlreadyReviewed = reviews?.some((review) => review.author._id === userId);
     return !isAlreadyReviewed;
   }, [reviews, userId]);
@@ -35,7 +34,6 @@ const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className
     <div className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex justify-between gap-5">
         <h2 className="text-2xl font-bold">Reviews</h2>
-
         {canUserAddReview && <AddReviewButton userId={userId} campground={campground} />}
       </div>
 
