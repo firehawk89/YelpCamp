@@ -29,11 +29,16 @@ export const fetchCampgrounds = async (filter: CampgroundsFilterDto): PaginatedA
   }
 };
 
-export const fetchCampgroundLocations = async (): ApiResponse<CampgroundLocation[]> => {
+export const fetchCampgroundLocations = async (filter: CampgroundsFilterDto): ApiResponse<CampgroundLocation[]> => {
   try {
-    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/locations`, {
-      next: { tags: [NEXT_TAGS.CAMPGROUND_LOCATIONS] },
-    });
+    const searchParamsString = getSearchParamsString<CampgroundsFilterDto>(filter);
+
+    const response = await fetch(
+      `${API_ROUTES.CAMPGROUNDS}/locations${searchParamsString ? `?${searchParamsString}` : ''}`,
+      {
+        next: { tags: [NEXT_TAGS.CAMPGROUND_LOCATIONS] },
+      }
+    );
 
     if (!response.ok) {
       const data: ApiError = await response.json();

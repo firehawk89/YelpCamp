@@ -21,11 +21,11 @@ import CampgroundPopup from './CampgroundPopup';
 import { clusterCountLayer, clusterLayer, unclusteredPointLayer } from './layers';
 
 const MAP_SOURCE_ID = 'campgrounds';
-const USA_COORDINATES = { latitude: 39.8283, longitude: -98.5795 };
+const USA_COORDINATES = { latitude: 37.8283, longitude: -98.5795 };
 
 const INITIAL_VIEW_STATE: ViewState = {
   ...(USA_COORDINATES ?? {}),
-  zoom: 3,
+  zoom: 2.8,
   bearing: 0,
   pitch: 0,
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
