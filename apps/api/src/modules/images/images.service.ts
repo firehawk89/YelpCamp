@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { IMAGE_FOLDER_BASE } from '@repo/constants';
+import { destinationFolderMap, IMAGE_FOLDER_BASE } from '@repo/constants';
 import { ImageType } from '@repo/types';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
+import { SIMILAR_IMAGES_CANDIDATES_LIMIT } from 'src/helpers/constants/misc';
+import { SIMILAR_IMAGES_SEARCH_LIMIT } from 'src/helpers/constants/misc';
 import { getImageEmbedding } from 'src/helpers/embeddings';
 import { handleError } from 'src/helpers/misc';
 import { validateBase64Image } from 'src/helpers/validation';
-import { Image } from 'src/schemas/image.schema';
+import { Image, ImageDocument } from 'src/schemas/image.schema';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
@@ -18,7 +20,25 @@ export class ImagesService {
     private readonly cloudinaryService: CloudinaryService
   ) {}
 
-  async uploadImage(uploadImageDto: UploadImageDTO, userId?: string) {
+  async getById(id: string) {
+    try {
+      const isValidId = isValidObjectId(id);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid image ID');
+      }
+
+      const image = await this.imageModel.findById(id).select('+embedding').exec();
+      if (!image) {
+        throw new NotFoundException("Image doesn't exist");
+      }
+
+      return image;
+    } catch (error) {
+      handleError(error, ImagesService.name);
+    }
+  }
+
+  async create(uploadImageDto: UploadImageDTO, userId?: string) {
     try {
       const base64Image = uploadImageDto.image;
       validateBase64Image(base64Image);
@@ -40,6 +60,7 @@ export class ImagesService {
         _id: imageId,
         url: imageUrl,
         type: uploadImageDto.type,
+        campgroundId: uploadImageDto.campgroundId,
         fileName: imageFileName,
         embedding: searchImageEmbedding,
       });
@@ -50,12 +71,38 @@ export class ImagesService {
     }
   }
 
+  async getSimilarCampgroundImages(imageId: string): Promise<ImageDocument[]> {
+    const image = await this.getById(imageId);
+
+    const similarImages = await this.imageModel
+      .aggregate<ImageDocument>([
+        {
+          $vectorSearch: {
+            index: 'image_search_vector_index',
+            path: 'embedding',
+            queryVector: image.embedding,
+            numCandidates: SIMILAR_IMAGES_CANDIDATES_LIMIT,
+            limit: SIMILAR_IMAGES_SEARCH_LIMIT,
+          },
+        },
+        {
+          $match: {
+            campgroundId: { $ne: null },
+          },
+        },
+      ])
+      .exec();
+
+    return similarImages;
+  }
+
   private getImageFileName(imageId: string, imageType: ImageType, userId?: string) {
-    return `${userId ? `${userId}-` : ''}${imageType}-image-${imageId}`;
+    return `${userId ? `user-${userId}-` : ''}${imageType}-image-${imageId}`;
   }
 
   private getImageFolder(uploadImageDto: UploadImageDTO) {
-    const { type: imageType, folderPath } = uploadImageDto;
-    return `${IMAGE_FOLDER_BASE}/${imageType}-images${folderPath ? `/${folderPath}` : ''}`;
+    const { type: imageType, subFolder } = uploadImageDto;
+    const destinationFolder = destinationFolderMap[imageType];
+    return `${IMAGE_FOLDER_BASE}/${destinationFolder}${subFolder ? `/${subFolder}` : ''}`;
   }
 }

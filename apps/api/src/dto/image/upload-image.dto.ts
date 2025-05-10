@@ -1,5 +1,5 @@
 import { ImageType } from '@repo/types';
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IsBase64Image } from 'src/decorators/isBase64Image.decorator';
 
 export class UploadImageDTO {
@@ -12,6 +12,10 @@ export class UploadImageDTO {
   type?: ImageType = ImageType.CAMPGROUND;
 
   @IsOptional()
+  @IsMongoId()
+  campgroundId?: string;
+
+  @IsOptional()
   @IsString()
-  folderPath?: string;
+  subFolder?: string;
 }

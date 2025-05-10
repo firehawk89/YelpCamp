@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { type JwtPayload } from '@repo/types';
 import { User } from 'src/decorators/user.decorator';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
@@ -11,8 +11,13 @@ import { ImagesService } from './images.service';
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
+  @Get(':id')
+  getImageById(@Param('id') id: string) {
+    return this.imagesService.getById(id);
+  }
+
   @Post()
-  uploadImage(@User() user: JwtPayload, @Body() uploadImageDto: UploadImageDTO) {
-    return this.imagesService.uploadImage(uploadImageDto, user.userId);
+  createImage(@User() user: JwtPayload, @Body() uploadImageDto: UploadImageDTO) {
+    return this.imagesService.create(uploadImageDto, user.userId);
   }
 }

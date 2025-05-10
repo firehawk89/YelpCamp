@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ImageType } from '@repo/types';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export type ImageDocument = HydratedDocument<Image>;
 
@@ -15,7 +15,10 @@ export class Image {
   @Prop({ required: false, enum: ImageType, default: ImageType.CAMPGROUND })
   type?: ImageType;
 
-  @Prop({ required: false, default: null, select: false })
+  @Prop({ required: false, type: mongoose.Schema.Types.ObjectId, ref: 'Campground', default: null })
+  campgroundId?: string;
+
+  @Prop({ required: false, type: [Number], default: [], select: false })
   embedding?: number[];
 }
 

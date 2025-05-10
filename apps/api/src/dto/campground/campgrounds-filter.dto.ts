@@ -21,6 +21,10 @@ export class CampgroundsFilterDTO {
   search?: string;
 
   @IsOptional()
+  @IsString({ message: 'Search image should be a string' })
+  searchImage?: string;
+
+  @IsOptional()
   @IsString({ message: 'Rating should be a string' })
   @Matches(/^(1|2|3|4|5)$/, { message: 'Rating should be a number between 1 and 5' })
   rating?: string;
