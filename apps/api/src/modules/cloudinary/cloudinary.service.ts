@@ -33,4 +33,12 @@ export class CloudinaryService {
       handleError(error, CloudinaryService.name);
     }
   }
+
+  async deleteImagesFolder(folder: string) {
+    try {
+      await cloudinaryV2.api.delete_resources_by_prefix(`${folder}/`);
+    } catch (error) {
+      handleError(error, CloudinaryService.name);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { MAX_REVIEW_RATING, MIN_REVIEW_RATING } from '@repo/constants';
+import { CAMPGROUND_IMAGES_FOLDER_NAME, MAX_REVIEW_RATING, MIN_REVIEW_RATING } from '@repo/constants';
 import { Currency } from '@repo/types';
 import { Model } from 'mongoose';
 import { MAX_SEEDED_CAMPGROUNDS, MAX_SEEDED_REVIEWS } from 'src/helpers/constants/misc';
@@ -13,13 +13,16 @@ import { User } from 'src/schemas/user.schema';
 import countriesJson from 'src/seeds/countries.json';
 import placesJson from 'src/seeds/places.json';
 
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+
 @Injectable()
 export class SeederService {
   constructor(
     private readonly logger: Logger,
     @InjectModel(Campground.name) private readonly campgroundModel: Model<Campground>,
     @InjectModel(Review.name) private readonly reviewModel: Model<Review>,
-    @InjectModel(User.name) private readonly userModel: Model<User>
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   private getRandomRating(): number {
@@ -38,6 +41,8 @@ export class SeederService {
 
       await this.campgroundModel.deleteMany();
       await this.userModel.updateMany({}, { $set: { favoriteCampgrounds: [] } });
+
+      await this.cloudinaryService.deleteImagesFolder(CAMPGROUND_IMAGES_FOLDER_NAME);
 
       const campgrounds: CampgroundDocument[] = [];
 

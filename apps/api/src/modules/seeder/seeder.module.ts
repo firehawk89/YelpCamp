@@ -4,6 +4,7 @@ import { Campground, CampgroundSchema } from 'src/schemas/campground.schema';
 import { Review, ReviewSchema } from 'src/schemas/review.schema';
 import { User, UserSchema } from 'src/schemas/user.schema';
 
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { SeederService } from './seeder.service';
 
 @Module({
@@ -14,6 +15,6 @@ import { SeederService } from './seeder.service';
       { name: User.name, schema: UserSchema },
     ]),
   ],
-  providers: [Logger, SeederService],
+  providers: [Logger, SeederService, CloudinaryService],
 })
 export class SeederModule {}
