@@ -50,7 +50,7 @@ const CampgroundMenu = ({ campgroundId }: CampgroundMenuProps) => {
       <ConfirmationModal
         isHidden={!isCampgroundModalOpen}
         title="Delete Campground"
-        description="Are you sure you want to delete this campground? This action cannot be undone."
+        description="Are you sure you want to delete this campground? All campground images will be deleted as well. This action cannot be undone."
         onConfirm={handleDeleteCampground}
         onClose={() => setIsCampgroundModalOpen(false)}
         isLoading={isLoading}

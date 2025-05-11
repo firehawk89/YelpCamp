@@ -11,6 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import CampgroundLocation from '../CampgroundLocation';
+import CampgroundMenu from '../CampgroundMenu';
 import CampgroundPrice from '../CampgroundPrice';
 import CampgroundRating from '../CampgroundRating';
 import FavoriteButton from '../FavoriteButton';
@@ -27,6 +28,8 @@ export interface CampgroundCardProps extends CardProps {
 const CampgroundCard = ({ campground, user, preview, onClose, className, ...props }: CampgroundCardProps) => {
   const isFavoriteCampground = !!user?.favoriteCampgrounds.some((campgroundId) => campgroundId === campground._id);
   const image = campground.images?.[0];
+
+  const isUserCampground = campground.author === user?._id;
 
   return (
     <Card
@@ -75,12 +78,16 @@ const CampgroundCard = ({ campground, user, preview, onClose, className, ...prop
           {preview && <Button className="-mr-1.5 -mt-1.5 max-sm:hidden" onClick={onClose} icon={<CloseIcon />} />}
 
           {!preview && (
-            <FavoriteButton
-              className="max-sm:absolute max-sm:right-4 max-sm:top-4 max-sm:z-[5]"
-              campgroundId={campground._id}
-              isFavorite={isFavoriteCampground}
-              isLoggedIn={!!user}
-            />
+            <div className="flex items-center">
+              <FavoriteButton
+                className="max-sm:absolute max-sm:right-4 max-sm:top-4 max-sm:z-[5]"
+                campgroundId={campground._id}
+                isFavorite={isFavoriteCampground}
+                isLoggedIn={!!user}
+              />
+
+              {isUserCampground && <CampgroundMenu campgroundId={campground._id} />}
+            </div>
           )}
 
           <div className="mt-auto flex flex-col gap-2">

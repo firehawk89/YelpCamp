@@ -31,6 +31,7 @@ export interface Campground {
   location: CampgroundLocation;
   rating?: number;
   reviewsCount?: number;
+  author?: string;
   createdAt: string;
   updatedAt: string;
 }
