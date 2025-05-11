@@ -100,3 +100,30 @@ export const createCampground = async (campgroundData: CreateCampgroundDTO): Pro
     throw new Error(errorMessage);
   }
 };
+
+export const deleteCampground = async (campgroundId: string): Promise<Campground> => {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      throw new Error('Failed to delete campground - access token is missing');
+    }
+
+    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${campgroundId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!response.ok) {
+      const data: ApiError = await response.json();
+      throw new Error(data.message || 'Failed to delete campground');
+    }
+
+    const data: Campground = await response.json();
+    revalidateTag(NEXT_TAGS.CAMPGROUNDS);
+
+    return data;
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to delete campground';
+    throw new Error(errorMessage);
+  }
+};
