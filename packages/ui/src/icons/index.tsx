@@ -24,3 +24,6 @@ export { EditIcon } from './EditIcon';
 export { UploadDocumentIcon } from './UploadDocumentIcon';
 export { LoadingIcon } from './LoadingIcon';
 export { ReviewIcon } from './ReviewIcon';
+export { MapIcon } from './MapIcon';
+export { UserGroupIcon } from './UserGroupIcon';
+export { ChatIcon } from './ChatIcon';

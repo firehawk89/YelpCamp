@@ -20,7 +20,7 @@ export const buttonVariants = tv({
     size: {
       default: 'px-3 py-1.5 gap-1.5',
       sm: 'px-2 py-1 text-sm gap-1',
-      lg: 'px-4 py-2 text-lg gap-2',
+      lg: 'px-3 py-1.5 lg:px-4 lg:py-2 text-lg gap-1.5 lg:gap-2',
       icon: 'p-1.5',
       'icon-sm': 'p-1',
     },
