@@ -17,3 +17,8 @@ export const NEXT_TAGS = {
   CAMPGROUND_LOCATIONS: 'campground-locations',
   FAVORITE_CAMPGROUNDS: 'favorite-campgrounds',
 };
+
+export const HEADER_HEIGHT = {
+  MOBILE: 56,
+  DESKTOP: 60,
+};
