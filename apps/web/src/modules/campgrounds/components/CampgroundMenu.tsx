@@ -1,20 +1,25 @@
 'use client';
 
+import { routes } from '@/app/routes';
 import ConfirmationModal from '@/components/ConfirmationModal';
 import ThreeDotMenu from '@/components/ThreeDotMenu';
 import { deleteCampground } from '@/server/campgrounds';
 import { Campground } from '@/types/campground';
-import { DeleteIcon } from '@repo/ui/icons';
+import { DeleteIcon, EditIcon } from '@repo/ui/icons';
 import { SelectOption } from '@repo/ui/select';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
 interface CampgroundMenuProps {
-  campgroundId: Campground['_id'];
+  campground: Campground;
 }
 
-const CampgroundMenu = ({ campgroundId }: CampgroundMenuProps) => {
+const CampgroundMenu = ({ campground }: CampgroundMenuProps) => {
+  const router = useRouter();
+
   const [isCampgroundModalOpen, setIsCampgroundModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { _id: campgroundId, slug: campgroundSlug } = campground;
 
   const handleDeleteCampground = async () => {
     if (!campgroundId) {
@@ -34,6 +39,13 @@ const CampgroundMenu = ({ campgroundId }: CampgroundMenuProps) => {
   };
 
   const options: SelectOption[] = [
+    {
+      label: 'Edit',
+      value: 'edit',
+      onClick: () => router.push(routes.campground.edit(campgroundSlug)),
+      className: 'hover:bg-warning hover:text-white',
+      icon: <EditIcon className="size-5" />,
+    },
     {
       label: 'Delete',
       value: 'delete',

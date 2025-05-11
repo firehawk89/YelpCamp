@@ -4,8 +4,8 @@ import ErrorAlertList from '@/components/ErrorAlertList';
 import MultiImageInput from '@/components/MultiImageInput';
 import PriceInput from '@/components/PriceInput';
 import useImageFileSelect from '@/hooks/useImageFileSelect';
-import { createCampground } from '@/server/campgrounds';
-import { CreateCampgroundDTO } from '@/types/campground';
+import { createCampground, updateCampground } from '@/server/campgrounds';
+import { Campground, CreateCampgroundDTO } from '@/types/campground';
 import { User } from '@/types/user';
 import { cn, parseErrorMessages } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +17,7 @@ import InputWrapper from '@repo/ui/input-wrapper';
 import { SelectOption } from '@repo/ui/select';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, HTMLAttributes, useCallback, useState } from 'react';
+import { ChangeEvent, HTMLAttributes, useCallback, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { routes } from 'src/app/routes';
 
@@ -31,14 +31,14 @@ const GeocoderInput = dynamic(() => import('@/components/GeocoderInput'), {
 
 interface CampgroundFormProps extends Omit<HTMLAttributes<HTMLFormElement>, 'onSubmit'> {
   user: User | null;
+  campground?: Campground;
 }
 
-const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
+const CampgroundForm = ({ user, campground, className, ...props }: CampgroundFormProps) => {
   const router = useRouter();
 
   const [images, setImages] = useState<string[] | null>(null);
 
-  const [includeSlug, setIncludeSlug] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<SelectOption | undefined>(CURRENCY_OPTIONS[0]);
   const [saveErrors, setSaveErrors] = useState<string[] | null>(null);
 
@@ -48,10 +48,22 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
     handleSubmit,
     resetField,
     reset,
+    setValue,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm<CampgroundFormFields>({
     resolver: zodResolver(campgroundFormSchema),
+    defaultValues: {
+      title: campground?.title ?? undefined,
+      includeSlug: !!campground?.slug,
+      slug: campground?.slug ?? undefined,
+      price: campground?.price ?? undefined,
+      location: campground?.location ?? undefined,
+      description: campground?.description ?? undefined,
+    },
   });
+
+  const includeSlug = watch('includeSlug');
 
   const geocoderError =
     errors.location?.message ||
@@ -61,7 +73,7 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
 
   const handleSlugToggle = (e: ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
-    setIncludeSlug(isChecked);
+    setValue('includeSlug', isChecked);
 
     if (!isChecked) {
       resetField('slug');
@@ -87,7 +99,7 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
   const onSubmit: SubmitHandler<CampgroundFormFields> = useCallback(
     async (data) => {
       if (!user?._id) return;
-
+      console.log(data);
       setSaveErrors(null);
 
       try {
@@ -104,17 +116,29 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
           campgroundData.slug = slug;
         }
 
-        await createCampground(campgroundData);
+        if (campground) {
+          console.log(campgroundData);
+          await updateCampground(campground._id, campgroundData);
+        } else {
+          await createCampground(campgroundData);
+        }
         reset();
 
         router.push(routes.campgrounds.all());
       } catch (error) {
-        const errorMessages = parseErrorMessages(error, 'Failed to create campground');
+        const errorMessages = parseErrorMessages(error, `Failed to ${campground ? 'update' : 'create'} campground`);
         setSaveErrors(errorMessages);
       }
     },
-    [images, includeSlug, reset, router, user?._id]
+    [images, includeSlug, reset, router, user?._id, campground]
   );
+
+  useEffect(() => {
+    if (campground) {
+      const imageUrls = campground.images?.map((image) => image.url);
+      setImages(imageUrls ?? null);
+    }
+  }, [campground]);
 
   return (
     <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5">
@@ -220,9 +244,21 @@ const CampgroundForm = ({ user, className, ...props }: CampgroundFormProps) => {
           </InputWrapper>
         </div>
 
-        <Button type="submit" variant="outline" color="accent" isLoading={isSubmitting}>
-          Create Campground
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button
+            className="w-full"
+            type="button"
+            variant="outline"
+            color="info"
+            onClick={() => router.push(routes.campgrounds.all())}
+          >
+            Cancel
+          </Button>
+
+          <Button className="w-full" type="submit" variant="outline" color="accent" isLoading={isSubmitting}>
+            {campground ? 'Update' : 'Create'} Campground
+          </Button>
+        </div>
       </form>
     </div>
   );
