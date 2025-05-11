@@ -27,3 +27,5 @@ export { ReviewIcon } from './ReviewIcon';
 export { MapIcon } from './MapIcon';
 export { UserGroupIcon } from './UserGroupIcon';
 export { ChatIcon } from './ChatIcon';
+export { DeleteIcon } from './DeleteIcon';
+export { EllipsisVerticalIcon } from './ElipsisVerticalIcon';
