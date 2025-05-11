@@ -46,12 +46,7 @@ const LikeReviewButton = ({ userId, review, likedBy, className, ...props }: Like
   };
 
   return isOwnReview ? (
-    <Button
-      className={cn({ 'text-accent': isLikedByUser }, className)}
-      icon={likedBy.length ? <ThumbUpIcon /> : null}
-      disabled
-      {...props}
-    />
+    <Button className={cn({ 'text-accent': isLikedByUser }, className)} icon={<ThumbUpIcon />} disabled {...props} />
   ) : (
     <Tooltip label="Helpful">
       <Button

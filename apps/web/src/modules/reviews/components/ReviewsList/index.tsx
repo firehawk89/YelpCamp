@@ -15,7 +15,7 @@ const ReviewsList = ({ reviews, user, mode, ...props }: ReviewsListProps) => (
   <ReviewsListWrapper className="flex flex-col gap-8" {...props}>
     {reviews.map((review) => (
       <ReviewCardWrapper key={review._id}>
-        <ReviewCard key={review._id} user={user} review={review} mode={mode} />
+        <ReviewCard user={user} review={review} mode={mode} />
       </ReviewCardWrapper>
     ))}
   </ReviewsListWrapper>
