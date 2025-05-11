@@ -113,3 +113,29 @@ export const unlikeReview = async (reviewId: string): Promise<Review> => {
     throw new Error(errorMessage);
   }
 };
+
+export const deleteReview = async (reviewId: string): Promise<Review> => {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      throw new Error('Failed to delete the review. Please, sign in or sign up and try again');
+    }
+
+    const response = await fetch(`${API_ROUTES.REVIEWS}/${reviewId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete the review. Please, try again later');
+    }
+
+    const review: Review = await response.json();
+    revalidateTag(NEXT_TAGS.REVIEWS);
+
+    return review;
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to delete the review. Please, try again later';
+    throw new Error(errorMessage);
+  }
+};
