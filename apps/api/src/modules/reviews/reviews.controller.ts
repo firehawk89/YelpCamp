@@ -25,12 +25,6 @@ export class ReviewsController {
     return this.reviewsService.likeReview(id, user.userId);
   }
 
-  // TODO: Make available only for admin users
-  //   @Patch(':id')
-  //   updateReview(@Param('id') id: string, @Body() updateCampgroundDto: UpdateCampgroundDTO) {
-  //     return this.reviewsService.update(id, updateCampgroundDto);
-  //   }
-
   @UseGuards(AuthGuard)
   @Delete(':id')
   deleteReview(@Param('id') id: string) {

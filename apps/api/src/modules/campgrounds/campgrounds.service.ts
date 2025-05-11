@@ -1,6 +1,13 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DEFAULT_PAGE, DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from '@repo/constants';
+import {
+  CAMPGROUND_IMAGES_FOLDER_NAME,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_LIMIT,
+  DEFAULT_SORT_FIELD,
+  DEFAULT_SORT_ORDER,
+  IMAGE_FOLDER_BASE,
+} from '@repo/constants';
 import { ImageType, PaginatedResponse } from '@repo/types';
 import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
@@ -240,7 +247,19 @@ export class CampgroundsService {
         throw new NotFoundException("Campground doesn't exist");
       }
 
-      return this.campgroundModel.findByIdAndDelete(id).exec();
+      const updatedCampground = await this.campgroundModel.findByIdAndDelete(id).exec();
+
+      const campgroundImages = await this.imagesService.getByCampgroundId(id);
+      const campgroundImageFilenames = campgroundImages.map((img) => img.fileName);
+
+      if (campgroundImageFilenames.length) {
+        await this.imagesService.deleteCampgroundImages(
+          campground.id,
+          `${IMAGE_FOLDER_BASE}/${CAMPGROUND_IMAGES_FOLDER_NAME}/${campground.slug}`
+        );
+      }
+
+      return updatedCampground;
     } catch (error) {
       handleError(error, CampgroundsService.name);
     }

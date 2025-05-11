@@ -71,6 +71,14 @@ export class ImagesService {
     }
   }
 
+  async getByCampgroundId(campgroundId: string): Promise<ImageDocument[]> {
+    try {
+      return this.imageModel.find({ campgroundId }).exec();
+    } catch (error) {
+      handleError(error, ImagesService.name);
+    }
+  }
+
   async getSimilarCampgroundImages(imageId: string): Promise<ImageDocument[]> {
     const image = await this.getById(imageId);
 
@@ -94,6 +102,16 @@ export class ImagesService {
       .exec();
 
     return similarImages;
+  }
+
+  async deleteCampgroundImages(campgroundId: string, folderName: string) {
+    try {
+      const deletedImages = await this.imageModel.deleteMany({ campgroundId }).exec();
+      await this.cloudinaryService.deleteImagesFolder(folderName);
+      return deletedImages;
+    } catch (error) {
+      handleError(error, ImagesService.name);
+    }
   }
 
   private getImageFileName(imageId: string, imageType: ImageType, userId?: string) {
