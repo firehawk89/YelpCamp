@@ -3,7 +3,8 @@
 import { routes } from '@/app/routes';
 import { AuthFormFields } from '@/modules/auth/schemas/form.schema';
 import { logout, signIn, signUp } from '@/server/auth';
-import { useRouter } from 'next/navigation';
+import { RETURN_TO_PARAM } from '@/utils/constants/params';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
 interface Options<T> {
@@ -14,6 +15,8 @@ interface Options<T> {
 
 const useAuthActions = <T extends AuthFormFields>({ onSignIn, onSignUp, onLogout }: Options<T> = {}) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [error, setError] = useState<Error | null>(null);
 
   const handleAuthAction = useCallback(
@@ -31,12 +34,19 @@ const useAuthActions = <T extends AuthFormFields>({ onSignIn, onSignUp, onLogout
           await action(formData);
           onSuccess?.(formData);
         }
-        router.replace(routes.campgrounds.all());
+
+        const returnTo = searchParams.get(RETURN_TO_PARAM);
+
+        if (returnTo && returnTo.startsWith('/')) {
+          router.replace(returnTo);
+        } else {
+          router.replace(routes.campgrounds.all());
+        }
       } catch (error) {
         setError(error instanceof Error ? error : new Error(errorMessage || 'An error occurred.'));
       }
     },
-    [router]
+    [router, searchParams]
   );
 
   const handleSignIn = useCallback(

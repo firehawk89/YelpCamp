@@ -23,8 +23,8 @@ const UserMenu = ({ user, onLogout, className, containerClassName }: UserMenuPro
 
   const userMenuOptions = useMemo<SelectOption[]>(
     () => [
-      { label: 'Profile', value: routes.profile(), className: 'hover:bg-info', icon: <UserIcon /> },
-      { label: 'Favorites', value: routes.profile('favorites'), icon: <HeartIcon /> },
+      { label: 'Profile', value: 'profile', href: routes.profile(), className: 'hover:bg-info', icon: <UserIcon /> },
+      { label: 'Favorites', value: 'favorites', href: routes.profile('favorites'), icon: <HeartIcon /> },
       { label: 'Log Out', value: 'logout', onClick: handleLogout, className: 'hover:bg-danger', icon: <LogOutIcon /> },
     ],
     [handleLogout]

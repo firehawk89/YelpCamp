@@ -8,6 +8,7 @@ import { SelectButtonProps, SelectOptionProps, DropdownPosition, dropdownPositio
 export type SelectOption<T = string> = {
   label: string;
   value: T;
+  href?: string;
   onClick?: () => void;
   className?: string;
   icon?: ReactNode;

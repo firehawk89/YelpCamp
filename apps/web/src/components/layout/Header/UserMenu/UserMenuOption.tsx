@@ -7,7 +7,7 @@ interface UserMenuOptionProps {
 }
 
 const UserMenuOption = ({ option }: UserMenuOptionProps) => {
-  const { className, icon, label, value: href, onClick } = option;
+  const { className, icon, label, href, onClick } = option;
 
   const optionClassName = cn(
     'hover:bg-accent flex cursor-pointer items-center gap-1 px-3 py-1 text-neutral-600 transition-colors hover:text-white',

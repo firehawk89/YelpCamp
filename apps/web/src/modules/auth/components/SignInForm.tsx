@@ -1,6 +1,7 @@
 'use client';
 
 import useAuthActions from '@/hooks/useAuthActions';
+import { RETURN_TO_PARAM } from '@/utils/constants/params';
 import { cn } from '@/utils/misc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@repo/ui/alert';
@@ -11,11 +12,15 @@ import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
 import PasswordInput from '@repo/ui/password-input';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { AuthFormFields, authFormSchema } from '../schemas/form.schema';
 
 const SignInForm = ({ className, ...props }: CardProps) => {
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get(RETURN_TO_PARAM);
+
   const {
     register,
     handleSubmit,
@@ -61,7 +66,10 @@ const SignInForm = ({ className, ...props }: CardProps) => {
 
           <p className="mt-1 text-center">
             Not with us yet?{' '}
-            <Link className="text-accent ml-1 hover:underline" href="/sign-up">
+            <Link
+              className="text-accent ml-1 hover:underline"
+              href={returnTo ? `/sign-up?${RETURN_TO_PARAM}=${encodeURIComponent(returnTo)}` : '/sign-up'}
+            >
               Sign Up!
             </Link>
           </p>

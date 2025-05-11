@@ -7,3 +7,5 @@ export const RATING_PARAM: string = 'rating';
 
 export const SORT_BY_PARAM: string = 'sortBy';
 export const SORT_ORDER_PARAM: string = 'sortOrder';
+
+export const RETURN_TO_PARAM: string = 'returnTo';
