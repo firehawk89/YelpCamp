@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { HTMLAttributes } from 'react';
 
 import LikeReviewButton from '../LikeReviewButton';
+import ReviewMenu from '../ReviewMenu';
 
 interface ReviewProps extends HTMLAttributes<HTMLDivElement> {
   review: Review;
@@ -19,7 +20,8 @@ interface ReviewProps extends HTMLAttributes<HTMLDivElement> {
 const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: ReviewProps) => {
   const { createdAt, likedBy, author, body, title, rating } = review;
 
-  const isUserProfileReview = mode === 'user' && user?._id === author._id;
+  const isUserReview = user?._id === author._id;
+  const isUserProfileReview = mode === 'user' && isUserReview;
   const createdAtDate = formatDate(new Date(createdAt));
   const likesCount = likedBy.length;
 
@@ -49,8 +51,14 @@ const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: 
           <span className="text-xs text-neutral-500">{createdAtDate}</span>
 
           <div className="flex items-center gap-0.5">
-            {!!likesCount && <span className="text-sm">{likesCount}</span>}
-            <LikeReviewButton userId={user?._id} review={review} likedBy={likedBy} />
+            {!!likesCount && (
+              <>
+                <LikeReviewButton userId={user?._id} review={review} likedBy={likedBy} />
+                <span className="text-sm">{likesCount}</span>
+              </>
+            )}
+
+            {isUserReview && <ReviewMenu reviewId={review._id} />}
           </div>
         </div>
       </div>
