@@ -49,7 +49,7 @@ const FavoriteButton = ({ campgroundId, isFavorite, isLoggedIn, className, ...pr
       disabled={isLoading}
       color="destructive"
       size="icon"
-      icon={<HeartIcon className="size-7" fill={isFavorite ? 'currentColor' : 'none'} />}
+      icon={<HeartIcon fill={isFavorite ? 'currentColor' : 'none'} />}
       {...props}
     />
   );
