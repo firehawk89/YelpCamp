@@ -104,6 +104,21 @@ export class ImagesService {
     return similarImages;
   }
 
+  async delete(imageId: string) {
+    try {
+      const image = await this.getById(imageId);
+      if (!image) {
+        throw new NotFoundException("Image doesn't exist");
+      }
+
+      await this.cloudinaryService.deleteImage(image.fileName);
+
+      return this.imageModel.findByIdAndDelete(imageId).exec();
+    } catch (error) {
+      handleError(error, ImagesService.name);
+    }
+  }
+
   async deleteCampgroundImages(campgroundId: string, folderName: string) {
     try {
       const deletedImages = await this.imageModel.deleteMany({ campgroundId }).exec();

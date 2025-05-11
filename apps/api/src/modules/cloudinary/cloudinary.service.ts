@@ -43,4 +43,13 @@ export class CloudinaryService {
       handleError(error, CloudinaryService.name);
     }
   }
+
+  async deleteImage(publicId: string) {
+    try {
+      const deletedImage = await cloudinaryV2.uploader.destroy(publicId);
+      return deletedImage;
+    } catch (error) {
+      handleError(error, CloudinaryService.name);
+    }
+  }
 }
