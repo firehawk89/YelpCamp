@@ -55,7 +55,7 @@ const CampgroundCard = ({ campground, user, preview, onClose, className, ...prop
         className={cn('flex flex-grow gap-4 p-4 max-sm:flex-col', { 'max-sm:flex-col': !preview, 'p-2.5': preview })}
       >
         <div className="flex flex-1 flex-col gap-2">
-          <Link href={routes.campground(campground.slug)} className="flex justify-between gap-2">
+          <Link href={routes.campground.view(campground.slug)} className="flex justify-between gap-2">
             <h2 className={cn('text-2xl font-medium', { 'text-lg font-semibold': preview })}>{campground.title}</h2>
             {preview && <Button className="-mr-1.5 -mt-1.5 sm:hidden" onClick={onClose} icon={<CloseIcon />} />}
           </Link>
@@ -86,7 +86,7 @@ const CampgroundCard = ({ campground, user, preview, onClose, className, ...prop
                 isLoggedIn={!!user}
               />
 
-              {isUserCampground && <CampgroundMenu campgroundId={campground._id} />}
+              {isUserCampground && <CampgroundMenu campground={campground} />}
             </div>
           )}
 
@@ -95,7 +95,7 @@ const CampgroundCard = ({ campground, user, preview, onClose, className, ...prop
 
             <Link
               className={cn('justify-center', buttonVariants({ variant: 'accent', size: preview ? 'sm' : 'default' }))}
-              href={routes.campground(campground.slug)}
+              href={routes.campground.view(campground.slug)}
             >
               View Details
             </Link>

@@ -4,7 +4,10 @@ export const routes = {
     all: (searchParamsString?: string) => (searchParamsString ? `/campgrounds?${searchParamsString}` : '/campgrounds'),
     new: () => '/campgrounds/new',
   },
-  campground: (slug: string) => `/campgrounds/${slug}`,
+  campground: {
+    view: (slug: string) => `/campgrounds/${slug}`,
+    edit: (slug: string) => `/campgrounds/${slug}/edit`,
+  },
   signIn: () => '/sign-in',
   signUp: () => '/sign-up',
   profile: (subPage?: 'reviews' | 'favorites') => (subPage ? `/profile/${subPage}` : '/profile'),
