@@ -8,22 +8,30 @@ import HeaderMenu from './Menu';
 import MobileMenu from './Menu/MobileMenu';
 import UserMenu from './UserMenu';
 
-const Header = async ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
+interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
+  logoOnly?: boolean;
+}
+
+const Header = async ({ className, logoOnly, ...props }: HeaderProps) => {
   const user = await getSessionUser();
 
   return (
     <header className={cn('bg-white py-2 lg:py-3', className)} {...props}>
       <div className="container">
-        <nav className={cn('flex items-center justify-between gap-3')}>
-          <Logo className="basis-1/3" />
+        <nav className={cn('flex items-center justify-between gap-3', { 'justify-center': logoOnly })}>
+          <Logo className={cn({ 'basis-1/3': !logoOnly })} />
 
-          <HeaderMenu className="max-lg:hidden" />
+          {!logoOnly && (
+            <>
+              <HeaderMenu className="max-lg:hidden" />
 
-          <div className="flex basis-1/3 justify-end max-lg:hidden">
-            {user ? <UserMenu user={user} /> : <HeaderMenu items={authMenuItems} />}
-          </div>
+              <div className="flex basis-1/3 justify-end max-lg:hidden">
+                {user ? <UserMenu user={user} /> : <HeaderMenu items={authMenuItems} />}
+              </div>
 
-          <MobileMenu user={user} />
+              <MobileMenu user={user} />
+            </>
+          )}
         </nav>
       </div>
     </header>

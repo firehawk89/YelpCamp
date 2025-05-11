@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
-import '@repo/tailwind-config/styles';
-import Logo from '@/components/Logo';
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 import Divider from '@repo/ui/divider';
 import { ReactNode } from 'react';
 
@@ -17,11 +17,11 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <>
-      <div className="flex items-center justify-center bg-white py-2.5 lg:py-5">
-        <Logo className="text-4xl" />
-      </div>
+      <Header logoOnly />
       <Divider />
       <main className="container flex flex-1 flex-col py-10">{children}</main>
+      <Divider />
+      <Footer />
     </>
   );
 }

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import '@repo/tailwind-config/styles';
+import Divider from '@repo/ui/divider';
 import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
@@ -18,7 +18,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <>
       <Header />
+      <Divider />
       <main className="container flex flex-1 flex-col py-10">{children}</main>
+      <Divider />
       <Footer />
     </>
   );
