@@ -101,6 +101,37 @@ export const createCampground = async (campgroundData: CreateCampgroundDTO): Pro
   }
 };
 
+export const updateCampground = async (
+  campgroundId: string,
+  campgroundData: CreateCampgroundDTO
+): Promise<Campground> => {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      throw new Error('Failed to update campground - access token is missing');
+    }
+
+    const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${campgroundId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(campgroundData),
+    });
+
+    if (!response.ok) {
+      const data: ApiError = await response.json();
+      throw new Error(data.message || 'Failed to update campground');
+    }
+
+    const data: Campground = await response.json();
+    revalidateTag(NEXT_TAGS.CAMPGROUNDS);
+
+    return data;
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to update campground';
+    throw new Error(errorMessage);
+  }
+};
+
 export const deleteCampground = async (campgroundId: string): Promise<Campground> => {
   try {
     const accessToken = await getAccessToken();
