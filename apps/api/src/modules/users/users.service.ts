@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DEFAULT_PAGE } from '@repo/constants';
+import { AVATAR_IMAGES_FOLDER_NAME, DEFAULT_PAGE } from '@repo/constants';
 import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_ORDER, DEFAULT_SORT_FIELD } from '@repo/constants';
 import { PaginatedResponse } from '@repo/types';
 import { isEmail } from 'class-validator';
@@ -9,7 +9,6 @@ import { CreateUserDTO } from 'src/dto/user/create-user.dto';
 import { FavoriteCampgroundsFilterDTO } from 'src/dto/user/favorite-campgrounds-filter.dto';
 import { UpdateUserPasswordDTO } from 'src/dto/user/update-user-password.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
-import { AVATAR_IMAGES_FOLDER_NAME } from 'src/helpers/constants/misc';
 import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';

@@ -85,16 +85,6 @@ export class SeederService {
           description,
           location: randomLocation,
           price: randomPrice,
-          // images: [
-          //   {
-          //     url: 'https://res.cloudinary.com/dvwakmag1/image/upload/v1687373560/YelpCamp/hijufksfh5a6n5udaibx.jpg',
-          //     filename: 'YelpCamp/hijufksfh5a6n5udaibx',
-          //   },
-          //   {
-          //     url: 'https://res.cloudinary.com/dvwakmag1/image/upload/v1687373560/YelpCamp/avxaiicpbvsg8tvvq89h.webp',
-          //     filename: 'YelpCamp/avxaiicpbvsg8tvvq89h',
-          //   },
-          // ],
           rating: randomRating,
           author: authorId,
         });
