@@ -41,7 +41,6 @@ export class CampgroundsService {
 
       const newCampground = new this.campgroundModel(createCampgroundDto);
       const imageIds: mongoose.Types.ObjectId[] = [];
-      const imageEmbeddings: number[][] = [];
 
       // TODO: Generate image embedding for all images
       if (createCampgroundDto.images.length) {
@@ -53,9 +52,6 @@ export class CampgroundsService {
         };
 
         const image = await this.imagesService.create(imageData);
-        if (image.embedding) {
-          imageEmbeddings.push(image.embedding);
-        }
 
         imageIds.push(image._id);
       }
@@ -222,14 +218,58 @@ export class CampgroundsService {
     }
   }
 
-  async update(slug: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<CampgroundDocument> {
+  async update(id: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<CampgroundDocument> {
     try {
-      const campground = await this.campgroundModel.findOne({ slug }).exec();
+      const campground = await this.campgroundModel.findById(id).exec();
       if (!campground) {
-        throw new NotFoundException("Campground with given slug doesn't exist");
+        throw new NotFoundException("Campground with given ID doesn't exist");
       }
 
-      return this.campgroundModel.findByIdAndUpdate(campground.id, { ...updateCampgroundDto }, { new: true }).exec();
+      if (!updateCampgroundDto.slug) {
+        const slug = generateSlug(updateCampgroundDto.title);
+        updateCampgroundDto.slug = slug;
+      }
+
+      if (!updateCampgroundDto.images?.length) {
+        await this.imagesService.deleteCampgroundImages(
+          campground.id,
+          `${IMAGE_FOLDER_BASE}/${CAMPGROUND_IMAGES_FOLDER_NAME}/${campground.slug}`
+        );
+      }
+
+      const existingImages = await this.imagesService.getByCampgroundId(id);
+      const existingImageIds = existingImages.map((img) => img._id);
+      const finalImageIds: mongoose.Types.ObjectId[] = [...existingImageIds];
+
+      if (updateCampgroundDto.images?.length) {
+        const existingImageUrls = existingImages.map((img) => img.url);
+        const newImages = updateCampgroundDto.images.filter((img) => !existingImageUrls.includes(img));
+
+        // TODO: Generate image embedding for all images
+        const imageData: UploadImageDTO = {
+          image: newImages[0],
+          type: ImageType.CAMPGROUND,
+          subFolder: campground.slug,
+          campgroundId: campground.id,
+        };
+
+        const image = await this.imagesService.create(imageData);
+
+        finalImageIds.push(image._id);
+      }
+
+      const updatedCampground = await this.campgroundModel
+        .findByIdAndUpdate(
+          id,
+          {
+            ...updateCampgroundDto,
+            images: finalImageIds,
+          },
+          { new: true }
+        )
+        .exec();
+
+      return updatedCampground;
     } catch (error) {
       handleError(error, CampgroundsService.name);
     }
