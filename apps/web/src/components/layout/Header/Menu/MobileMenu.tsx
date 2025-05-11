@@ -18,9 +18,10 @@ interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
   overlayClassName?: string;
   user: User | null;
   onLogout?: () => void;
+  buttonClassName?: string;
 }
 
-const MobileMenu = ({ user, onLogout, overlayClassName, className, ...props }: MobileMenuProps) => {
+const MobileMenu = ({ user, onLogout, buttonClassName, overlayClassName, className, ...props }: MobileMenuProps) => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
   const mobileMenuRef = useClickOutside<HTMLDivElement>(() => setIsMenuOpened(false));
@@ -45,7 +46,12 @@ const MobileMenu = ({ user, onLogout, overlayClassName, className, ...props }: M
 
   return (
     <>
-      <Button className="lg:hidden" size="icon" icon={<MenuIcon />} onClick={() => setIsMenuOpened(true)} />
+      <Button
+        className={cn('lg:hidden', buttonClassName)}
+        size="icon"
+        icon={<MenuIcon />}
+        onClick={() => setIsMenuOpened(true)}
+      />
 
       <Overlay className={cn('lg:hidden', overlayClassName)} isHidden={!isMenuOpened} placement="right">
         <div
