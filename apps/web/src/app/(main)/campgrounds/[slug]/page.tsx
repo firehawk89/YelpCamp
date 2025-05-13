@@ -54,7 +54,12 @@ export default async function Campground({ params }: CampgroundPageProps) {
         <div className="flex w-full flex-col gap-3 text-center lg:w-[70%]">
           {image ? (
             <div className="relative mx-auto aspect-video w-full shrink-0 overflow-hidden rounded-lg">
-              <Image src={image?.url} alt={image.fileName ?? `campground-${campground._id}-image`} fill />
+              <Image
+                className="object-cover object-center"
+                src={image?.url}
+                alt={image.fileName ?? `campground-${campground._id}-image`}
+                fill
+              />
             </div>
           ) : (
             <ImagePlaceholder className="mx-auto aspect-video w-full shrink-0 rounded-lg" />
