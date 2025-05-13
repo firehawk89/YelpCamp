@@ -18,7 +18,7 @@ const publicRoutes = [routes.signIn(), routes.signUp];
 const protectedRoutes = [routes.profile(), routes.campgrounds.new()];
 
 const protectedRoutePatterns = [
-  /^\/[\w-]+\/[\w-]+\/edit$/, // matches any /{resource}/{id}/edit pattern
+  /^\/[\w-]+\/[\w-]+\/edit$/, // matches any /{resource}/{id}/edit pattern (e.g. edit pages)
 ];
 
 export async function middleware(request: NextRequest) {

@@ -51,11 +51,12 @@ const SignInForm = ({ className, ...props }: CardProps) => {
             label="Password"
             inputId="password"
             error={errors.password?.message}
-            helperElement={
-              <Link className="text-accent text-sm hover:underline" href="/forgot-password">
-                Forgot Password?
-              </Link>
-            }
+            // TODO: Add forgot password logic
+            // helperElement={
+            //   <Link className="text-accent text-sm hover:underline" href="/forgot-password">
+            //     Forgot Password?
+            //   </Link>
+            // }
           >
             <PasswordInput {...register('password')} id="password" />
           </InputWrapper>
