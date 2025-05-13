@@ -80,28 +80,32 @@ export class ImagesService {
   }
 
   async getSimilarCampgroundImages(imageId: string): Promise<ImageDocument[]> {
-    const image = await this.getById(imageId);
+    try {
+      const image = await this.getById(imageId);
 
-    const similarImages = await this.imageModel
-      .aggregate<ImageDocument>([
-        {
-          $vectorSearch: {
-            index: 'image_search_vector_index',
-            path: 'embedding',
-            queryVector: image.embedding,
-            numCandidates: SIMILAR_IMAGES_CANDIDATES_LIMIT,
-            limit: SIMILAR_IMAGES_SEARCH_LIMIT,
+      const similarImages = await this.imageModel
+        .aggregate<ImageDocument>([
+          {
+            $vectorSearch: {
+              index: 'image_search_vector_index',
+              path: 'embedding',
+              queryVector: image.embedding,
+              numCandidates: SIMILAR_IMAGES_CANDIDATES_LIMIT,
+              limit: SIMILAR_IMAGES_SEARCH_LIMIT,
+            },
           },
-        },
-        {
-          $match: {
-            campgroundId: { $ne: null },
+          {
+            $match: {
+              campgroundId: { $ne: null },
+            },
           },
-        },
-      ])
-      .exec();
+        ])
+        .exec();
 
-    return similarImages;
+      return similarImages;
+    } catch (error) {
+      handleError(error, ImagesService.name);
+    }
   }
 
   async delete(imageId: string) {

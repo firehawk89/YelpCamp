@@ -83,12 +83,6 @@ export class CampgroundsService {
 
       const pipeline: PipelineStage[] = [];
 
-      if (search) {
-        pipeline.push({
-          $match: { title: { $regex: search, $options: 'i' } },
-        });
-      }
-
       if (searchImageId) {
         const similarImages = await this.imagesService.getSimilarCampgroundImages(searchImageId);
         const campgroundIds = similarImages.map((img) => img.campgroundId).filter(Boolean);
@@ -101,6 +95,12 @@ export class CampgroundsService {
             },
           });
         }
+      }
+
+      if (search) {
+        pipeline.push({
+          $match: { title: { $regex: search, $options: 'i' } },
+        });
       }
 
       if (rating) {
