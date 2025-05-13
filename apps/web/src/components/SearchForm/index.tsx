@@ -10,6 +10,7 @@ import { ImageType } from '@repo/types';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
 import Input from '@repo/ui/input';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { FormEvent, FormHTMLAttributes, useCallback, useState } from 'react';
 import { routes } from 'src/app/routes';
@@ -91,7 +92,6 @@ const SearchForm = ({
 
         const params: Record<string, string> = { [SEARCH_PARAM]: search as string };
 
-        // Always upload new image if there's a resolvedImageSource
         if (imageSearch && resolvedImageSource) {
           const searchImage = await uploadImage(resolvedImageSource, ImageType.SEARCH);
           params[SEARCH_IMAGE_PARAM] = searchImage._id;
@@ -111,9 +111,17 @@ const SearchForm = ({
 
   return (
     <form className={cn('flex w-full flex-col gap-2', className)} onSubmit={handleSearch} {...props}>
-      <label className={cn('font-medium', !label && 'sr-only')} htmlFor={SEARCH_PARAM}>
-        {label ? label : 'Search'}
-      </label>
+      <div className="flex items-center justify-between gap-5">
+        <label className={cn('text-lg font-semibold', !label && 'sr-only')} htmlFor={SEARCH_PARAM}>
+          {label ? label : 'Search'}
+        </label>
+
+        {!user && (
+          <Link href={routes.signUp()} className="hover:text-accent text-sm text-neutral-500 transition-colors">
+            Sign up to unlock image search
+          </Link>
+        )}
+      </div>
 
       <div className="relative flex gap-2">
         {showImageSearch && (
