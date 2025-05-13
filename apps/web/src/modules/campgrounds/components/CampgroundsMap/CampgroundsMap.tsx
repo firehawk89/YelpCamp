@@ -15,6 +15,7 @@ import Map, {
   MapMouseEvent,
   MapRef,
   ViewStateChangeEvent,
+  GeolocateControl,
 } from 'react-map-gl/mapbox';
 
 import CampgroundPopup from './CampgroundPopup';
@@ -119,6 +120,7 @@ const CampgroundsMap = ({ className, locations = [], ...props }: CampgroundsMapP
       >
         <FullscreenControl position="top-right" />
         <NavigationControl position="top-left" />
+        <GeolocateControl position="top-right" />
 
         <CampgroundPopup campgroundSlug={clickedCampgroundSlug} onClose={() => setClickedCampgroundSlug(null)} />
 
