@@ -64,6 +64,7 @@ const CampgroundForm = ({ user, campground, className, ...props }: CampgroundFor
   });
 
   const includeSlug = watch('includeSlug');
+  const enteredDescriptionLength = watch('description')?.length || 0;
 
   const geocoderError =
     errors.location?.message ||
@@ -232,7 +233,16 @@ const CampgroundForm = ({ user, campground, className, ...props }: CampgroundFor
             </InputWrapper>
           </div>
 
-          <InputWrapper label="Description" inputId="description" error={errors.description?.message}>
+          <InputWrapper
+            label="Description"
+            inputId="description"
+            error={errors.description?.message}
+            helperElement={
+              <span className="ml-auto text-sm text-neutral-500">
+                {enteredDescriptionLength} / {MAX_CAMPGROUND_DESCRIPTION_LENGTH}
+              </span>
+            }
+          >
             <textarea
               id="description"
               {...register('description')}
