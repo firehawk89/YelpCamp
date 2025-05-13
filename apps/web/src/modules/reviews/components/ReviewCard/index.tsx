@@ -51,12 +51,8 @@ const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: 
           <span className="text-xs text-neutral-500">{createdAtDate}</span>
 
           <div className="flex items-center gap-0.5">
-            {!!likesCount && (
-              <>
-                <LikeReviewButton userId={user?._id} review={review} likedBy={likedBy} />
-                <span className="text-sm">{likesCount}</span>
-              </>
-            )}
+            <LikeReviewButton userId={user?._id} review={review} likedBy={likedBy} />
+            {!!likesCount && <span className="text-sm">{likesCount}</span>}
 
             {isUserReview && <ReviewMenu reviewId={review._id} />}
           </div>
