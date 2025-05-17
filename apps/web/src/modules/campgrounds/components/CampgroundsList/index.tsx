@@ -14,11 +14,17 @@ interface CampgroundsListProps extends HTMLMotionProps<'div'> {
 
 const CampgroundsList = ({ campgrounds, user, className, ...props }: CampgroundsListProps) => (
   <CampgroundsListWrapper className={cn('flex flex-col gap-7', className)} {...props}>
-    {campgrounds?.map((campground) => (
-      <CampgroundCardWrapper key={campground._id}>
-        <CampgroundCard campground={campground} user={user} />
-      </CampgroundCardWrapper>
-    ))}
+    {campgrounds?.map((campground) => {
+      const campgroundSimilarity = campground.similarity ? Math.round(campground.similarity * 100) : null;
+      const formattedSimilarity = campgroundSimilarity === 100 ? 'Exact match' : `${campgroundSimilarity}% match`;
+
+      return (
+        <CampgroundCardWrapper key={campground._id} className="flex flex-col gap-1">
+          {campgroundSimilarity && <span className="text-sm text-gray-500">{formattedSimilarity}</span>}
+          <CampgroundCard campground={campground} user={user} />
+        </CampgroundCardWrapper>
+      );
+    })}
   </CampgroundsListWrapper>
 );
 

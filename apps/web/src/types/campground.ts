@@ -26,6 +26,7 @@ export interface Campground {
   title: string;
   slug: string;
   images: Image[] | null;
+  similarity?: number;
   description?: string;
   price: CampgroundPrice;
   location: CampgroundLocation;
