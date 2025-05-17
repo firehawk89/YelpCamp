@@ -6,10 +6,10 @@ import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
 import { SIMILAR_IMAGES_CANDIDATES_LIMIT } from 'src/helpers/constants/misc';
 import { SIMILAR_IMAGES_SEARCH_LIMIT } from 'src/helpers/constants/misc';
-import { getImageEmbedding } from 'src/helpers/embeddings';
+import { getCosineSimilarity, getImageEmbedding } from 'src/helpers/embeddings';
 import { handleError } from 'src/helpers/misc';
 import { validateBase64Image } from 'src/helpers/validation';
-import { Image, ImageDocument } from 'src/schemas/image.schema';
+import { Image, ImageDocument, ImageWithSimilarity } from 'src/schemas/image.schema';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
@@ -79,7 +79,7 @@ export class ImagesService {
     }
   }
 
-  async getSimilarCampgroundImages(imageId: string): Promise<ImageDocument[]> {
+  async getSimilarCampgroundImages(imageId: string): Promise<ImageWithSimilarity[]> {
     try {
       const image = await this.getById(imageId);
 
@@ -102,7 +102,16 @@ export class ImagesService {
         ])
         .exec();
 
-      return similarImages;
+      const formattedImages = similarImages.map((similarImage) => {
+        const similarity = getCosineSimilarity(image.embedding, similarImage.embedding);
+
+        return {
+          ...similarImage,
+          similarity,
+        };
+      });
+
+      return formattedImages as unknown as ImageWithSimilarity[];
     } catch (error) {
       handleError(error, ImagesService.name);
     }

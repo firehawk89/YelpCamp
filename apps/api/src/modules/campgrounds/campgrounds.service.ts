@@ -15,7 +15,7 @@ import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
 import { generateSlug, handleError } from 'src/helpers/misc';
-import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
+import { Campground, CampgroundDocument, CampgroundWithSimilarity } from 'src/schemas/campground.schema';
 import { CampgroundLocation } from 'src/schemas/location.schema';
 
 import { ImagesService } from '../images/images.service';
@@ -64,7 +64,9 @@ export class CampgroundsService {
     }
   }
 
-  async getAll(filter?: CampgroundsFilterDTO): Promise<PaginatedResponse<CampgroundDocument>> {
+  async getAll(
+    filter?: CampgroundsFilterDTO
+  ): Promise<PaginatedResponse<CampgroundDocument | CampgroundWithSimilarity>> {
     try {
       const {
         sortBy = DEFAULT_SORT_FIELD,
@@ -82,10 +84,18 @@ export class CampgroundsService {
       const totalCount = await this.campgroundModel.countDocuments().exec();
 
       const pipeline: PipelineStage[] = [];
+      let campgroundSimilarityScores = {};
 
       if (searchImageId) {
         const similarImages = await this.imagesService.getSimilarCampgroundImages(searchImageId);
         const campgroundIds = similarImages.map((img) => img.campgroundId).filter(Boolean);
+
+        campgroundSimilarityScores = similarImages.reduce((acc, img) => {
+          if (img.campgroundId) {
+            acc[img.campgroundId.toString()] = Number(img.similarity.toFixed(2));
+          }
+          return acc;
+        }, {});
 
         if (campgroundIds.length) {
           const campgroundObjectIds = campgroundIds.map((id) => new mongoose.Types.ObjectId(id));
@@ -99,7 +109,9 @@ export class CampgroundsService {
 
       if (search) {
         pipeline.push({
-          $match: { title: { $regex: search, $options: 'i' } },
+          $match: {
+            $or: [{ title: { $regex: search, $options: 'i' } }, { description: { $regex: search, $options: 'i' } }],
+          },
         });
       }
 
@@ -146,6 +158,23 @@ export class CampgroundsService {
 
       const [result] = await this.campgroundModel.aggregate<PaginatedResponse<CampgroundDocument>>(pipeline).exec();
       result.metadata = { ...result.metadata[0], count: result.data.length };
+
+      if (searchImageId && Object.keys(campgroundSimilarityScores).length) {
+        const enhancedResult = result as unknown as PaginatedResponse<CampgroundWithSimilarity>;
+
+        enhancedResult.data = result.data.map((campground) => {
+          const id = campground._id.toString();
+
+          return {
+            ...campground,
+            similarity: campgroundSimilarityScores[id] || 0,
+          } as unknown as CampgroundWithSimilarity;
+        });
+
+        enhancedResult.data.sort((a, b) => b.similarity - a.similarity);
+
+        return enhancedResult;
+      }
 
       return result;
     } catch (error) {

@@ -38,3 +38,5 @@ export class Campground {
 }
 
 export const CampgroundSchema = SchemaFactory.createForClass(Campground);
+
+export type CampgroundWithSimilarity = CampgroundDocument & { similarity: number };
