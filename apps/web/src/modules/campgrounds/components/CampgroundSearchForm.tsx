@@ -1,14 +1,14 @@
 import SearchForm, { SearchFormProps } from '@/components/SearchForm';
 import { fetchImage } from '@/server/media';
 
-interface CampgroundSearchFormProps extends SearchFormProps {
+interface CampgroundSearchFormProps extends Omit<SearchFormProps, 'selectedImage'> {
   searchImage?: string;
 }
 
 const CampgroundSearchForm = async ({ searchImage, ...props }: CampgroundSearchFormProps) => {
   const selectedImage = searchImage ? await fetchImage(searchImage) : null;
 
-  return <SearchForm label="Search Campgrounds" selectedImage={selectedImage?.url} imageSearch {...props} />;
+  return <SearchForm label="Search Campgrounds" selectedImage={selectedImage} imageSearch {...props} />;
 };
 
 export default CampgroundSearchForm;

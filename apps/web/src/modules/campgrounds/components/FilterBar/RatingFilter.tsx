@@ -10,7 +10,7 @@ const CampgroundRatingFilter = () => {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <span className="font-medium">Rating</span>
+      <span className="font-semibold">Rating</span>
       <Rating
         rating={selectedRating}
         onChange={(rating) => applyFilter({ param: RATING_PARAM, value: rating })}
