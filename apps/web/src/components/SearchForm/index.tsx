@@ -2,10 +2,11 @@
 
 import useImageFileSelect from '@/hooks/useImageFileSelect';
 import { uploadImage } from '@/server/media';
+import { Image } from '@/types/media';
 import { User } from '@/types/user';
 import { PAGE_PARAM, SEARCH_IMAGE_PARAM, SEARCH_PARAM } from '@/utils/constants/params';
 import { cn } from '@/utils/misc';
-import { DEFAULT_PAGE } from '@repo/constants';
+import { BASE64_IMAGE_PATTERN, DEFAULT_PAGE } from '@repo/constants';
 import { ImageType } from '@repo/types';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
@@ -22,7 +23,7 @@ import ImageSearchButton from './ImageSearchButton';
 export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
   user?: User | null;
   label?: string;
-  selectedImage?: string;
+  selectedImage: Image | null;
   onSelectImage?: (base64Image: string) => void;
   imageSearch?: boolean;
 }
@@ -50,7 +51,7 @@ const SearchForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const resolvedImageSource = imageSource ?? selectedImage ?? null;
+  const resolvedImageSource = imageSource ?? selectedImage?.url ?? null;
   const showImageSearch = imageSearch && !!user;
 
   const updateSearchParams = useCallback(
@@ -93,20 +94,25 @@ const SearchForm = ({
         const params: Record<string, string> = { [SEARCH_PARAM]: search as string };
 
         if (imageSearch && resolvedImageSource) {
-          const searchImage = await uploadImage(resolvedImageSource, ImageType.SEARCH);
-          params[SEARCH_IMAGE_PARAM] = searchImage._id;
+          if (BASE64_IMAGE_PATTERN.test(resolvedImageSource)) {
+            const searchImage = await uploadImage(resolvedImageSource, ImageType.SEARCH);
+            params[SEARCH_IMAGE_PARAM] = searchImage._id;
+          } else {
+            params[SEARCH_IMAGE_PARAM] = selectedImage?._id ?? '';
+          }
         } else {
           params[SEARCH_IMAGE_PARAM] = '';
         }
 
         updateSearchParams(params);
-      } catch {
+      } catch (error) {
+        console.log(error);
         setImageError('Failed to upload search image');
       } finally {
         setIsLoading(false);
       }
     },
-    [defaultValue, imageSearch, resolvedImageSource, setImageError, updateSearchParams]
+    [defaultValue, imageSearch, resolvedImageSource, selectedImage?._id, setImageError, updateSearchParams]
   );
 
   return (
