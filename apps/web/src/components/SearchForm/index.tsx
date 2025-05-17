@@ -23,7 +23,7 @@ import ImageSearchButton from './ImageSearchButton';
 export interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
   user?: User | null;
   label?: string;
-  selectedImage: Image | null;
+  selectedImage?: Image | null;
   onSelectImage?: (base64Image: string) => void;
   imageSearch?: boolean;
 }

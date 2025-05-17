@@ -12,15 +12,15 @@ import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
 import PasswordInput from '@repo/ui/password-input';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { AuthFormFields, authFormSchema } from '../schemas/form.schema';
 
-const SignInForm = ({ className, ...props }: CardProps) => {
-  const searchParams = useSearchParams();
-  const returnTo = searchParams.get(RETURN_TO_PARAM);
+interface SignInFormProps extends CardProps {
+  returnTo?: string;
+}
 
+const SignInForm = ({ returnTo, className, ...props }: SignInFormProps) => {
   const {
     register,
     handleSubmit,
