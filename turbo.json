@@ -19,6 +19,10 @@
       "cache": false,
       "persistent": true,
       "env": ["PORT", "API_URL", "DATABASE_*", "JWT_*", "CLOUDINARY_*"]
+    },
+    "start": {
+      "dependsOn": ["^start"],
+      "env": ["PORT", "API_URL", "DATABASE_*", "JWT_*", "CLOUDINARY_*"]
     }
   }
 }
