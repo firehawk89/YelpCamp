@@ -208,7 +208,19 @@ export class UsersService {
                 },
               },
             ],
-            data: [{ $skip: skip }, { $limit: DEFAULT_PAGE_LIMIT }],
+            data: [
+              { $skip: skip },
+              { $limit: DEFAULT_PAGE_LIMIT },
+              {
+                $lookup: {
+                  from: 'images',
+                  localField: 'images',
+                  foreignField: '_id',
+                  pipeline: [{ $project: { url: 1, fileName: 1, type: 1 } }],
+                  as: 'images',
+                },
+              },
+            ],
           },
         },
       ];
@@ -218,6 +230,7 @@ export class UsersService {
         .aggregate<PaginatedResponse<CampgroundDocument>>(pipeline)
         .exec();
 
+      // TODO: Leave only one metadata object
       result.metadata = result.metadata[0]
         ? { ...result.metadata[0] }
         : {
@@ -228,7 +241,7 @@ export class UsersService {
             limit: DEFAULT_PAGE_LIMIT,
             offset: skip,
           };
-
+      console.log(result);
       return result;
     } catch (error) {
       handleError(error, UsersService.name);
