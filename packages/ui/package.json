@@ -21,6 +21,7 @@
     "./tab": "./src/Tabs/Tab.tsx"
   },
   "scripts": {
+    "build": "tsc",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"
   },
