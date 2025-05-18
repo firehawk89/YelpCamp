@@ -1,3 +1,5 @@
+'use server';
+
 import { Image } from '@/types/media';
 import { API_ROUTES } from '@/utils/constants/misc';
 import { ApiError, ImageType } from '@repo/types';
