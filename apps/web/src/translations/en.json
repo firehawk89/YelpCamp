@@ -1,0 +1,36 @@
+{
+  "pages": {
+    "home": {
+      "hero": {
+        "title": "Welcome to CampZone!",
+        "description": "Your ultimate destination for discovering and sharing campgrounds. Find your next outdoor adventure or list your own camping spot.",
+        "actions": {
+          "browseCampgrounds": "Browse Campgrounds"
+        }
+      },
+      "features": {
+        "title": "Why Choose CampZone?",
+        "description": "CampZone is the ultimate platform for discovering and sharing campgrounds. Find your next outdoor adventure or list your own camping spot.",
+        "findPerfectSpots": {
+          "title": "Find Perfect Spots",
+          "description": "Discover handpicked campgrounds with detailed information about facilities, location, and nearby attractions."
+        },
+        "shareYourExperience": {
+          "title": "Share Your Experience",
+          "description": "Upload photos, write reviews, and help fellow campers make informed decisions about their next adventure."
+        },
+        "joinTheCommunity": {
+          "title": "Join the Community",
+          "description": "Connect with fellow outdoor enthusiasts, share tips, and get recommendations from experienced campers."
+        }
+      },
+      "cta": {
+        "title": "Ready to Explore the Great Outdoors?",
+        "description": "Create your free CampZone account today to discover amazing campgrounds, share your experiences, and connect with a community of outdoor enthusiasts.",
+        "actions": {
+          "signUp": "Sign Up Now"
+        }
+      }
+    }
+  }
+}

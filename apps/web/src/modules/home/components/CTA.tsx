@@ -1,10 +1,11 @@
 'use client';
 
 import { routes } from '@/app/routes';
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/utils/misc';
 import { buttonVariants } from '@repo/ui/button';
 import { HTMLMotionProps, motion, MotionProps } from 'motion/react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 const ANIMATION_VARIANTS: Record<string, MotionProps> = {
   TITLE: {
@@ -32,25 +33,28 @@ const ANIMATION_VARIANTS: Record<string, MotionProps> = {
   },
 };
 
-const CTA = ({ className, ...props }: HTMLMotionProps<'div'>) => (
-  <motion.div className={cn('bg-accent/5 py-16 md:py-20', className)} {...props}>
-    <div className="mx-auto flex flex-col items-center gap-4 text-center max-md:container md:max-w-2xl md:gap-5">
-      <motion.h2 className="text-2xl font-semibold md:text-3xl" {...ANIMATION_VARIANTS.TITLE}>
-        Ready to Explore the Great Outdoors?
-      </motion.h2>
+const CTA = ({ className, ...props }: HTMLMotionProps<'div'>) => {
+  const t = useTranslations('pages.home.cta');
 
-      <motion.p className="text-neutral-600 md:text-lg" {...ANIMATION_VARIANTS.DESCRIPTION}>
-        Create your free CampZone account today to discover amazing campgrounds, share your experiences, and connect
-        with a community of outdoor enthusiasts.
-      </motion.p>
+  return (
+    <motion.div className={cn('bg-accent/5 py-16 md:py-20', className)} {...props}>
+      <div className="mx-auto flex flex-col items-center gap-4 text-center max-md:container md:max-w-2xl md:gap-5">
+        <motion.h2 className="text-2xl font-semibold md:text-3xl" {...ANIMATION_VARIANTS.TITLE}>
+          {t('title')}
+        </motion.h2>
 
-      <motion.div className="flex flex-col gap-4 sm:flex-row" {...ANIMATION_VARIANTS.BUTTON}>
-        <Link className={buttonVariants({ variant: 'accent', size: 'lg' })} href={routes.signUp()}>
-          Sign Up Now
-        </Link>
-      </motion.div>
-    </div>
-  </motion.div>
-);
+        <motion.p className="text-neutral-600 md:text-lg" {...ANIMATION_VARIANTS.DESCRIPTION}>
+          {t('description')}
+        </motion.p>
+
+        <motion.div className="flex flex-col gap-4 sm:flex-row" {...ANIMATION_VARIANTS.BUTTON}>
+          <Link className={buttonVariants({ variant: 'accent', size: 'lg' })} href={routes.signUp()}>
+            {t('actions.signUp')}
+          </Link>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
 
 export default CTA;
