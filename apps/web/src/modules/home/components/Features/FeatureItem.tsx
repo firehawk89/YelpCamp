@@ -36,7 +36,6 @@ const FeatureItem = ({ feature, className, ...props }: FeatureItemProps) => (
     {...props}
   >
     <motion.div className="bg-accent/10 rounded-full p-3 md:p-4">{ICONS[feature.icon]}</motion.div>
-
     <h3 className="text-lg font-semibold md:text-xl">{feature.title}</h3>
     <p className="text-neutral-600">{feature.description}</p>
   </motion.article>
