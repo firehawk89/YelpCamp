@@ -78,7 +78,7 @@ const Select = <T, M extends SelectOption<T>>({
 
       <Card
         className={cn(
-          'absolute top-full z-10 mt-1.5 w-36 flex-col py-2 transition-opacity',
+          'absolute top-full z-10 mt-1.5 w-36 flex-col border py-2 transition-opacity',
           dropdownPositionClasses[position],
           !showOptions && 'pointer-events-none opacity-0',
           listClassName

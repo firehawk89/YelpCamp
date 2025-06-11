@@ -1,3 +1,4 @@
+import LocaleSwitcher from '@/components/layout/Header/LocaleSwitcher';
 import Logo from '@/components/Logo';
 import { getSessionUser } from '@/server/session';
 import { cn } from '@/utils/misc';
@@ -25,8 +26,9 @@ const Header = async ({ className, logoOnly, ...props }: HeaderProps) => {
             <>
               <HeaderMenu className="max-lg:hidden" />
 
-              <div className="flex basis-1/3 justify-end max-lg:hidden">
+              <div className="flex basis-1/3 items-center justify-end gap-4 max-lg:hidden">
                 {user ? <UserMenu user={user} /> : <HeaderMenu items={authMenuItems} />}
+                <LocaleSwitcher />
               </div>
 
               <MobileMenu user={user} />
