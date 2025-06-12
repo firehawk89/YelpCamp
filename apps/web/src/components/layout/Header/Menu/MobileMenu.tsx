@@ -7,12 +7,13 @@ import { cn } from '@/utils/misc';
 import Button, { buttonVariants } from '@repo/ui/button';
 import Divider from '@repo/ui/divider';
 import { CloseIcon, LogOutIcon, MenuIcon, UserIcon } from '@repo/ui/icons';
+import { useTranslations } from 'next-intl';
 import { HTMLAttributes, useMemo, useState } from 'react';
 import { useClickOutside } from 'src/hooks/useClickOutside';
 import { User } from 'src/types/user';
 
 import HeaderMenu from '.';
-import { authMenuItems, MenuItem } from '../helpers';
+import { getAuthMenuItems, MenuItem } from '../helpers';
 
 interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
   overlayClassName?: string;
@@ -22,6 +23,8 @@ interface MobileMenuProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const MobileMenu = ({ user, onLogout, buttonClassName, overlayClassName, className, ...props }: MobileMenuProps) => {
+  const t = useTranslations();
+
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
   const mobileMenuRef = useClickOutside<HTMLDivElement>(() => setIsMenuOpened(false));
@@ -31,17 +34,17 @@ const MobileMenu = ({ user, onLogout, buttonClassName, overlayClassName, classNa
     () => [
       {
         path: routes.profile(),
-        label: 'Profile',
+        label: t('layout.header.menu.actions.profile'),
         icon: <UserIcon />,
       },
       {
-        label: 'Log Out',
+        label: t('layout.header.menu.actions.logOut'),
         onClick: handleLogout,
         icon: <LogOutIcon />,
         className: buttonVariants({ variant: 'outline', color: 'destructive', size: 'sm' }),
       },
     ],
-    [handleLogout]
+    [handleLogout, t]
   );
 
   return (
@@ -78,7 +81,7 @@ const MobileMenu = ({ user, onLogout, buttonClassName, overlayClassName, classNa
             <Divider />
             <HeaderMenu
               orientation="vertical"
-              items={!user ? authMenuItems : userMenuItems}
+              items={!user ? getAuthMenuItems(t) : userMenuItems}
               onItemClick={() => setIsMenuOpened(false)}
             />
           </div>

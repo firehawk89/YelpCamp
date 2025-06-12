@@ -2,9 +2,10 @@ import LocaleSwitcher from '@/components/layout/Header/LocaleSwitcher';
 import Logo from '@/components/Logo';
 import { getSessionUser } from '@/server/session';
 import { cn } from '@/utils/misc';
+import { getTranslations } from 'next-intl/server';
 import { HTMLAttributes } from 'react';
 
-import { authMenuItems } from './helpers';
+import { getAuthMenuItems } from './helpers';
 import HeaderMenu from './Menu';
 import MobileMenu from './Menu/MobileMenu';
 import UserMenu from './UserMenu';
@@ -14,7 +15,10 @@ interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Header = async ({ className, logoOnly, ...props }: HeaderProps) => {
+  const t = await getTranslations();
   const user = await getSessionUser();
+
+  const authMenuItems = getAuthMenuItems(t);
 
   return (
     <header className={cn('bg-white py-2 lg:py-3', className)} {...props}>
