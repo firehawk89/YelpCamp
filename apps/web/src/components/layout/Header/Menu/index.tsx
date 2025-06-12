@@ -1,9 +1,10 @@
 'use client';
 
 import { cn } from '@/utils/misc';
+import { useTranslations } from 'next-intl';
 import { HTMLAttributes, useMemo } from 'react';
 
-import { defaultMenuItems, MenuItem } from '../helpers';
+import { getDefaultMenuItems, MenuItem } from '../helpers';
 import MenuButton from './MenuButton';
 import MenuLink from './MenuLink';
 
@@ -21,7 +22,9 @@ const HeaderMenu = ({
   className,
   ...props
 }: HeaderMenuProps) => {
-  const menuItems = useMemo<MenuItem[]>(() => (items.length ? items : defaultMenuItems), [items]);
+  const t = useTranslations();
+
+  const menuItems = useMemo<MenuItem[]>(() => (items.length ? items : getDefaultMenuItems(t)), [items, t]);
 
   const handleMenuItemClick = (item: MenuItem) => {
     item.onClick?.();

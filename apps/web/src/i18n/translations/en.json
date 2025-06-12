@@ -1,4 +1,18 @@
 {
+  "layout": {
+    "header": {
+      "menu": {
+        "home": "Home",
+        "campgrounds": "Campgrounds",
+        "actions": {
+          "signIn": "Sign In",
+          "signUp": "Sign Up",
+          "profile": "Profile",
+          "logOut": "Log Out"
+        }
+      }
+    }
+  },
   "pages": {
     "home": {
       "hero": {
@@ -31,6 +45,9 @@
           "signUp": "Sign Up Now"
         }
       }
+    },
+    "campgrounds": {
+      "title": "Campgrounds"
     }
   }
 }
