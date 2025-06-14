@@ -4,6 +4,7 @@ import { routes } from '@/app/routes';
 import { AuthFormFields } from '@/modules/auth/schemas/form.schema';
 import { logout, signIn, signUp } from '@/server/auth';
 import { RETURN_TO_PARAM } from '@/utils/constants/params';
+import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
@@ -14,6 +15,8 @@ interface Options<T> {
 }
 
 const useAuthActions = <T extends AuthFormFields>({ onSignIn, onSignUp, onLogout }: Options<T> = {}) => {
+  const t = useTranslations('authActions.errors');
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -43,25 +46,25 @@ const useAuthActions = <T extends AuthFormFields>({ onSignIn, onSignUp, onLogout
           router.replace(routes.campgrounds.all());
         }
       } catch (error) {
-        setError(error instanceof Error ? error : new Error(errorMessage || 'An error occurred.'));
+        setError(error instanceof Error ? error : new Error(errorMessage || t('default')));
       }
     },
-    [router, searchParams]
+    [router, searchParams, t]
   );
 
   const handleSignIn = useCallback(
-    (formData: T) => handleAuthAction(formData, signIn, onSignIn, 'An error occurred while signing in.'),
-    [handleAuthAction, onSignIn]
+    (formData: T) => handleAuthAction(formData, signIn, onSignIn, t('signIn')),
+    [handleAuthAction, onSignIn, t]
   );
 
   const handleSignUp = useCallback(
-    (formData: T) => handleAuthAction(formData, signUp, onSignUp, 'An error occurred while signing up.'),
-    [handleAuthAction, onSignUp]
+    (formData: T) => handleAuthAction(formData, signUp, onSignUp, t('signUp')),
+    [handleAuthAction, onSignUp, t]
   );
 
   const handleLogout = useCallback(async () => {
-    handleAuthAction(null, logout, onLogout, 'An error occurred while logging out.');
-  }, [handleAuthAction, onLogout]);
+    handleAuthAction(null, logout, onLogout, t('logout'));
+  }, [handleAuthAction, onLogout, t]);
 
   return { error, handleSignIn, handleSignUp, handleLogout };
 };

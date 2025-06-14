@@ -1,4 +1,5 @@
 import { MAX_IMAGE_SIZE_KB, MIN_IMAGE_DIMENSION } from '@repo/constants';
+import { useTranslations } from 'next-intl';
 import { useState, useCallback } from 'react';
 
 interface Options {
@@ -16,6 +17,8 @@ const useImageFileSelect = ({
   onImageSourceAdd,
   onImageError,
 }: Options) => {
+  const t = useTranslations();
+
   const [imageError, setImageError] = useState<string | null>(null);
   const [imageSource, setImageSource] = useState<string | null>(null);
 
@@ -35,7 +38,7 @@ const useImageFileSelect = ({
       const fileSize = getFileSizeInKB(file);
 
       if (fileSize > maxFileSize) {
-        handleImageError(`Image size exceeds the limit of ${maxFileSize} KB. Please select other image.`);
+        handleImageError(t('imageSelect.errors.sizeExceeded', { maxFileSize }));
         return;
       }
 
@@ -52,7 +55,7 @@ const useImageFileSelect = ({
           const { naturalWidth, naturalHeight } = image;
 
           if (naturalWidth < minDimension || naturalHeight < minDimension) {
-            handleImageError(`Image dimensions are too small. Minimum size is ${minDimension}x${minDimension} pixels.`);
+            handleImageError(t('imageSelect.errors.dimensionsTooSmall', { minDimension }));
             return;
           }
 
@@ -63,7 +66,7 @@ const useImageFileSelect = ({
 
       reader.readAsDataURL(file);
     },
-    [handleImageError, imageError, maxFileSize, minDimension, onImageSourceAdd]
+    [handleImageError, imageError, maxFileSize, minDimension, onImageSourceAdd, t]
   );
 
   return { imageSource, setImageSource, handleSelectFile, imageError, setImageError, onImageError };

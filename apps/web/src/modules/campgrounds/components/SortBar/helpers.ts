@@ -1,18 +1,25 @@
 import { Campground } from '@/types/campground';
+import { TFunction } from '@/types/misc';
 import { SortOrder } from '@repo/types';
 import { SelectOption } from '@repo/ui/select';
 
-export const DEFAULT_SORT_BY_OPTION: SelectOption<keyof Campground> = { value: 'createdAt', label: 'Relevance' };
+export const getDefaultSortByOption = (t: TFunction): SelectOption<keyof Campground> => ({
+  value: 'createdAt',
+  label: t('pages.campgrounds.sort.relevance'),
+});
 
-export const SORT_BY_OPTIONS: SelectOption<keyof Campground>[] = [
-  DEFAULT_SORT_BY_OPTION,
-  { value: 'price', label: 'Price' },
-  { value: 'rating', label: 'Rating' },
+export const getSortByOptions = (t: TFunction): SelectOption<keyof Campground>[] => [
+  getDefaultSortByOption(t),
+  { value: 'price', label: t('pages.campgrounds.sort.price') },
+  { value: 'rating', label: t('pages.campgrounds.sort.rating') },
 ];
 
-export const DEFAULT_SORT_ORDER_OPTION: SelectOption<SortOrder> = { value: 'desc', label: 'Descending' };
+export const getDefaultSortOrderOption = (t: TFunction): SelectOption<SortOrder> => ({
+  value: 'desc',
+  label: t('pages.campgrounds.sort.desc'),
+});
 
-export const SORT_ORDER_OPTIONS: SelectOption<SortOrder>[] = [
-  DEFAULT_SORT_ORDER_OPTION,
-  { value: 'asc', label: 'Ascending' },
+export const getSortOrderOptions = (t: TFunction): SelectOption<SortOrder>[] => [
+  getDefaultSortOrderOption(t),
+  { value: 'asc', label: t('pages.campgrounds.sort.asc') },
 ];
