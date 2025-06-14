@@ -14,6 +14,47 @@
     }
   },
   "pages": {
+    "auth": {
+      "signIn": {
+        "title": "Увійти",
+        "form": {
+          "email": {
+            "label": "Email",
+            "required": "Email є обов'язковим",
+            "invalid": "Невірний email"
+          },
+          "password": {
+            "label": "Пароль",
+            "required": "Пароль є обов'язковим"
+          }
+        },
+        "actions": {
+          "signIn": "Увійти",
+          "signUp": "Зареєструватися",
+          "forgotPassword": "Забули пароль?"
+        },
+        "noAccount": "Немає облікового запису?"
+      },
+      "signUp": {
+        "title": "Зареєструватися",
+        "form": {
+          "email": {
+            "label": "Email",
+            "required": "Email є обов'язковим",
+            "invalid": "Невірний email"
+          },
+          "password": {
+            "label": "Пароль",
+            "required": "Пароль є обов'язковим"
+          }
+        },
+        "actions": {
+          "signIn": "Увійти",
+          "signUp": "Зареєструватися"
+        },
+        "haveAccount": "Вже є обліковий запис?"
+      }
+    },
     "home": {
       "hero": {
         "title": "Вас вітає CampZone!",
