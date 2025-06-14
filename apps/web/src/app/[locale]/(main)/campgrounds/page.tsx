@@ -6,6 +6,7 @@ import CampgroundsFilterBar from '@/modules/campgrounds/components/FilterBar';
 import CampgroundsSortBar from '@/modules/campgrounds/components/SortBar';
 import { getSessionUser } from '@/server/session';
 import Alert from '@repo/ui/alert';
+import { getTranslations } from 'next-intl/server';
 import { fetchCampgroundLocations, fetchCampgrounds } from 'src/server/campgrounds';
 import { CampgroundsFilterDto } from 'src/types/campground';
 
@@ -14,12 +15,13 @@ interface CampgroundsPageProps {
 }
 
 export default async function Campgrounds({ searchParams }: CampgroundsPageProps) {
+  const t = await getTranslations();
+
   const filter = (await searchParams) ?? {};
   const user = await getSessionUser();
 
   const { result: campgroundsData, error: campgroundsError } = await fetchCampgrounds(filter);
   const { data: campgrounds, metadata: campgroundsMetadata } = campgroundsData ?? {};
-
   const { result: campgroundLocations, error: campgroundLocationsError } = await fetchCampgroundLocations(filter);
 
   const error = campgroundsError || campgroundLocationsError;
@@ -28,7 +30,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
     throw new Error(typeof error === 'string' ? error : error.join(', '));
   }
 
-  const hasMore = !!campgroundsMetadata?.totalPages && campgroundsMetadata?.totalPages > 1;
+  const hasMoreCampgrounds = !!campgroundsMetadata?.totalPages && campgroundsMetadata?.totalPages > 1;
 
   return (
     <div className="flex flex-col gap-5">
@@ -42,7 +44,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
 
           {!campgrounds?.length && (
             <Alert className="w-full text-center" color="info">
-              Sorry, we couldn't find any campgrounds.
+              {t('pages.campgrounds.noCampgrounds')}
             </Alert>
           )}
 
@@ -52,7 +54,7 @@ export default async function Campgrounds({ searchParams }: CampgroundsPageProps
 
               <CampgroundsList user={user} campgrounds={campgrounds} />
 
-              {hasMore && (
+              {hasMoreCampgrounds && (
                 <Pagination
                   className="mt-5"
                   page={campgroundsMetadata?.page}

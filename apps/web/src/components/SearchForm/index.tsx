@@ -11,6 +11,7 @@ import { ImageType } from '@repo/types';
 import Button from '@repo/ui/button';
 import { SearchIcon } from '@repo/ui/icons';
 import Input from '@repo/ui/input';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { FormEvent, FormHTMLAttributes, useCallback, useState } from 'react';
@@ -37,6 +38,8 @@ const SearchForm = ({
   className,
   ...props
 }: SearchFormProps) => {
+  const t = useTranslations('pages.campgrounds.search');
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -107,24 +110,24 @@ const SearchForm = ({
         updateSearchParams(params);
       } catch (error) {
         console.log(error);
-        setImageError('Failed to upload search image');
+        setImageError(t('image.error'));
       } finally {
         setIsLoading(false);
       }
     },
-    [defaultValue, imageSearch, resolvedImageSource, selectedImage?._id, setImageError, updateSearchParams]
+    [defaultValue, imageSearch, resolvedImageSource, selectedImage?._id, setImageError, t, updateSearchParams]
   );
 
   return (
     <form className={cn('flex w-full flex-col gap-2', className)} onSubmit={handleSearch} {...props}>
       <div className="flex items-center justify-between gap-5">
         <label className={cn('text-lg font-semibold', !label && 'sr-only')} htmlFor={SEARCH_PARAM}>
-          {label ? label : 'Search'}
+          {label ? label : t('label')}
         </label>
 
         {!user && (
           <Link href={routes.signUp()} className="hover:text-accent text-sm text-neutral-500 transition-colors">
-            Sign up to unlock image search
+            {t('image.signUpToUnlock')}
           </Link>
         )}
       </div>
@@ -143,7 +146,7 @@ const SearchForm = ({
           name={SEARCH_PARAM}
           className={cn(resolvedImageSource && !!user && 'pl-14')}
           type="text"
-          placeholder={imageSearch && !!resolvedImageSource ? 'Add to image search' : 'Search'}
+          placeholder={imageSearch && !!resolvedImageSource ? t('image.addToSearch') : t('placeholder')}
           defaultValue={defaultValue}
           size="lg"
         />
