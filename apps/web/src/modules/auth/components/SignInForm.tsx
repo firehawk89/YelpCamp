@@ -11,21 +11,25 @@ import Divider from '@repo/ui/divider';
 import Input from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
 import PasswordInput from '@repo/ui/password-input';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-import { AuthFormFields, authFormSchema } from '../schemas/form.schema';
+import { AuthFormFields, getAuthFormSchema } from '../schemas/form.schema';
 
 interface SignInFormProps extends CardProps {
   returnTo?: string;
 }
 
 const SignInForm = ({ returnTo, className, ...props }: SignInFormProps) => {
+  const t = useTranslations('pages.auth.signIn');
+  const tZod = useTranslations();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<AuthFormFields>({ resolver: zodResolver(authFormSchema) });
+  } = useForm<AuthFormFields>({ resolver: zodResolver(getAuthFormSchema(tZod)) });
 
   const { handleSignIn, error } = useAuthActions();
 
@@ -38,17 +42,17 @@ const SignInForm = ({ returnTo, className, ...props }: SignInFormProps) => {
       )}
 
       <Card className={cn('w-full max-w-96 gap-3', className)} orientation="vertical" {...props}>
-        <h1 className="text-xl font-semibold">Sign In</h1>
+        <h1 className="text-xl font-semibold">{t('title')}</h1>
 
         <Divider />
 
         <form className="flex w-full flex-col gap-3" onSubmit={handleSubmit(handleSignIn)}>
-          <InputWrapper label="Email" inputId="email" error={errors.email?.message}>
+          <InputWrapper label={t('form.email.label')} inputId="email" error={errors.email?.message}>
             <Input {...register('email')} id="email" type="text" />
           </InputWrapper>
 
           <InputWrapper
-            label="Password"
+            label={t('form.password.label')}
             inputId="password"
             error={errors.password?.message}
             // TODO: Add forgot password logic
@@ -62,16 +66,16 @@ const SignInForm = ({ returnTo, className, ...props }: SignInFormProps) => {
           </InputWrapper>
 
           <Button className="mt-1.5" type="submit" isLoading={isSubmitting} variant="accent">
-            Sign In
+            {t('actions.signIn')}
           </Button>
 
           <p className="mt-1 text-center">
-            Not with us yet?{' '}
+            {t('noAccount')}
             <Link
               className="text-accent ml-1 hover:underline"
               href={returnTo ? `/sign-up?${RETURN_TO_PARAM}=${encodeURIComponent(returnTo)}` : '/sign-up'}
             >
-              Sign Up!
+              {t('actions.signUp')}
             </Link>
           </p>
         </form>
