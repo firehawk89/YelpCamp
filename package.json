@@ -6,9 +6,13 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start": "turbo start"
+    "start": "turbo start",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "turbo": "^2.5.2",
