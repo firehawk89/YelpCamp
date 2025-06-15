@@ -8,6 +8,7 @@ import { Campground } from '@/types/campground';
 import { Review } from '@/types/review';
 import { User } from '@/types/user';
 import { PaginatedResponse, PaginationMetadata, ReviewsMetadata } from '@repo/types';
+import { useTranslations } from 'next-intl';
 import { HTMLAttributes, useCallback } from 'react';
 
 import ReviewsHeader from './ReviewsHeader';
@@ -29,6 +30,8 @@ const Reviews = ({
   mode = 'campground',
   ...props
 }: ReviewsProps) => {
+  const t = useTranslations('pages.campground');
+
   const fetchNewPage = useCallback(
     async (newPage: number) => {
       const fetchReviews = mode === 'campground' ? fetchCampgroundReviews : fetchUserReviews;
@@ -36,13 +39,13 @@ const Reviews = ({
 
       if (!targetId) {
         return {
-          error: `Cannot fetch reviews: missing ${mode} ID`,
+          error: t('reviews.errors.missingTargetId', { target: mode }),
         };
       }
 
       return fetchReviews(targetId, { page: newPage.toString() });
     },
-    [campground?._id, mode, user?._id]
+    [campground?._id, mode, user?._id, t]
   );
 
   const {
@@ -54,7 +57,7 @@ const Reviews = ({
   } = usePaginatedData<Review>({
     initialData: reviewsData,
     fetchPageData: fetchNewPage,
-    defaultErrorMessage: 'Failed to load more reviews',
+    defaultErrorMessage: t('reviews.errors.default'),
   });
 
   const { totalPages = 0 } = reviewsData?.metadata ?? {};
@@ -78,7 +81,7 @@ const Reviews = ({
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={fetchNextPage}
-        emptyStateMessage="No reviews yet"
+        emptyStateMessage={t('reviewsCount', { count: 0 })}
         pagination={false}
         {...props}
       >
