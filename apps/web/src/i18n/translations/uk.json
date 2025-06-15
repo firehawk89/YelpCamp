@@ -128,9 +128,80 @@
       },
       "reviewsCount": "{count, plural, =0 {Відгуки відсутні} =1 {# відгук} few {# відгуки} many {# відгуків} other {# відгуків}}"
     },
+    "profile": {
+      "menu": {
+        "profile": "Профіль",
+        "favorites": "Улюблене",
+        "logout": "Вийти"
+      },
+      "tabs": {
+        "overview": "Огляд",
+        "reviews": "Відгуки",
+        "favorites": "Улюблене"
+      },
+      "userInfo": {
+        "joinedOn": "Дата приєднання: {date}"
+      },
+      "personalInfo": {
+        "title": "Персональна інформація",
+        "firstName": "Ім'я",
+        "lastName": "Прізвище",
+        "email": "Email",
+        "password": "Пароль",
+        "changePassword": "Змінити пароль",
+        "actions": {
+          "save": "Зберегти",
+          "cancel": "Скасувати"
+        },
+        "form": {
+          "errors": {
+            "firstName": {
+              "minLength": "Ім'я повинно містити принаймні {min} символів",
+              "maxLength": "Ім'я повинно містити не більше {max} символів"
+            },
+            "lastName": {
+              "minLength": "Прізвище повинно містити принаймні {min} символів",
+              "maxLength": "Прізвище повинно містити не більше {max} символів"
+            },
+            "email": {
+              "invalid": "Невірний email"
+            }
+          }
+        },
+
+        "errors": {
+          "default": "Не вдалося оновити персональну інформацію"
+        }
+      },
+      "favorites": {
+        "emptyState": "Улюблені кемпінги відсутні",
+        "errors": {
+          "default": "Не вдалося завантажити більше улюблених кемпінгів",
+          "missingUserId": "Не вдалося завантажити улюблені кемпінги: відсутній ID користувача"
+        }
+      },
+      "avatarModal": {
+        "title": "Виберіть зображення для профілю",
+        "imageAreaLabel": "Натисніть, щоб вибрати зображення <br /> (або просто перетягніть його сюди)",
+        "minimumImageDimensions": "Мінімальний розмір зображення: {min}x{min}",
+        "maximumImageSize": "Максимальний розмір зображення: {max} KB",
+        "errors": {
+          "default": "Не вдалося оновити аватар. Будь ласка, спробуйте знову.",
+          "failedToSaveCroppedImage": "Не вдалося зберегти обрізане зображення. Будь ласка, спробуйте знову."
+        },
+        "actions": {
+          "chooseAnotherImage": "Обрати інше зображення",
+          "save": "Зберегти",
+          "cancel": "Скасувати"
+        }
+      }
+    },
     "notFound": {
       "title": "Сторінка не знайдена",
       "message": "Сторінка, яку ви шукаєте, не існує або була видалена"
+    },
+    "error": {
+      "title": "Упс, щось пішло не так!"
     }
   },
   "authActions": {
@@ -142,6 +213,7 @@
     }
   },
   "changePassword": {
+    "title": "Оновити пароль",
     "oldPassword": "Старий пароль",
     "newPassword": "Новий пароль",
     "confirmedNewPassword": "Підтвердження нового пароля",
@@ -157,6 +229,12 @@
     "errors": {
       "sizeExceeded": "Розмір зображення перевищує дозволений ліміт у {maxFileSize} KB. Будь ласка, оберіть інше зображення.",
       "dimensionsTooSmall": "Зображення замале. Мінімальний розмір становить {minDimension}x{minDimension} пікселів."
+    }
+  },
+  "imageCrop": {
+    "errors": {
+      "noCropData": "Не вдалося знайти зображення або дані для обрізання.",
+      "canvasInitializationFailed": "Не вдалося ініціалізувати Canvas."
     }
   }
 }

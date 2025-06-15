@@ -3,6 +3,7 @@ import { User } from '@/types/user';
 import { formatDate } from '@/utils/date';
 import { buttonVariants } from '@repo/ui/button';
 import Card from '@repo/ui/card';
+import { getLocale, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 import UserAvatar from './UserAvatar';
@@ -11,7 +12,10 @@ interface UserInfoProps {
   user: User;
 }
 
-const UserInfo = ({ user }: UserInfoProps) => {
+const UserInfo = async ({ user }: UserInfoProps) => {
+  const locale = await getLocale();
+  const t = await getTranslations('pages.profile.userInfo');
+
   const showUserName = user.firstName || user.lastName;
 
   return (
@@ -25,7 +29,9 @@ const UserInfo = ({ user }: UserInfoProps) => {
           </p>
         )}
 
-        <p className="text-center text-sm text-neutral-500">Joined on {formatDate(new Date(user.createdAt))}</p>
+        <p className="text-center text-sm text-neutral-500">
+          {t('joinedOn', { date: await formatDate(new Date(user.createdAt), locale) })}
+        </p>
       </div>
 
       <Link href={routes.campgrounds.new()} className={buttonVariants({ variant: 'success' })}>

@@ -1,6 +1,7 @@
 'use client';
 
 import AppError, { ErrorType } from '@/components/AppError';
+import { useTranslations } from 'next-intl';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
@@ -8,12 +9,14 @@ interface ErrorPageProps {
 }
 
 export default function Error({ error, reset }: ErrorPageProps) {
+  const t = useTranslations('pages.error');
+
   console.error('error', error);
 
   return (
     <AppError
       code={ErrorType.InternalServerError}
-      title="Oops, something went wrong!"
+      title={t('title')}
       message={error.message}
       onTryAgain={reset}
     />

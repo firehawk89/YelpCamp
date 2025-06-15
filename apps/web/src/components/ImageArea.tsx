@@ -2,6 +2,7 @@
 
 import { cn } from '@/utils/misc';
 import { UploadDocumentIcon } from '@repo/ui/icons';
+import { useTranslations } from 'next-intl';
 import { HTMLAttributes } from 'react';
 import { useDropzone } from 'react-dropzone';
 
@@ -12,14 +13,11 @@ export interface ImageAreaProps extends HTMLAttributes<HTMLDivElement> {
   iconClassName?: string;
 }
 
-const ImageArea = ({
-  onImageDrop,
-  label = 'Click to select an image <br /> (or just drop it here)',
-  isError,
-  iconClassName,
-  className,
-  ...props
-}: ImageAreaProps) => {
+const ImageArea = ({ onImageDrop, label, isError, iconClassName, className, ...props }: ImageAreaProps) => {
+  const t = useTranslations('pages.profile.avatarModal');
+
+  const imageAreaLabel = label || t('imageAreaLabel');
+
   const { getRootProps, isDragActive } = useDropzone({ onDrop: onImageDrop });
 
   return (
@@ -35,7 +33,7 @@ const ImageArea = ({
       <div className="flex flex-col items-center gap-2 text-neutral-500">
         <UploadDocumentIcon className={cn('size-16', iconClassName)} />
 
-        <p className="text-center" dangerouslySetInnerHTML={{ __html: label }} />
+        <p className="text-center" dangerouslySetInnerHTML={{ __html: imageAreaLabel }} />
       </div>
     </div>
   );

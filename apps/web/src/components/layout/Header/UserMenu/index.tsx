@@ -6,6 +6,7 @@ import { cn } from '@/utils/misc';
 import Avatar from '@repo/ui/avatar';
 import { HeartIcon, LogOutIcon, UserIcon } from '@repo/ui/icons';
 import Select, { SelectOption } from '@repo/ui/select';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { routes } from 'src/app/routes';
 
@@ -19,15 +20,22 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ user, onLogout, className, containerClassName }: UserMenuProps) => {
+  const t = useTranslations('pages.profile.menu');
   const { handleLogout } = useAuthActions({ onLogout });
 
   const userMenuOptions = useMemo<SelectOption[]>(
     () => [
-      { label: 'Profile', value: 'profile', href: routes.profile(), className: 'hover:bg-info', icon: <UserIcon /> },
-      { label: 'Favorites', value: 'favorites', href: routes.profile('favorites'), icon: <HeartIcon /> },
-      { label: 'Log Out', value: 'logout', onClick: handleLogout, className: 'hover:bg-danger', icon: <LogOutIcon /> },
+      { label: t('profile'), value: 'profile', href: routes.profile(), className: 'hover:bg-info', icon: <UserIcon /> },
+      { label: t('favorites'), value: 'favorites', href: routes.profile('favorites'), icon: <HeartIcon /> },
+      {
+        label: t('logout'),
+        value: 'logout',
+        onClick: handleLogout,
+        className: 'hover:bg-danger',
+        icon: <LogOutIcon />,
+      },
     ],
-    [handleLogout]
+    [handleLogout, t]
   );
 
   return (

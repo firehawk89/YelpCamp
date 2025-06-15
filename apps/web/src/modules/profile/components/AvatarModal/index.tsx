@@ -8,6 +8,7 @@ import { MAX_AVATAR_SIZE_KB, MIN_AVATAR_DIMENSION } from '@repo/constants';
 import Alert from '@repo/ui/alert';
 import { CardProps } from '@repo/ui/card';
 import Tooltip from '@repo/ui/tooltip';
+import { useTranslations } from 'next-intl';
 import { InfoIcon } from 'node_modules/@repo/ui/src/icons/InfoIcon';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -25,6 +26,8 @@ interface AvatarEditModalProps extends Omit<CardProps, 'orientation'> {
 }
 
 const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: AvatarEditModalProps) => {
+  const t = useTranslations('pages.profile.avatarModal');
+
   const imageRef = useRef<HTMLImageElement | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -47,7 +50,7 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
     const croppedImage = generateCroppedImage(imageRef.current);
 
     if (!croppedImage) {
-      setImageError('Failed to save cropped image. Please try again.');
+      setImageError(t('errors.failedToSaveCroppedImage'));
       return;
     }
 
@@ -60,11 +63,11 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
       onSave?.(croppedImage);
       onClose();
     } catch {
-      setImageError('An error occurred when trying to update an avatar. Please try again.');
+      setImageError(t('errors.default'));
     } finally {
       setIsLoading(false);
     }
-  }, [generateCroppedImage, onClose, onSave, setImageError, user._id]);
+  }, [generateCroppedImage, onClose, onSave, setImageError, t, user._id]);
 
   const resetModalState = useCallback(() => {
     setCrop(undefined);
@@ -87,7 +90,7 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
       className={className}
       isHidden={!isOpen}
       onClose={onClose}
-      title="Select profile image"
+      title={t('title')}
       renderHeader={({ titleSlot, closeButtonSlot }) => (
         <>
           <div className="flex items-center gap-1.5">
@@ -96,8 +99,8 @@ const AvatarModal = ({ user, isOpen, onSave, onClose, className, ...props }: Ava
               tooltipClassName="w-max"
               label={
                 <p>
-                  Minimum image dimensions: {MIN_AVATAR_DIMENSION}x{MIN_AVATAR_DIMENSION} <br />
-                  Maximum image size: {MAX_AVATAR_SIZE_KB} KB
+                  {t('minimumImageDimensions', { min: MIN_AVATAR_DIMENSION })} <br />
+                  {t('maximumImageSize', { max: MAX_AVATAR_SIZE_KB })}
                 </p>
               }
             >
