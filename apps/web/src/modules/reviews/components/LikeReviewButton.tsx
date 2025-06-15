@@ -8,6 +8,7 @@ import { cn } from '@/utils/misc';
 import Button, { ButtonProps } from '@repo/ui/button';
 import { ThumbUpIcon } from '@repo/ui/icons';
 import Tooltip from '@repo/ui/tooltip';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
@@ -18,7 +19,9 @@ interface LikeReviewButtonProps extends Omit<ButtonProps, 'icon'> {
 }
 
 const LikeReviewButton = ({ userId, review, likedBy, className, ...props }: LikeReviewButtonProps) => {
+  const t = useTranslations('pages.campground.reviews');
   const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const isOwnReview = userId === review.author._id;
@@ -48,7 +51,7 @@ const LikeReviewButton = ({ userId, review, likedBy, className, ...props }: Like
   return isOwnReview ? (
     <Button className={cn({ 'text-accent': isLikedByUser }, className)} icon={<ThumbUpIcon />} disabled {...props} />
   ) : (
-    <Tooltip label="Helpful">
+    <Tooltip label={t('actions.helpful')}>
       <Button
         className={cn({ 'text-accent': isLikedByUser }, className)}
         onClick={handleLikeClick}

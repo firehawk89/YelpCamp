@@ -6,6 +6,7 @@ import { POSITIVE_RATING_PERCENTAGE_THRESHOLD } from '@repo/constants';
 import { ReviewsMetadata } from '@repo/types';
 import Divider from '@repo/ui/divider';
 import { ThumbDownIcon, ThumbUpIcon } from '@repo/ui/icons';
+import { useTranslations } from 'next-intl';
 import { HTMLAttributes, useMemo } from 'react';
 
 import CampgroundRating from '../../campgrounds/components/CampgroundRating';
@@ -19,6 +20,8 @@ interface ReviewsHeaderProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className, ...props }: ReviewsHeaderProps) => {
+  const t = useTranslations('pages.campground');
+
   const { recommendationPercentage } = reviewsMetadata ?? {};
 
   const isRecommended = recommendationPercentage
@@ -33,7 +36,7 @@ const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex justify-between gap-5">
-        <h2 className="text-2xl font-bold">Reviews</h2>
+        <h2 className="text-2xl font-bold">{t('reviews.title')}</h2>
         {canUserAddReview && <AddReviewButton userId={userId} campground={campground} />}
       </div>
 
@@ -46,10 +49,10 @@ const ReviewsHeader = ({ userId, campground, reviews, reviewsMetadata, className
           {reviews?.length ? (
             <>
               {isRecommended ? <ThumbUpIcon className="text-success" /> : <ThumbDownIcon className="text-danger" />}
-              {recommendationPercentage}% of travelers recommend this campground
+              {t('reviews.recommendationPercentage', { percentage: recommendationPercentage ?? 0 })}
             </>
           ) : (
-            'Be the first to write a review!'
+            t('reviews.emptyState')
           )}
         </p>
       </div>

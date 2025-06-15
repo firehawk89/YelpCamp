@@ -121,9 +121,52 @@
       },
       "noRating": "No rating yet",
       "reviews": {
+        "title": "Reviews",
+        "emptyState": "Be the first to write a review!",
+        "recommendationPercentage": "{percentage, plural, =0 {No recommendations yet} other {{percentage}% of travelers recommend this campground}}",
+        "deleteModal": {
+          "title": "Delete Review",
+          "description": "Are you sure you want to delete this review? This action cannot be undone."
+        },
+        "addReviewModal": {
+          "title": "Review the {campground}"
+        },
+        "form": {
+          "rating": {
+            "label": "Rating",
+            "errors": {
+              "required": "Rating is required",
+              "minRating": "Rating must be at least {minRating}",
+              "maxRating": "Rating must be at most {maxRating}"
+            }
+          },
+          "title": {
+            "label": "Title",
+            "errors": {
+              "minLength": "Title must be at least {minLength} characters long",
+              "maxLength": "Title must be at most {maxLength} characters long"
+            }
+          },
+          "body": {
+            "label": "Describe your experience",
+            "errors": {
+              "required": "Body is required",
+              "minLength": "Body must be at least {minLength} characters long",
+              "maxLength": "Body must be at most {maxLength} characters long"
+            }
+          },
+          "actions": {
+            "submit": "Submit"
+          }
+        },
         "errors": {
           "default": "Failed to load more reviews",
           "missingTargetId": "Cannot fetch reviews: missing {target} ID"
+        },
+        "actions": {
+          "delete": "Delete",
+          "addReview": "Add Review",
+          "helpful": "Helpful"
         }
       },
       "reviewsCount": "{count, plural, =0 {No reviews yet} =1 {# review} few {# reviews} many {# reviews} other {# reviews}}"
@@ -235,5 +278,9 @@
       "noCropData": "No image or crop data found.",
       "canvasInitializationFailed": "Failed to initialize canvas."
     }
+  },
+  "confirmationModal": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   }
 }

@@ -121,9 +121,52 @@
       },
       "noRating": "Немає оцінки",
       "reviews": {
+        "title": "Відгуки",
+        "emptyState": "Будьте першим, хто напише відгук!",
+        "recommendationPercentage": "{percentage, plural, =0 {Немає рекомендацій} other {{percentage}% відвідувачів рекомендують цей кемпінг}}",
+        "deleteModal": {
+          "title": "Видалити відгук",
+          "description": "Ви впевнені, що хочете видалити цей відгук? Ця дія не може бути скасована."
+        },
+        "addReviewModal": {
+          "title": "Відгук про {campground}"
+        },
+        "form": {
+          "rating": {
+            "label": "Рейтинг",
+            "errors": {
+              "required": "Рейтинг є обов'язковим",
+              "minRating": "Рейтинг повинен бути не менше {minRating}",
+              "maxRating": "Рейтинг повинен бути не більше {maxRating}"
+            }
+          },
+          "title": {
+            "label": "Заголовок",
+            "errors": {
+              "minLength": "Заголовок повинен містити принаймні {minLength} символів",
+              "maxLength": "Заголовок повинен містити не більше {maxLength} символів"
+            }
+          },
+          "body": {
+            "label": "Опишіть своє враження",
+            "errors": {
+              "required": "Опис є обов'язковим",
+              "minLength": "Опис повинен містити принаймні {minLength} символів",
+              "maxLength": "Опис повинен містити не більше {maxLength} символів"
+            }
+          },
+          "actions": {
+            "submit": "Відправити"
+          }
+        },
         "errors": {
           "default": "Не вдалося завантажити більше відгуків",
           "missingTargetId": "Не вдалося завантажити відгуки: відсутній ID {target, select, campground {кемпінгу} user {користувача} other {}}"
+        },
+        "actions": {
+          "delete": "Видалити",
+          "addReview": "Додати відгук",
+          "helpful": "Корисний"
         }
       },
       "reviewsCount": "{count, plural, =0 {Відгуки відсутні} =1 {# відгук} few {# відгуки} many {# відгуків} other {# відгуків}}"
@@ -236,5 +279,9 @@
       "noCropData": "Не вдалося знайти зображення або дані для обрізання.",
       "canvasInitializationFailed": "Не вдалося ініціалізувати Canvas."
     }
+  },
+  "confirmationModal": {
+    "confirm": "Підтвердити",
+    "cancel": "Скасувати"
   }
 }
