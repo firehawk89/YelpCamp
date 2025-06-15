@@ -1,6 +1,7 @@
-import { DEFAULT_LOCALE } from './constants/defaults';
+import { DEFAULT_LOCALE } from '@/i18n/routing';
 
-export const formatDate = (
+export const formatDate = async (
   date: Date,
+  locales: Intl.LocalesArgument = DEFAULT_LOCALE,
   options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'long', year: 'numeric' }
-) => new Intl.DateTimeFormat(DEFAULT_LOCALE, options).format(date);
+) => new Intl.DateTimeFormat(locales, options).format(date);

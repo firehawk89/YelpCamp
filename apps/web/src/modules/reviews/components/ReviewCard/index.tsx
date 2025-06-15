@@ -13,16 +13,17 @@ import ReviewMenu from '../ReviewMenu';
 
 interface ReviewProps extends HTMLAttributes<HTMLDivElement> {
   review: Review;
+  locale: Intl.LocalesArgument;
   user?: User | null;
   mode?: 'campground' | 'user';
 }
 
-const ReviewCard = ({ user, review, mode = 'campground', className, ...props }: ReviewProps) => {
+const ReviewCard = ({ user, locale, review, mode = 'campground', className, ...props }: ReviewProps) => {
   const { createdAt, likedBy, author, body, title, rating } = review;
 
   const isUserReview = user?._id === author._id;
   const isUserProfileReview = mode === 'user' && isUserReview;
-  const createdAtDate = formatDate(new Date(createdAt));
+  const createdAtDate = formatDate(new Date(createdAt), locale);
   const likesCount = likedBy.length;
 
   return (
