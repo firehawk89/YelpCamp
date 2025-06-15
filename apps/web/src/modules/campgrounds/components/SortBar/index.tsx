@@ -12,7 +12,8 @@ import { getSortByOptions, getSortOrderOptions } from './helpers';
 import SortControl from './SortControl';
 
 const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
-  const t = useTranslations();
+  const t = useTranslations('pages.campgrounds.sort');
+  const tSortOptions = useTranslations();
 
   const { selectedSortByOption, selectedSortOrderOption, applyFilter } = useFilter();
 
@@ -20,8 +21,8 @@ const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivEleme
     <div className={cn('flex gap-4', className)} {...props}>
       <div className="flex h-full gap-x-4 gap-y-2 max-sm:flex-col sm:items-center sm:py-2 lg:py-0">
         <SortControl
-          label={t('pages.campgrounds.sort.sortBy')}
-          options={getSortByOptions(t)}
+          label={t('sortBy')}
+          options={getSortByOptions(tSortOptions)}
           selectedOption={selectedSortByOption}
           handleSort={(sortOption) => applyFilter({ param: SORT_BY_PARAM, value: sortOption.value })}
         />
@@ -29,8 +30,8 @@ const CampgroundsSortBar = ({ className, ...props }: HTMLAttributes<HTMLDivEleme
         <Divider className="max-sm:hidden" orientation="vertical" />
 
         <SortControl
-          label={t('pages.campgrounds.sort.sortOrder')}
-          options={getSortOrderOptions(t)}
+          label={t('sortOrder')}
+          options={getSortOrderOptions(tSortOptions)}
           selectedOption={selectedSortOrderOption}
           handleSort={(sortOption) => applyFilter({ param: SORT_ORDER_PARAM, value: sortOption.value })}
         />
