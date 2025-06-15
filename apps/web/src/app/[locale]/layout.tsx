@@ -6,7 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { ReactNode } from 'react';
 import { nunito } from 'src/app/fonts';
 
-import Providers from './_providers';
+import Providers from '../_providers';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

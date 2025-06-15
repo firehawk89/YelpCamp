@@ -109,7 +109,7 @@ const SearchForm = ({
 
         updateSearchParams(params);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setImageError(t('image.error'));
       } finally {
         setIsLoading(false);
