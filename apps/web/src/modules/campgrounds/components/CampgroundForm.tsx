@@ -100,7 +100,7 @@ const CampgroundForm = ({ user, campground, className, ...props }: CampgroundFor
   const onSubmit: SubmitHandler<CampgroundFormFields> = useCallback(
     async (data) => {
       if (!user?._id) return;
-      console.log(data);
+
       setSaveErrors(null);
 
       try {
@@ -118,7 +118,6 @@ const CampgroundForm = ({ user, campground, className, ...props }: CampgroundFor
         }
 
         if (campground) {
-          console.log(campgroundData);
           await updateCampground(campground._id, campgroundData);
         } else {
           await createCampground(campgroundData);

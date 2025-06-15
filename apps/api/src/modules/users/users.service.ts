@@ -241,7 +241,7 @@ export class UsersService {
             limit: DEFAULT_PAGE_LIMIT,
             offset: skip,
           };
-      console.log(result);
+
       return result;
     } catch (error) {
       handleError(error, UsersService.name);
