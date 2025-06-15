@@ -23,6 +23,7 @@ interface SignUpFormProps extends CardProps {
 
 const SignUpForm = ({ returnTo, className, ...props }: SignUpFormProps) => {
   const t = useTranslations('pages.auth.signUp');
+  const tForm = useTranslations('pages.auth.form');
   const tZod = useTranslations();
 
   const {
@@ -47,11 +48,11 @@ const SignUpForm = ({ returnTo, className, ...props }: SignUpFormProps) => {
         <Divider />
 
         <form className="flex w-full flex-col gap-3" onSubmit={handleSubmit(handleSignUp)}>
-          <InputWrapper label={t('form.email.label')} inputId="email" error={errors.email?.message}>
+          <InputWrapper label={tForm('email.label')} inputId="email" error={errors.email?.message}>
             <Input {...register('email')} id="email" type="text" />
           </InputWrapper>
 
-          <InputWrapper label={t('form.password.label')} inputId="password" error={errors.password?.message}>
+          <InputWrapper label={tForm('password.label')} inputId="password" error={errors.password?.message}>
             <PasswordInput {...register('password')} id="password" />
           </InputWrapper>
 

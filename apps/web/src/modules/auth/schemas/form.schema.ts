@@ -1,16 +1,15 @@
 import { TFunction } from '@/types/misc';
-import { Messages } from 'next-intl';
 import { z } from 'zod';
 
 import { getPasswordSchema } from './password.schema';
 
-export const getAuthFormSchema = (t: TFunction<Messages>) =>
+export const getAuthFormSchema = (t: TFunction) =>
   z
     .object({
       email: z
-        .string({ required_error: t('pages.auth.signIn.form.email.required') })
-        .email({ message: t('pages.auth.signIn.form.email.invalid') }),
-      password: getPasswordSchema(),
+        .string({ required_error: t('pages.auth.form.email.errors.required') })
+        .email({ message: t('pages.auth.form.email.errors.invalid') }),
+      password: getPasswordSchema(t),
     })
     .required();
 
