@@ -54,7 +54,7 @@ jobs:
         run: pnpm --version
 
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install
 
       - name: Run format check
         run: pnpm run format:check
