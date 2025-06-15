@@ -1,13 +1,8 @@
-'use client';
-
 import AppError, { ErrorType } from '@/components/AppError';
+import { getTranslations } from 'next-intl/server';
 
-export default function NotFound() {
-  return (
-    <AppError
-      code={ErrorType.NotFound}
-      title="Campground not found"
-      message="The campground you are looking for does not exist or might have been removed"
-    />
-  );
+export default async function NotFound() {
+  const t = await getTranslations('pages.campground.notFound');
+
+  return <AppError code={ErrorType.NotFound} title={t('title')} message={t('message')} />;
 }
