@@ -17,17 +17,6 @@
     "auth": {
       "signIn": {
         "title": "Sign In",
-        "form": {
-          "email": {
-            "label": "Email",
-            "required": "Email is required",
-            "invalid": "Invalid email address"
-          },
-          "password": {
-            "label": "Password",
-            "required": "Password is required"
-          }
-        },
         "actions": {
           "signIn": "Sign In",
           "signUp": "Sign Up",
@@ -37,22 +26,29 @@
       },
       "signUp": {
         "title": "Sign Up",
-        "form": {
-          "email": {
-            "label": "Email",
-            "required": "Email is required",
-            "invalid": "Invalid email address"
-          },
-          "password": {
-            "label": "Password",
-            "required": "Password is required"
-          }
-        },
         "actions": {
           "signIn": "Sign In",
           "signUp": "Sign Up"
         },
         "haveAccount": "Already have an account?"
+      },
+      "form": {
+        "email": {
+          "label": "Email",
+          "errors": {
+            "required": "Email is required",
+            "invalid": "Invalid email address"
+          }
+        },
+        "password": {
+          "label": "Password",
+          "errors": {
+            "length": "{label} must be at least {minLength} characters long",
+            "lowercase": "{label} must contain at least one lowercase letter",
+            "uppercase": "{label} must contain at least one uppercase letter",
+            "number": "{label} must contain at least one number"
+          }
+        }
       }
     },
     "home": {
@@ -114,9 +110,23 @@
       },
       "list": {
         "exactMatch": "Exact match",
-        "match": "{{similarity}}% match"
+        "match": "{similarity}% match"
       },
       "noCampgrounds": "Sorry, we couldn't find any campgrounds."
+    },
+    "campground": {
+      "notFound": {
+        "title": "Campground not found",
+        "message": "The campground you are looking for does not exist or might have been removed"
+      },
+      "noRating": "No rating yet",
+      "reviews": {
+        "errors": {
+          "default": "Failed to load more reviews",
+          "missingTargetId": "Cannot fetch reviews: missing {target} ID"
+        }
+      },
+      "reviewsCount": "{count, plural, =0 {No reviews yet} =1 {# review} few {# reviews} many {# reviews} other {# reviews}}"
     }
   },
   "authActions": {
@@ -127,10 +137,22 @@
       "logout": "Failed to logout. Please try again."
     }
   },
+  "changePassword": {
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "confirmedNewPassword": "Confirmed New Password",
+    "actions": {
+      "save": "Save"
+    },
+    "errors": {
+      "newPasswordMustMatchConfirmed": "New password and confirmed new password must match",
+      "newPasswordCannotBeTheSameAsOld": "New password cannot be the same as the old password"
+    }
+  },
   "imageSelect": {
     "errors": {
-      "sizeExceeded": "Image size exceeds the limit of {{maxFileSize}} KB. Please select other image.",
-      "dimensionsTooSmall": "Image dimensions are too small. Minimum size is {{minDimension}}x{{minDimension}} pixels."
+      "sizeExceeded": "Image size exceeds the limit of {maxFileSize} KB. Please select other image.",
+      "dimensionsTooSmall": "Image dimensions are too small. Minimum size is {minDimension}x{minDimension} pixels."
     }
   }
 }

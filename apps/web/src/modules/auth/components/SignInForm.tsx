@@ -23,6 +23,7 @@ interface SignInFormProps extends CardProps {
 
 const SignInForm = ({ returnTo, className, ...props }: SignInFormProps) => {
   const t = useTranslations('pages.auth.signIn');
+  const tForm = useTranslations('pages.auth.form');
   const tZod = useTranslations();
 
   const {
@@ -47,12 +48,12 @@ const SignInForm = ({ returnTo, className, ...props }: SignInFormProps) => {
         <Divider />
 
         <form className="flex w-full flex-col gap-3" onSubmit={handleSubmit(handleSignIn)}>
-          <InputWrapper label={t('form.email.label')} inputId="email" error={errors.email?.message}>
+          <InputWrapper label={tForm('email.label')} inputId="email" error={errors.email?.message}>
             <Input {...register('email')} id="email" type="text" />
           </InputWrapper>
 
           <InputWrapper
-            label={t('form.password.label')}
+            label={tForm('password.label')}
             inputId="password"
             error={errors.password?.message}
             // TODO: Add forgot password logic

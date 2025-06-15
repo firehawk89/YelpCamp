@@ -17,17 +17,6 @@
     "auth": {
       "signIn": {
         "title": "Увійти",
-        "form": {
-          "email": {
-            "label": "Email",
-            "required": "Email є обов'язковим",
-            "invalid": "Невірний email"
-          },
-          "password": {
-            "label": "Пароль",
-            "required": "Пароль є обов'язковим"
-          }
-        },
         "actions": {
           "signIn": "Увійти",
           "signUp": "Зареєструватися",
@@ -37,22 +26,29 @@
       },
       "signUp": {
         "title": "Зареєструватися",
-        "form": {
-          "email": {
-            "label": "Email",
-            "required": "Email є обов'язковим",
-            "invalid": "Невірний email"
-          },
-          "password": {
-            "label": "Пароль",
-            "required": "Пароль є обов'язковим"
-          }
-        },
         "actions": {
           "signIn": "Увійти",
           "signUp": "Зареєструватися"
         },
         "haveAccount": "Вже є обліковий запис?"
+      },
+      "form": {
+        "email": {
+          "label": "Email",
+          "errors": {
+            "required": "Email є обов'язковим",
+            "invalid": "Невірний email"
+          }
+        },
+        "password": {
+          "label": "Пароль",
+          "errors": {
+            "length": "{label} повинен мати довжину не менше {minLength} символів",
+            "lowercase": "{label} повинен містити принаймні одну маленьку літеру",
+            "uppercase": "{label} повинен містити принаймні одну велику літеру",
+            "number": "{label} повинен містити принаймні одну цифру"
+          }
+        }
       }
     },
     "home": {
@@ -114,9 +110,23 @@
       },
       "list": {
         "exactMatch": "Точний збіг",
-        "match": "{{similarity}}% збіг"
+        "match": "{similarity}% збіг"
       },
       "noCampgrounds": "На жаль, ми не знайшли жодного кемпінгу."
+    },
+    "campground": {
+      "notFound": {
+        "title": "Кемпінг не знайдено",
+        "message": "Кемпінг, який ви шукаєте, не існує або був видалений"
+      },
+      "noRating": "Немає оцінки",
+      "reviews": {
+        "errors": {
+          "default": "Не вдалося завантажити більше відгуків",
+          "missingTargetId": "Не вдалося завантажити відгуки: відсутній ID {target, select, campground {кемпінгу} user {користувача} other {}}"
+        }
+      },
+      "reviewsCount": "{count, plural, =0 {Відгуки відсутні} =1 {# відгук} few {# відгуки} many {# відгуків} other {# відгуків}}"
     }
   },
   "authActions": {
@@ -127,10 +137,22 @@
       "logout": "Не вдалося вийти. Будь ласка, спробуйте знову."
     }
   },
+  "changePassword": {
+    "oldPassword": "Старий пароль",
+    "newPassword": "Новий пароль",
+    "confirmedNewPassword": "Підтвердження нового пароля",
+    "actions": {
+      "save": "Зберегти"
+    },
+    "errors": {
+      "newPasswordMustMatchConfirmed": "Новий пароль повинен співпадати з підтвердженим новим паролем",
+      "newPasswordCannotBeTheSameAsOld": "Новий пароль не може бути таким самим, як старий пароль"
+    }
+  },
   "imageSelect": {
     "errors": {
-      "sizeExceeded": "Розмір зображення перевищує дозволений ліміт у {{maxFileSize}} KB. Будь ласка, оберіть інше зображення.",
-      "dimensionsTooSmall": "Зображення замале. Мінімальний розмір становить {{minDimension}}x{{minDimension}} пікселів."
+      "sizeExceeded": "Розмір зображення перевищує дозволений ліміт у {maxFileSize} KB. Будь ласка, оберіть інше зображення.",
+      "dimensionsTooSmall": "Зображення замале. Мінімальний розмір становить {minDimension}x{minDimension} пікселів."
     }
   }
 }

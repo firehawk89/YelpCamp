@@ -11,11 +11,12 @@ import Button from '@repo/ui/button';
 import { CardProps } from '@repo/ui/card';
 import InputWrapper from '@repo/ui/input-wrapper';
 import PasswordInput from '@repo/ui/password-input';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { ChangePasswordFormFields, changePasswordFormSchema } from '../../schemas/change-password.schema';
+import { ChangePasswordFormFields, getChangePasswordFormSchema } from '../../schemas/change-password.schema';
 
 interface ChangePasswordModalProps extends Omit<CardProps, 'orientation'> {
   user: User;
@@ -25,8 +26,10 @@ interface ChangePasswordModalProps extends Omit<CardProps, 'orientation'> {
 }
 
 const ChangePasswordModal = ({ user, isOpen, onClose, className, ...props }: ChangePasswordModalProps) => {
-  const router = useRouter();
+  const t = useTranslations('changePassword');
+  const tZod = useTranslations();
 
+  const router = useRouter();
   const [saveErrors, setSaveErrors] = useState<string[] | null>(null);
 
   const {
@@ -35,7 +38,7 @@ const ChangePasswordModal = ({ user, isOpen, onClose, className, ...props }: Cha
     reset,
     formState: { isSubmitting, errors },
   } = useForm<ChangePasswordFormFields>({
-    resolver: zodResolver(changePasswordFormSchema),
+    resolver: zodResolver(getChangePasswordFormSchema(tZod)),
   });
 
   const onSubmit: SubmitHandler<ChangePasswordFormFields> = async (data) => {
@@ -66,28 +69,28 @@ const ChangePasswordModal = ({ user, isOpen, onClose, className, ...props }: Cha
         <ErrorAlertList errors={saveErrors} />
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <InputWrapper inputId="oldPassword" label="Old Password" error={errors.oldPassword?.message}>
-            <PasswordInput {...register('oldPassword')} id="oldPassword" placeholder="Old Password" />
+          <InputWrapper inputId="oldPassword" label={t('oldPassword')} error={errors.oldPassword?.message}>
+            <PasswordInput {...register('oldPassword')} id="oldPassword" placeholder={t('oldPassword')} />
           </InputWrapper>
 
-          <InputWrapper inputId="newPassword" label="New Password" error={errors.newPassword?.message}>
-            <PasswordInput {...register('newPassword')} id="newPassword" placeholder="New Password" />
+          <InputWrapper inputId="newPassword" label={t('newPassword')} error={errors.newPassword?.message}>
+            <PasswordInput {...register('newPassword')} id="newPassword" placeholder={t('newPassword')} />
           </InputWrapper>
 
           <InputWrapper
             inputId="confirmedNewPassword"
-            label="Confirm New Password"
+            label={t('confirmedNewPassword')}
             error={errors.confirmedNewPassword?.message}
           >
             <PasswordInput
               {...register('confirmedNewPassword')}
               id="confirmedNewPassword"
-              placeholder="Confirm New Password"
+              placeholder={t('confirmedNewPassword')}
             />
           </InputWrapper>
 
           <Button className="ml-auto min-w-20" type="submit" variant="outline" color="info" isLoading={isSubmitting}>
-            Save
+            {t('actions.save')}
           </Button>
         </form>
       </div>
