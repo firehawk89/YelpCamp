@@ -9,10 +9,11 @@ import { MAX_REVIEW_BODY_LENGTH, MAX_REVIEW_TITLE_LENGTH } from '@repo/constants
 import Button from '@repo/ui/button';
 import Input, { inputVariants } from '@repo/ui/input';
 import InputWrapper from '@repo/ui/input-wrapper';
+import { useTranslations } from 'next-intl';
 import { FormHTMLAttributes } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import { ReviewFormFields, reviewFormSchema } from '../schemas/form.schema';
+import { getReviewFormSchema, ReviewFormFields } from '../schemas/form.schema';
 
 interface ReviewFormProps extends FormHTMLAttributes<HTMLFormElement> {
   campground: Campground;
@@ -20,13 +21,16 @@ interface ReviewFormProps extends FormHTMLAttributes<HTMLFormElement> {
 }
 
 const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProps) => {
+  const t = useTranslations('pages.campground.reviews.form');
+  const tZod = useTranslations();
+
   const {
     register,
     watch,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<ReviewFormFields>({ defaultValues: { title: null }, resolver: zodResolver(reviewFormSchema) });
+  } = useForm<ReviewFormFields>({ defaultValues: { title: '' }, resolver: zodResolver(getReviewFormSchema(tZod)) });
 
   const enteredTitleLength = watch('title')?.length || 0;
   const enteredBodyLength = watch('body')?.length || 0;
@@ -42,7 +46,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
 
   return (
     <form className={cn('flex flex-col gap-5', className)} onSubmit={handleSubmit(onSubmit)} {...props}>
-      <InputWrapper label="Rating" inputId="rating" error={errors.rating?.message} required>
+      <InputWrapper label={t('rating.label')} inputId="rating" error={errors.rating?.message} required>
         <Controller
           control={control}
           name="rating"
@@ -51,7 +55,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
       </InputWrapper>
 
       <InputWrapper
-        label="Title"
+        label={t('title.label')}
         inputId="title"
         error={errors.title?.message}
         helperElement={
@@ -64,7 +68,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
       </InputWrapper>
 
       <InputWrapper
-        label="Describe your experience"
+        label={t('body.label')}
         inputId="body"
         error={errors.body?.message}
         required
@@ -84,7 +88,7 @@ const ReviewForm = ({ campground, onClose, className, ...props }: ReviewFormProp
       </InputWrapper>
 
       <Button className="mt-1.5" type="submit" isLoading={isSubmitting} variant="accent">
-        Submit a review
+        {t('actions.submit')}
       </Button>
     </form>
   );

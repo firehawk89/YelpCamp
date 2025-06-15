@@ -6,6 +6,7 @@ import { deleteReview } from '@/server/reviews';
 import { Review } from '@/types/review';
 import { DeleteIcon } from '@repo/ui/icons';
 import { SelectOption } from '@repo/ui/select';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface ReviewMenuProps {
@@ -13,6 +14,8 @@ interface ReviewMenuProps {
 }
 
 const ReviewMenu = ({ reviewId }: ReviewMenuProps) => {
+  const t = useTranslations('pages.campground.reviews');
+
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,7 +38,7 @@ const ReviewMenu = ({ reviewId }: ReviewMenuProps) => {
 
   const options: SelectOption[] = [
     {
-      label: 'Delete',
+      label: t('actions.delete'),
       value: 'delete',
       onClick: () => setIsReviewModalOpen(true),
       className: 'hover:bg-danger hover:text-white',
@@ -49,8 +52,8 @@ const ReviewMenu = ({ reviewId }: ReviewMenuProps) => {
 
       <ConfirmationModal
         isHidden={!isReviewModalOpen}
-        title="Delete Review"
-        description="Are you sure you want to delete this review? This action cannot be undone."
+        title={t('deleteModal.title')}
+        description={t('deleteModal.description')}
         onConfirm={handleDeleteReview}
         onClose={() => setIsReviewModalOpen(false)}
         isLoading={isLoading}

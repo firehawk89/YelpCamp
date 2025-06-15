@@ -1,4 +1,5 @@
 import Button from '@repo/ui/button';
+import { useTranslations } from 'next-intl';
 
 import Modal, { ModalProps } from './Modal';
 
@@ -12,27 +13,31 @@ interface ConfirmationModalProps extends ModalProps {
 
 const ConfirmationModal = ({
   description,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   onConfirm,
   isLoading,
   ...props
-}: ConfirmationModalProps) => (
-  <Modal className="gap-3" {...props}>
-    <div className="flex flex-col gap-4">
-      <p>{description}</p>
+}: ConfirmationModalProps) => {
+  const t = useTranslations('confirmationModal');
 
-      <div className="ml-auto flex gap-2">
-        <Button onClick={props.onClose} variant="outline" color="info">
-          {cancelText}
-        </Button>
+  return (
+    <Modal className="gap-3" {...props}>
+      <div className="flex flex-col gap-4">
+        <p>{description}</p>
 
-        <Button onClick={onConfirm} variant="accent" isLoading={isLoading}>
-          {confirmText}
-        </Button>
+        <div className="ml-auto flex gap-2">
+          <Button onClick={props.onClose} variant="outline" color="info">
+            {cancelText || t('cancel')}
+          </Button>
+
+          <Button onClick={onConfirm} variant="accent" isLoading={isLoading}>
+            {confirmText || t('confirm')}
+          </Button>
+        </div>
       </div>
-    </div>
-  </Modal>
-);
+    </Modal>
+  );
+};
 
 export default ConfirmationModal;

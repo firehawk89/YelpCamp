@@ -5,6 +5,7 @@ import Modal from '@/components/Modal';
 import { Campground } from '@/types/campground';
 import { User } from '@/types/user';
 import Button, { ButtonProps } from '@repo/ui/button';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -16,6 +17,7 @@ interface AddReviewButtonProps extends Omit<ButtonProps, 'variant'> {
 }
 
 const AddReviewButton = ({ userId, campground, ...props }: AddReviewButtonProps) => {
+  const t = useTranslations('pages.campground.reviews');
   const router = useRouter();
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -31,13 +33,13 @@ const AddReviewButton = ({ userId, campground, ...props }: AddReviewButtonProps)
   return (
     <>
       <Button onClick={handleReviewButtonClick} variant="accent" {...props}>
-        Add a review
+        {t('actions.addReview')}
       </Button>
 
       <Modal
         isHidden={!isReviewModalOpen}
         onClose={() => setIsReviewModalOpen(false)}
-        title={`Review the ${campground.title}`}
+        title={t('addReviewModal.title', { campground: campground.title })}
       >
         <ReviewForm campground={campground} onClose={() => setIsReviewModalOpen(false)} />
       </Modal>
