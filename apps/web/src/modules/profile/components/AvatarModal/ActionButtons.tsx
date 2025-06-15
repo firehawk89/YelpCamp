@@ -2,6 +2,7 @@
 
 import { cn } from '@/utils/misc';
 import Button from '@repo/ui/button';
+import { useTranslations } from 'next-intl';
 import { HTMLAttributes } from 'react';
 
 interface AvatarModalActionButtonsProps extends HTMLAttributes<HTMLDivElement> {
@@ -20,30 +21,34 @@ const AvatarModalActionButtons = ({
   isLoading,
   className,
   ...props
-}: AvatarModalActionButtonsProps) => (
-  <div className={cn('flex flex-col justify-between gap-3 sm:flex-row', className)} {...props}>
-    {isImageSelected && (
-      <Button onClick={onImageChange} variant="outline" color="info">
-        Choose another image
-      </Button>
-    )}
+}: AvatarModalActionButtonsProps) => {
+  const t = useTranslations('pages.profile.avatarModal.actions');
 
-    <div className="flex gap-3 sm:ml-auto">
-      <Button className="w-full sm:w-fit" onClick={onCancel} variant="outline">
-        Cancel
-      </Button>
+  return (
+    <div className={cn('flex flex-col justify-between gap-3 sm:flex-row', className)} {...props}>
+      {isImageSelected && (
+        <Button onClick={onImageChange} variant="outline" color="info">
+          {t('chooseAnotherImage')}
+        </Button>
+      )}
 
-      <Button
-        className="w-full sm:w-fit"
-        onClick={onSave}
-        disabled={!isImageSelected}
-        isLoading={isLoading}
-        variant="accent"
-      >
-        Save
-      </Button>
+      <div className="flex gap-3 sm:ml-auto">
+        <Button className="w-full sm:w-fit" onClick={onCancel} variant="outline">
+          {t('cancel')}
+        </Button>
+
+        <Button
+          className="w-full sm:w-fit"
+          onClick={onSave}
+          disabled={!isImageSelected}
+          isLoading={isLoading}
+          variant="accent"
+        >
+          {t('save')}
+        </Button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default AvatarModalActionButtons;

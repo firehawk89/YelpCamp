@@ -7,6 +7,7 @@ import { fetchUserFavoriteCampgrounds } from '@/server/user';
 import { Campground } from '@/types/campground';
 import { User } from '@/types/user';
 import { PaginatedResponse } from '@repo/types';
+import { useTranslations } from 'next-intl';
 import { HTMLAttributes, useCallback } from 'react';
 
 interface FavoriteCampgroundsProps extends HTMLAttributes<HTMLDivElement> {
@@ -16,16 +17,18 @@ interface FavoriteCampgroundsProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const FavoriteCampgrounds = ({ user, campgroundsData, error: initialError, ...props }: FavoriteCampgroundsProps) => {
+  const t = useTranslations('pages.profile.favorites');
+
   const fetchNewPage = useCallback(
     async (newPage: number) => {
       if (!user?._id) {
         return {
-          error: 'Cannot fetch favorite campgrounds: missing user ID',
+          error: t('errors.missingUserId'),
         };
       }
       return fetchUserFavoriteCampgrounds({ page: newPage.toString() });
     },
-    [user?._id]
+    [user?._id, t]
   );
 
   const {
@@ -37,7 +40,7 @@ const FavoriteCampgrounds = ({ user, campgroundsData, error: initialError, ...pr
   } = usePaginatedData<Campground>({
     initialData: campgroundsData,
     fetchPageData: fetchNewPage,
-    defaultErrorMessage: 'Failed to load more favorite campgrounds',
+    defaultErrorMessage: t('errors.default'),
   });
 
   const { totalPages = 0 } = campgroundsData?.metadata ?? {};
@@ -50,7 +53,7 @@ const FavoriteCampgrounds = ({ user, campgroundsData, error: initialError, ...pr
       currentPage={currentPage}
       totalPages={totalPages}
       onPageChange={fetchNextPage}
-      emptyStateMessage="No favorite campgrounds yet"
+      emptyStateMessage={t('emptyState')}
       pagination={false}
       {...props}
     >

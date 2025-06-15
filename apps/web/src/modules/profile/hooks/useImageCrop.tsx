@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { SyntheticEvent, useCallback, useState } from 'react';
 import { centerCrop, convertToPixelCrop, Crop, makeAspectCrop } from 'react-image-crop';
 
@@ -9,6 +10,8 @@ interface Options {
 }
 
 export const useImageCrop = ({ setError }: Options) => {
+  const t = useTranslations('imageCrop');
+
   const [crop, setCrop] = useState<Crop>();
 
   const handleImageLoad = useCallback((e: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -23,14 +26,14 @@ export const useImageCrop = ({ setError }: Options) => {
   const generateCroppedImage = useCallback(
     (imageElement: HTMLImageElement | null) => {
       if (!imageElement || !crop) {
-        setError('No image or crop data found.');
+        setError(t('errors.noCropData'));
         return;
       }
 
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       if (!ctx) {
-        setError('Failed to initialize canvas.');
+        setError(t('errors.canvasInitializationFailed'));
         return;
       }
 
@@ -50,7 +53,7 @@ export const useImageCrop = ({ setError }: Options) => {
 
       return canvas.toDataURL('image/jpeg', CROPPED_IMAGE_QUALITY);
     },
-    [crop, setError]
+    [crop, setError, t]
   );
 
   return { crop, setCrop, handleImageLoad, generateCroppedImage };
