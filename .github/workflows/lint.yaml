@@ -37,20 +37,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-          cache: 'pnpm'
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: '9.0.0'
+
+        - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'pnpm'
+
       - name: Verify pnpm installation
         run: pnpm --version
+
       - name: Install dependencies
         run: pnpm ci
+
       - name: Run format check
         run: pnpm run format:check
+        
       - name: Run lint
         run: pnpm run lint
