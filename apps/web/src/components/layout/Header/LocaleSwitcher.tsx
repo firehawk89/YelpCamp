@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { routing } from '@/i18n/routing';
+import { SUPPORTED_LOCALES } from '@/i18n/routing';
 import Button from '@repo/ui/button';
 import Select, { SelectOption, SelectProps } from '@repo/ui/select';
 import { useLocale } from 'next-intl';
@@ -19,7 +19,7 @@ const LocaleSwitcher = ({
   const router = useRouter();
 
   const localeOptions: SelectOption[] = useMemo(
-    () => routing.locales.map((locale) => ({ label: locale, value: locale })),
+    () => SUPPORTED_LOCALES.map((locale) => ({ label: locale, value: locale })),
     []
   );
 

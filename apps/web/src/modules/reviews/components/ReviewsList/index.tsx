@@ -1,5 +1,6 @@
 import { Review } from '@/types/review';
 import { User } from '@/types/user';
+import { useLocale } from 'next-intl';
 
 import ReviewCard from '../ReviewCard';
 import ReviewCardWrapper from '../ReviewCard/Wrapper';
@@ -11,14 +12,18 @@ interface ReviewsListProps {
   mode?: 'campground' | 'user';
 }
 
-const ReviewsList = ({ reviews, user, mode, ...props }: ReviewsListProps) => (
-  <ReviewsListWrapper className="flex flex-col gap-8" {...props}>
-    {reviews.map((review) => (
-      <ReviewCardWrapper key={review._id}>
-        <ReviewCard user={user} review={review} mode={mode} />
-      </ReviewCardWrapper>
-    ))}
-  </ReviewsListWrapper>
-);
+const ReviewsList = ({ reviews, user, mode, ...props }: ReviewsListProps) => {
+  const locale = useLocale();
+
+  return (
+    <ReviewsListWrapper className="flex flex-col gap-8" {...props}>
+      {reviews.map((review) => (
+        <ReviewCardWrapper key={review._id}>
+          <ReviewCard user={user} review={review} mode={mode} locale={locale} />
+        </ReviewCardWrapper>
+      ))}
+    </ReviewsListWrapper>
+  );
+};
 
 export default ReviewsList;
