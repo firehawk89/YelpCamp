@@ -188,9 +188,11 @@ export class ReviewsService {
       }
 
       const review = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
+
       if (!review) {
         throw new NotFoundException("Review doesn't exist");
       }
+
       return review;
     } catch (error) {
       handleError(error, ReviewsService.name);
@@ -330,6 +332,11 @@ export class ReviewsService {
 
   private async decreaseCampgroundRating(campgroundId: mongoose.Types.ObjectId, reviewRating: number) {
     try {
+      const isValidId = isValidObjectId(campgroundId);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid campground ID');
+      }
+
       const reviewCampground = await this.campgroundModel.findOne({ _id: { $eq: campgroundId } });
 
       const campgroundRating = isFinite(reviewCampground.rating) ? reviewCampground.rating : 0;

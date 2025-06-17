@@ -14,7 +14,7 @@ import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto'
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
-import { generateSlug, handleError } from 'src/helpers/misc';
+import { generateSlug, handleError, isValidSlug } from 'src/helpers/misc';
 import { Campground, CampgroundDocument, CampgroundWithSimilarity } from 'src/schemas/campground.schema';
 import { CampgroundLocation } from 'src/schemas/location.schema';
 
@@ -29,7 +29,13 @@ export class CampgroundsService {
 
   async create(createCampgroundDto: CreateCampgroundDTO): Promise<CampgroundDocument> {
     try {
-      const foundCampground = await this.campgroundModel.findOne({ title: createCampgroundDto.title }).exec();
+      const { title, images } = createCampgroundDto;
+
+      if (typeof title !== 'string') {
+        throw new BadRequestException('Invalid title format');
+      }
+
+      const foundCampground = await this.campgroundModel.findOne({ title: { $eq: title } }).exec();
       if (foundCampground) {
         throw new ConflictException('Campground already exists');
       }
@@ -43,9 +49,9 @@ export class CampgroundsService {
       const imageIds: mongoose.Types.ObjectId[] = [];
 
       // TODO: Generate image embedding for all images
-      if (createCampgroundDto.images.length) {
+      if (images.length) {
         const imageData: UploadImageDTO = {
-          image: createCampgroundDto.images[0],
+          image: images[0],
           type: ImageType.CAMPGROUND,
           subFolder: newCampground.slug,
           campgroundId: newCampground.id,
@@ -239,7 +245,14 @@ export class CampgroundsService {
 
   async getBySlug(slug: string): Promise<CampgroundDocument> {
     try {
-      const campground = await this.campgroundModel.findOne({ slug }).populate('images').exec();
+      if (!isValidSlug(slug)) {
+        throw new BadRequestException('Invalid slug format');
+      }
+
+      const campground = await this.campgroundModel
+        .findOne({ slug: { $eq: slug } })
+        .populate('images')
+        .exec();
 
       if (!campground) {
         throw new NotFoundException("Campground with given slug doesn't exist");
@@ -253,6 +266,11 @@ export class CampgroundsService {
 
   async update(id: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<CampgroundDocument> {
     try {
+      const isValidId = isValidObjectId(id);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid campground ID');
+      }
+
       const campground = await this.campgroundModel.findOne({ _id: { $eq: id } }).exec();
       if (!campground) {
         throw new NotFoundException("Campground with given ID doesn't exist");

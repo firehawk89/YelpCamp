@@ -39,7 +39,7 @@ export class TokenService {
       }
 
       const foundRefreshToken = await this.refreshTokenModel.findOne({
-        token: refreshToken,
+        token: { $eq: refreshToken },
         expiryDate: { $gte: new Date() },
       });
 

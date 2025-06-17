@@ -27,7 +27,14 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDTO): Promise<UserDocument> {
     try {
-      const foundUser = await this.userModel.findOne({ email: createUserDto.email }).exec();
+      const { email } = createUserDto;
+
+      const isValidEmail = isEmail(email);
+      if (!isValidEmail) {
+        throw new BadRequestException('Invalid email');
+      }
+
+      const foundUser = await this.userModel.findOne({ email: { $eq: email } }).exec();
       if (foundUser) {
         throw new ConflictException('User already exists');
       }
@@ -68,7 +75,7 @@ export class UsersService {
         throw new BadRequestException('Invalid email');
       }
 
-      const user = await this.userModel.findOne({ email }).exec();
+      const user = await this.userModel.findOne({ email: { $eq: email } }).exec();
       if (!user && throwError) {
         throw new NotFoundException("User doesn't exist");
       }
@@ -103,6 +110,11 @@ export class UsersService {
 
   async updatePassword(userId: string, updateUserPasswordDto: UpdateUserPasswordDTO): Promise<UserDocument> {
     try {
+      const isValidId = isValidObjectId(userId);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid user ID');
+      }
+
       const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
         throw new NotFoundException("User doesn't exist");
