@@ -314,7 +314,13 @@ export class CampgroundsService {
           id,
           {
             ...updateCampgroundDto,
+            title: updateCampgroundDto.title,
             images: finalImageIds,
+            slug: updateCampgroundDto.slug,
+            description: updateCampgroundDto.description,
+            price: updateCampgroundDto.price,
+            location: updateCampgroundDto.location,
+            author: updateCampgroundDto.author,
           },
           { new: true }
         )

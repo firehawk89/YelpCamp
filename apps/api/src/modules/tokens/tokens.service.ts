@@ -1,8 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { REFRESH_TOKEN_EXPIRATION_MILLISECONDS } from '@repo/constants';
 import crypto from 'crypto';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
 
@@ -12,7 +12,12 @@ export class TokenService {
 
   async invalidateUserTokens(userId: string): Promise<void> {
     try {
-      await this.refreshTokenModel.deleteMany({ userId }).exec();
+      const isValidId = isValidObjectId(userId);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid user ID');
+      }
+
+      await this.refreshTokenModel.deleteMany({ userId: { $eq: userId } }).exec();
     } catch (error) {
       handleError(error, TokenService.name);
     }

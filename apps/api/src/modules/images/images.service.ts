@@ -137,7 +137,12 @@ export class ImagesService {
 
   async deleteCampgroundImages(campgroundId: string, folderName: string) {
     try {
-      const deletedImages = await this.imageModel.deleteMany({ campgroundId }).exec();
+      const isValidId = isValidObjectId(campgroundId);
+      if (!isValidId) {
+        throw new BadRequestException('Invalid campground ID');
+      }
+
+      const deletedImages = await this.imageModel.deleteMany({ campgroundId: { $eq: campgroundId } }).exec();
       await this.cloudinaryService.deleteImagesFolder(folderName);
       return deletedImages;
     } catch (error) {
