@@ -16,4 +16,3 @@ export const MAX_CAMPGROUND_PRICE = 5000;
 
 export const MIN_CAMPGROUND_IMAGES = 0;
 export const MAX_CAMPGROUND_IMAGES = 8;
-

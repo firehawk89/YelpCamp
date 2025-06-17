@@ -14,11 +14,6 @@ export default function Error({ error, reset }: ErrorPageProps) {
   console.error('error', error);
 
   return (
-    <AppError
-      code={ErrorType.InternalServerError}
-      title={t('title')}
-      message={error.message}
-      onTryAgain={reset}
-    />
+    <AppError code={ErrorType.InternalServerError} title={t('title')} message={error.message} onTryAgain={reset} />
   );
 }

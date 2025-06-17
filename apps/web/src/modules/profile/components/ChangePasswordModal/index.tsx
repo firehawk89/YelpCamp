@@ -58,13 +58,7 @@ const ChangePasswordModal = ({ user, isOpen, onClose, className, ...props }: Cha
   };
 
   return (
-    <Modal
-      className={cn('max-w-96', className)}
-      isHidden={!isOpen}
-      onClose={onClose}
-      title={t('title')}
-      {...props}
-    >
+    <Modal className={cn('max-w-96', className)} isHidden={!isOpen} onClose={onClose} title={t('title')} {...props}>
       <div className="flex flex-col gap-5">
         <ErrorAlertList errors={saveErrors} />
 
