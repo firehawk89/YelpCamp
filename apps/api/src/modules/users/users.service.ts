@@ -102,7 +102,18 @@ export class UsersService {
         return this.updateAvatar(id, updateUserDto.avatar);
       }
 
-      return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();
+      return this.userModel
+        .findByIdAndUpdate(
+          id,
+          {
+            email: updateUserDto.email || user.email,
+            firstName: updateUserDto.firstName || user.firstName,
+            lastName: updateUserDto.lastName || user.lastName,
+            avatar: updateUserDto.avatar || user.avatar,
+          },
+          { new: true }
+        )
+        .exec();
     } catch (error) {
       handleError(error, UsersService.name);
     }

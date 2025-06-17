@@ -313,14 +313,13 @@ export class CampgroundsService {
         .findByIdAndUpdate(
           id,
           {
-            ...updateCampgroundDto,
-            title: updateCampgroundDto.title,
+            title: updateCampgroundDto.title || campground.title,
+            slug: updateCampgroundDto.slug || campground.slug,
             images: finalImageIds,
-            slug: updateCampgroundDto.slug,
-            description: updateCampgroundDto.description,
-            price: updateCampgroundDto.price,
-            location: updateCampgroundDto.location,
-            author: updateCampgroundDto.author,
+            description: updateCampgroundDto.description || campground.description,
+            price: updateCampgroundDto.price || campground.price,
+            location: updateCampgroundDto.location || campground.location,
+            author: updateCampgroundDto.author || campground.author,
           },
           { new: true }
         )
