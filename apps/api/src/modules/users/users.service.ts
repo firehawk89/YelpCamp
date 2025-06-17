@@ -10,7 +10,7 @@ import { FavoriteCampgroundsFilterDTO } from 'src/dto/user/favorite-campgrounds-
 import { UpdateUserPasswordDTO } from 'src/dto/user/update-user-password.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { comparePassword, hashPassword } from 'src/helpers/crypto';
-import { handleError } from 'src/helpers/misc';
+import { handleError, validateField } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
 import { User, UserDocument } from 'src/schemas/user.schema';
 
@@ -106,10 +106,10 @@ export class UsersService {
         .findByIdAndUpdate(
           id,
           {
-            email: updateUserDto.email || user.email,
-            firstName: updateUserDto.firstName || user.firstName,
-            lastName: updateUserDto.lastName || user.lastName,
-            avatar: updateUserDto.avatar || user.avatar,
+            email: validateField(updateUserDto.email, user.email),
+            firstName: validateField(updateUserDto.firstName, user.firstName),
+            lastName: validateField(updateUserDto.lastName, user.lastName),
+            avatar: validateField(updateUserDto.avatar, user.avatar),
           },
           { new: true }
         )

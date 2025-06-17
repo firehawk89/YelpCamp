@@ -14,7 +14,7 @@ import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto'
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
-import { generateSlug, handleError, isValidSlug } from 'src/helpers/misc';
+import { generateSlug, handleError, isValidSlug, validateField } from 'src/helpers/misc';
 import { Campground, CampgroundDocument, CampgroundWithSimilarity } from 'src/schemas/campground.schema';
 import { CampgroundLocation } from 'src/schemas/location.schema';
 
@@ -313,13 +313,12 @@ export class CampgroundsService {
         .findByIdAndUpdate(
           id,
           {
-            title: updateCampgroundDto.title || campground.title,
-            slug: updateCampgroundDto.slug || campground.slug,
+            title: validateField(updateCampgroundDto.title, campground.title),
+            slug: validateField(updateCampgroundDto.slug, campground.slug),
             images: finalImageIds,
-            description: updateCampgroundDto.description || campground.description,
-            price: updateCampgroundDto.price || campground.price,
-            location: updateCampgroundDto.location || campground.location,
-            author: updateCampgroundDto.author || campground.author,
+            description: validateField(updateCampgroundDto.description, campground.description),
+            price: validateField(updateCampgroundDto.price, campground.price),
+            location: validateField(updateCampgroundDto.location, campground.location),
           },
           { new: true }
         )

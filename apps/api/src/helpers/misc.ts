@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { BadRequestException, Logger } from '@nestjs/common';
 import slugify from 'slugify';
 
 export const generateSlug = (value: string): string => slugify(value, { lower: true });
@@ -20,6 +20,16 @@ export const handleError = (error: unknown, context: string, throwError: boolean
   if (throwError) {
     throw error;
   }
+};
+
+export const validateField = <T>(field: T | undefined, defaultValue: T): T => {
+  if (field === undefined || field === null) {
+    return defaultValue;
+  }
+  if (typeof field !== typeof defaultValue) {
+    throw new BadRequestException('Invalid field type');
+  }
+  return field;
 };
 
 export const sample = <T>(array: T[]): T => array[Math.floor(Math.random() * array.length)];
