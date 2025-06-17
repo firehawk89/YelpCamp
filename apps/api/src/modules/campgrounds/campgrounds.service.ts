@@ -222,7 +222,11 @@ export class CampgroundsService {
         throw new BadRequestException('Invalid campground ID');
       }
 
-      const campground = await this.campgroundModel.findById(id).populate('images').exec();
+      const campground = await this.campgroundModel
+        .findOne({ _id: { $eq: id } })
+        .populate('images')
+        .exec();
+
       if (!campground) {
         throw new NotFoundException("Campground doesn't exist");
       }
@@ -249,7 +253,7 @@ export class CampgroundsService {
 
   async update(id: string, updateCampgroundDto: UpdateCampgroundDTO): Promise<CampgroundDocument> {
     try {
-      const campground = await this.campgroundModel.findById(id).exec();
+      const campground = await this.campgroundModel.findOne({ _id: { $eq: id } }).exec();
       if (!campground) {
         throw new NotFoundException("Campground with given ID doesn't exist");
       }
@@ -311,7 +315,7 @@ export class CampgroundsService {
         throw new BadRequestException('Invalid campground ID');
       }
 
-      const campground = await this.campgroundModel.findById(id).exec();
+      const campground = await this.campgroundModel.findOne({ _id: { $eq: id } }).exec();
       if (!campground) {
         throw new NotFoundException("Campground doesn't exist");
       }

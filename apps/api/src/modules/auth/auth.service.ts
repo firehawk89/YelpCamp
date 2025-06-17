@@ -72,7 +72,8 @@ export class AuthService {
     try {
       const userId = await this.tokenService.validateRefreshToken(refreshToken);
       const accessToken = this.jwtService.sign({ userId });
-      return { accessToken, refreshToken };
+      const newRefreshToken = await this.tokenService.generateRefreshToken(userId);
+      return { accessToken, refreshToken: newRefreshToken };
     } catch (error) {
       handleError(error, AuthService.name);
     }

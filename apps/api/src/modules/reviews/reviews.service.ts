@@ -187,7 +187,7 @@ export class ReviewsService {
         throw new BadRequestException('Invalid review ID');
       }
 
-      const review = await this.reviewModel.findById(id).exec();
+      const review = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
       if (!review) {
         throw new NotFoundException("Review doesn't exist");
       }
@@ -216,7 +216,7 @@ export class ReviewsService {
         throw new BadRequestException('Invalid campground ID');
       }
 
-      const campground = await this.campgroundModel.findById(campgroundId).exec();
+      const campground = await this.campgroundModel.findOne({ _id: { $eq: campgroundId } }).exec();
       if (!campground) {
         throw new NotFoundException("Campground doesn't exist");
       }
@@ -240,7 +240,7 @@ export class ReviewsService {
     try {
       this.validateReviewAndUserIDs(id, userId);
 
-      const foundReview = await this.reviewModel.findById(id).exec();
+      const foundReview = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundReview) {
         throw new NotFoundException("Review doesn't exist");
       }
@@ -268,7 +268,7 @@ export class ReviewsService {
     try {
       this.validateReviewAndUserIDs(id, userId);
 
-      const foundReview = await this.reviewModel.findById(id).exec();
+      const foundReview = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundReview) {
         throw new NotFoundException("Review doesn't exist");
       }
@@ -295,7 +295,7 @@ export class ReviewsService {
         throw new BadRequestException('Invalid review ID');
       }
 
-      const foundReview = await this.reviewModel.findById(id).exec();
+      const foundReview = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundReview) {
         throw new NotFoundException("Review doesn't exist");
       }
@@ -330,7 +330,7 @@ export class ReviewsService {
 
   private async decreaseCampgroundRating(campgroundId: mongoose.Types.ObjectId, reviewRating: number) {
     try {
-      const reviewCampground = await this.campgroundModel.findById(campgroundId);
+      const reviewCampground = await this.campgroundModel.findOne({ _id: { $eq: campgroundId } });
 
       const campgroundRating = isFinite(reviewCampground.rating) ? reviewCampground.rating : 0;
       const reviewsCount = reviewCampground.reviewsCount || 0;

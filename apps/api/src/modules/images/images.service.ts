@@ -27,7 +27,10 @@ export class ImagesService {
         throw new BadRequestException('Invalid image ID');
       }
 
-      const image = await this.imageModel.findById(id).select('+embedding').exec();
+      const image = await this.imageModel
+        .findOne({ _id: { $eq: id } })
+        .select('+embedding')
+        .exec();
       if (!image) {
         throw new NotFoundException("Image doesn't exist");
       }

@@ -50,7 +50,7 @@ export class UsersService {
         throw new BadRequestException('Invalid user ID');
       }
 
-      const user = await this.userModel.findById(id).exec();
+      const user = await this.userModel.findOne({ _id: { $eq: id } }).exec();
       if (!user) {
         throw new NotFoundException("User doesn't exist");
       }
@@ -86,7 +86,7 @@ export class UsersService {
         throw new BadRequestException('Invalid user ID');
       }
 
-      const user = await this.userModel.findById(id).exec();
+      const user = await this.userModel.findOne({ _id: { $eq: id } }).exec();
       if (!user) {
         throw new NotFoundException("User with given ID doesn't exist");
       }
@@ -103,7 +103,7 @@ export class UsersService {
 
   async updatePassword(userId: string, updateUserPasswordDto: UpdateUserPasswordDTO): Promise<UserDocument> {
     try {
-      const user = await this.userModel.findById(userId).exec();
+      const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
         throw new NotFoundException("User doesn't exist");
       }
@@ -153,7 +153,7 @@ export class UsersService {
         throw new BadRequestException('Invalid user ID');
       }
 
-      const foundUser = await this.userModel.findById(id).exec();
+      const foundUser = await this.userModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundUser) {
         throw new NotFoundException("User doesn't exist");
       }
@@ -174,7 +174,7 @@ export class UsersService {
         throw new BadRequestException('Invalid user ID');
       }
 
-      const user = await this.userModel.findById(userId).exec();
+      const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
         throw new NotFoundException("User doesn't exist");
       }
@@ -254,7 +254,7 @@ export class UsersService {
         throw new BadRequestException('Invalid user or campground ID format');
       }
 
-      const user = await this.userModel.findById(userId).exec();
+      const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
         throw new NotFoundException("User doesn't exist");
       }
@@ -278,7 +278,7 @@ export class UsersService {
         throw new BadRequestException('Invalid user or campground ID format');
       }
 
-      const user = await this.userModel.findById(userId).exec();
+      const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
         throw new NotFoundException("User doesn't exist");
       }
