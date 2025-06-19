@@ -1,0 +1,16 @@
+{
+  "layout": {
+    "header": {
+      "menu": {
+        "home": "Головна",
+        "campgrounds": "Кемпінги",
+        "actions": {
+          "signIn": "Увійти",
+          "signUp": "Зареєструватися",
+          "profile": "Профіль",
+          "logOut": "Вийти"
+        }
+      }
+    }
+  }
+}
