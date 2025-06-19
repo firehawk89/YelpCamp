@@ -1,18 +1,4 @@
 {
-  "layout": {
-    "header": {
-      "menu": {
-        "home": "Home",
-        "campgrounds": "Campgrounds",
-        "actions": {
-          "signIn": "Sign In",
-          "signUp": "Sign Up",
-          "profile": "Profile",
-          "logOut": "Log Out"
-        }
-      }
-    }
-  },
   "pages": {
     "auth": {
       "signIn": {
@@ -245,42 +231,5 @@
     "error": {
       "title": "Oops, something went wrong!"
     }
-  },
-  "authActions": {
-    "errors": {
-      "default": "An unexpected error occurred. Please try again.",
-      "signIn": "Failed to sign in. Please try again.",
-      "signUp": "Failed to sign up. Please try again.",
-      "logout": "Failed to logout. Please try again."
-    }
-  },
-  "changePassword": {
-    "title": "Update Password",
-    "oldPassword": "Old Password",
-    "newPassword": "New Password",
-    "confirmedNewPassword": "Confirmed New Password",
-    "actions": {
-      "save": "Save"
-    },
-    "errors": {
-      "newPasswordMustMatchConfirmed": "New password and confirmed new password must match",
-      "newPasswordCannotBeTheSameAsOld": "New password cannot be the same as the old password"
-    }
-  },
-  "imageSelect": {
-    "errors": {
-      "sizeExceeded": "Image size exceeds the limit of {maxFileSize} KB. Please select other image.",
-      "dimensionsTooSmall": "Image dimensions are too small. Minimum size is {minDimension}x{minDimension} pixels."
-    }
-  },
-  "imageCrop": {
-    "errors": {
-      "noCropData": "No image or crop data found.",
-      "canvasInitializationFailed": "Failed to initialize canvas."
-    }
-  },
-  "confirmationModal": {
-    "confirm": "Confirm",
-    "cancel": "Cancel"
   }
 }

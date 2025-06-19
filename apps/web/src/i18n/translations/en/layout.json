@@ -1,0 +1,16 @@
+{
+  "layout": {
+    "header": {
+      "menu": {
+        "home": "Home",
+        "campgrounds": "Campgrounds",
+        "actions": {
+          "signIn": "Sign In",
+          "signUp": "Sign Up",
+          "profile": "Profile",
+          "logOut": "Log Out"
+        }
+      }
+    }
+  }
+}

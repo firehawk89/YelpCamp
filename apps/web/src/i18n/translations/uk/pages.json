@@ -1,18 +1,4 @@
 {
-  "layout": {
-    "header": {
-      "menu": {
-        "home": "Головна",
-        "campgrounds": "Кемпінги",
-        "actions": {
-          "signIn": "Увійти",
-          "signUp": "Зареєструватися",
-          "profile": "Профіль",
-          "logOut": "Вийти"
-        }
-      }
-    }
-  },
   "pages": {
     "auth": {
       "signIn": {
@@ -246,42 +232,5 @@
     "error": {
       "title": "Упс, щось пішло не так!"
     }
-  },
-  "authActions": {
-    "errors": {
-      "default": "Сталася непередбачувана помилка. Будь ласка, спробуйте знову.",
-      "signIn": "Не вдалося увійти. Будь ласка, спробуйте знову.",
-      "signUp": "Не вдалося зареєструватися. Будь ласка, спробуйте знову.",
-      "logout": "Не вдалося вийти. Будь ласка, спробуйте знову."
-    }
-  },
-  "changePassword": {
-    "title": "Оновити пароль",
-    "oldPassword": "Старий пароль",
-    "newPassword": "Новий пароль",
-    "confirmedNewPassword": "Підтвердження нового пароля",
-    "actions": {
-      "save": "Зберегти"
-    },
-    "errors": {
-      "newPasswordMustMatchConfirmed": "Новий пароль повинен співпадати з підтвердженим новим паролем",
-      "newPasswordCannotBeTheSameAsOld": "Новий пароль не може бути таким самим, як старий пароль"
-    }
-  },
-  "imageSelect": {
-    "errors": {
-      "sizeExceeded": "Розмір зображення перевищує дозволений ліміт у {maxFileSize} KB. Будь ласка, оберіть інше зображення.",
-      "dimensionsTooSmall": "Зображення замале. Мінімальний розмір становить {minDimension}x{minDimension} пікселів."
-    }
-  },
-  "imageCrop": {
-    "errors": {
-      "noCropData": "Не вдалося знайти зображення або дані для обрізання.",
-      "canvasInitializationFailed": "Не вдалося ініціалізувати Canvas."
-    }
-  },
-  "confirmationModal": {
-    "confirm": "Підтвердити",
-    "cancel": "Скасувати"
   }
 }
