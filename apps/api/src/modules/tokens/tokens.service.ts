@@ -3,12 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { REFRESH_TOKEN_EXPIRATION_MILLISECONDS } from '@repo/constants';
 import crypto from 'crypto';
 import { isValidObjectId, Model } from 'mongoose';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { handleError } from 'src/helpers/misc';
 import { RefreshToken } from 'src/schemas/refresh-token.schema';
+import { I18nTranslations } from 'src/types/i18n';
 
 @Injectable()
 export class TokenService {
-  constructor(@InjectModel(RefreshToken.name) private refreshTokenModel: Model<RefreshToken>) {}
+  constructor(
+    @InjectModel(RefreshToken.name) private refreshTokenModel: Model<RefreshToken>,
+    private readonly i18n: I18nService<I18nTranslations>
+  ) {}
 
   async invalidateUserTokens(userId: string): Promise<void> {
     try {
@@ -31,6 +36,7 @@ export class TokenService {
       await this.refreshTokenModel
         .updateOne({ userId }, { $set: { token: refreshToken, expiryDate } }, { upsert: true })
         .exec();
+
       return refreshToken;
     } catch (error) {
       handleError(error, TokenService.name);
@@ -40,7 +46,9 @@ export class TokenService {
   async validateRefreshToken(refreshToken: string): Promise<string> {
     try {
       if (!refreshToken) {
-        throw new UnauthorizedException('Refresh token is required');
+        throw new UnauthorizedException(
+          this.i18n.t('errors.auth.tokens.refreshTokenMissing', { lang: I18nContext.current().lang })
+        );
       }
 
       const foundRefreshToken = await this.refreshTokenModel.findOne({
@@ -49,7 +57,9 @@ export class TokenService {
       });
 
       if (!foundRefreshToken) {
-        throw new UnauthorizedException('Refresh token is expired or invalid');
+        throw new UnauthorizedException(
+          this.i18n.t('errors.auth.tokens.refreshTokenExpiredOrInvalid', { lang: I18nContext.current().lang })
+        );
       }
 
       const userId = foundRefreshToken.userId.toString();

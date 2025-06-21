@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "tokens": {
+      "accessTokenMissing": "Access token is missing",
+      "accessTokenVerificationFailed": "Failed to verify access token",
+      "refreshTokenMissing": "Refresh token is missing",
+      "refreshTokenExpiredOrInvalid": "Refresh token is expired or invalid"
+    },
+    "users": {
+      "userDoesNotExist": "User does not exist",
+      "userAlreadyExists": "User already exists",
+      "loggedOut": "Successfully logged out"
+    }
+  }
+}

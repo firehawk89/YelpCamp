@@ -1,10 +1,12 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserTokens } from '@repo/types';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { SignInDTO } from 'src/dto/auth/sign-in.dto';
 import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
 import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
+import { I18nTranslations } from 'src/types/i18n';
 
 import { TokenService } from '../tokens/tokens.service';
 import { UsersService } from '../users/users.service';
@@ -14,14 +16,17 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly tokenService: TokenService
+    private readonly tokenService: TokenService,
+    private readonly i18n: I18nService<I18nTranslations>
   ) {}
 
   async signIn(signInDto: SignInDTO): Promise<UserTokens> {
     try {
       const foundUser = await this.usersService.getByEmail(signInDto.email, false);
       if (!foundUser) {
-        throw new ConflictException("User doesn't exist");
+        throw new ConflictException(
+          this.i18n.t('errors.auth.users.userDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       const isPasswordCorrect = await comparePassword(signInDto.password, foundUser.password);
@@ -41,7 +46,9 @@ export class AuthService {
     try {
       const existingUser = await this.usersService.getByEmail(signUpDto.email, false);
       if (existingUser) {
-        throw new ConflictException('User already exists');
+        throw new ConflictException(
+          this.i18n.t('errors.auth.users.userAlreadyExists', { lang: I18nContext.current().lang })
+        );
       }
 
       const hashedPassword = await hashPassword(signUpDto.password);
@@ -62,7 +69,7 @@ export class AuthService {
   async logout(userId: string): Promise<{ message: string }> {
     try {
       await this.tokenService.invalidateUserTokens(userId);
-      return { message: 'User logged out successfully' };
+      return { message: this.i18n.t('errors.auth.users.loggedOut', { lang: I18nContext.current().lang }) };
     } catch (error) {
       handleError(error, AuthService.name);
     }
