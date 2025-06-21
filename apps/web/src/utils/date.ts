@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE } from '@/i18n/routing';
+import { DEFAULT_LOCALE } from '@repo/constants';
 
 export const formatDate = (
   date: Date,
