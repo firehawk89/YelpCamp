@@ -9,6 +9,7 @@ import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { USER_ID_PARAM } from '@/utils/constants/params';
 import { getSearchParamsString } from '@/utils/misc';
 import { ApiError, PaginatedApiResponse, PaginatedResponse } from '@repo/types';
+import { getLocale } from 'next-intl/server';
 import { revalidateTag } from 'next/cache';
 
 import { deleteSessionCookies, getAccessToken } from './session';
@@ -19,8 +20,10 @@ export const fetchUser = async (userId: string): Promise<User> => {
     throw new Error('Failed to fetch a user - access token is missing');
   }
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.USERS}?${USER_ID_PARAM}=${userId}`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: { Authorization: `Bearer ${accessToken}`, 'Accept-Language': locale },
     next: { tags: [NEXT_TAGS.USER] },
   });
 
@@ -40,6 +43,7 @@ export const fetchUserReviews = async (userId: string, filters?: ReviewsFilterDt
       throw new Error('Failed to fetch user reviews - access token is missing');
     }
 
+    const locale = await getLocale();
     let searchParamsString = '';
 
     if (filters) {
@@ -49,7 +53,7 @@ export const fetchUserReviews = async (userId: string, filters?: ReviewsFilterDt
     const response = await fetch(
       `${API_ROUTES.USERS}/${userId}/reviews${searchParamsString ? `?${searchParamsString}` : ''}`,
       {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}`, 'Accept-Language': locale },
         next: { tags: [NEXT_TAGS.USER] },
       }
     );
@@ -73,9 +77,15 @@ export const updateUserAvatar = async (userId: string, avatar: string): Promise<
     throw new Error('Failed to update user avatar - access token is missing');
   }
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.USERS}/${userId}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      'Accept-Language': locale,
+    },
     body: JSON.stringify({ avatar }),
   });
 
@@ -99,9 +109,15 @@ export const updateUserPersonalInfo = async (
     throw new Error('Failed to update user personal info - access token is missing');
   }
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.USERS}/${userId}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      'Accept-Language': locale,
+    },
     body: JSON.stringify(personalInfo),
   });
 
@@ -122,9 +138,15 @@ export const updateUserPassword = async (userId: string, passwordData: ChangePas
     throw new Error('Failed to update user password - access token is missing');
   }
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.USERS}/${userId}/password`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      'Accept-Language': locale,
+    },
     body: JSON.stringify(passwordData),
   });
 
@@ -147,12 +169,14 @@ export const fetchUserFavoriteCampgrounds = async (filter?: CampgroundsFilterDto
       throw new Error('Failed to get user favorite campgrounds - access token is missing');
     }
 
+    const locale = await getLocale();
+
     const searchParamsString = filter ? getSearchParamsString<CampgroundsFilterDto>(filter) : '';
 
     const response = await fetch(
       `${API_ROUTES.USERS}/favorites/campgrounds${searchParamsString ? `?${searchParamsString}` : ''}`,
       {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}`, 'Accept-Language': locale },
         next: { tags: [NEXT_TAGS.FAVORITE_CAMPGROUNDS] },
       }
     );
@@ -176,9 +200,15 @@ export const addFavoriteCampground = async (campgroundId: string): Promise<User>
     throw new Error('Failed to add favorite campground - access token is missing');
   }
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.USERS}/favorites/campgrounds`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      'Accept-Language': locale,
+    },
     body: JSON.stringify({ campgroundId }),
   });
 
@@ -200,9 +230,15 @@ export const removeFavoriteCampground = async (campgroundId: string): Promise<Us
     throw new Error('Failed to remove favorite campground - access token is missing');
   }
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.USERS}/favorites/campgrounds`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      'Accept-Language': locale,
+    },
     body: JSON.stringify({ campgroundId }),
   });
 

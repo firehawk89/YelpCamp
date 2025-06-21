@@ -5,12 +5,14 @@ import { Review, ReviewsApiResponse, ReviewsFilterDto } from '@/types/review';
 import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
 import { PaginatedResponse, ReviewsMetadata } from '@repo/types';
+import { getLocale } from 'next-intl/server';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';
 
 export const fetchCampgroundReviews = async (campgroundId: string, filters?: ReviewsFilterDto): ReviewsApiResponse => {
   try {
+    const locale = await getLocale();
     let searchParamsString = '';
 
     if (filters) {
@@ -19,7 +21,7 @@ export const fetchCampgroundReviews = async (campgroundId: string, filters?: Rev
 
     const response = await fetch(
       `${API_ROUTES.CAMPGROUNDS}/${campgroundId}/reviews${searchParamsString ? `?${searchParamsString}` : ''}`,
-      { next: { tags: [NEXT_TAGS.REVIEWS] } }
+      { next: { tags: [NEXT_TAGS.REVIEWS] }, headers: { 'Accept-Language': locale } }
     );
 
     if (!response.ok) {
@@ -42,9 +44,15 @@ export const createReview = async (campgroundId: string, reviewData: ReviewFormF
       throw new Error('Failed to create a review. Please, sign in or sign up and try again');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${campgroundId}/reviews`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
       body: JSON.stringify(reviewData),
     });
 
@@ -69,9 +77,15 @@ export const likeReview = async (reviewId: string): Promise<Review> => {
       throw new Error('Failed to like the review. Please, sign in or sign up and try again');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.REVIEWS}/${reviewId}/like`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
     });
 
     if (!response.ok) {
@@ -95,9 +109,15 @@ export const unlikeReview = async (reviewId: string): Promise<Review> => {
       throw new Error('Failed to unlike the review. Please, sign in or sign up and try again');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.REVIEWS}/${reviewId}/like`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
     });
 
     if (!response.ok) {
@@ -121,9 +141,15 @@ export const deleteReview = async (reviewId: string): Promise<Review> => {
       throw new Error('Failed to delete the review. Please, sign in or sign up and try again');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.REVIEWS}/${reviewId}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
     });
 
     if (!response.ok) {

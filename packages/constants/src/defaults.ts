@@ -5,3 +5,5 @@ export const DEFAULT_PAGE_LIMIT: number = 8;
 
 export const DEFAULT_SORT_FIELD = 'createdAt';
 export const DEFAULT_SORT_ORDER: SortOrder = 'desc';
+
+export const DEFAULT_LOCALE = 'en';
