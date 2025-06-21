@@ -45,6 +45,7 @@ export class AuthService {
   async signUp(signUpDto: SignUpDTO): Promise<UserTokens> {
     try {
       const existingUser = await this.usersService.getByEmail(signUpDto.email, false);
+
       if (existingUser) {
         throw new ConflictException(
           this.i18n.t('errors.users.userAlreadyExists', { lang: I18nContext.current().lang })
