@@ -3,6 +3,7 @@
 import { Image } from '@/types/media';
 import { API_ROUTES } from '@/utils/constants/misc';
 import { ApiError, ImageType } from '@repo/types';
+import { getLocale } from 'next-intl/server';
 
 import { getAccessToken } from './session';
 
@@ -13,9 +14,15 @@ export const fetchImage = async (imageId: string): Promise<Image> => {
       throw new Error('Failed to fetch image - access token is missing');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.IMAGES}/${imageId}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
     });
 
     if (!response.ok) {
@@ -39,9 +46,15 @@ export const uploadImage = async (base64Image: string, type?: ImageType): Promis
       throw new Error('Failed to upload image - access token is missing');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.IMAGES}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
       body: JSON.stringify({ image: base64Image, type: type ?? ImageType.CAMPGROUND }),
     });
 

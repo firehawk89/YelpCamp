@@ -4,15 +4,18 @@ import { Campground, CampgroundLocation, CampgroundsFilterDto, CreateCampgroundD
 import { API_ROUTES, NEXT_TAGS } from '@/utils/constants/misc';
 import { getSearchParamsString } from '@/utils/misc';
 import { ApiError, ApiResponse, PaginatedApiResponse, PaginatedResponse } from '@repo/types';
+import { getLocale } from 'next-intl/server';
 import { revalidateTag } from 'next/cache';
 
 import { getAccessToken } from './session';
 
 export const fetchCampgrounds = async (filter: CampgroundsFilterDto): PaginatedApiResponse<Campground> => {
   try {
+    const locale = await getLocale();
     const searchParamsString = getSearchParamsString<CampgroundsFilterDto>(filter);
 
     const response = await fetch(`${API_ROUTES.CAMPGROUNDS}${searchParamsString ? `?${searchParamsString}` : ''}`, {
+      headers: { 'Accept-Language': locale },
       next: { tags: [NEXT_TAGS.CAMPGROUNDS] },
     });
 
@@ -31,11 +34,13 @@ export const fetchCampgrounds = async (filter: CampgroundsFilterDto): PaginatedA
 
 export const fetchCampgroundLocations = async (filter: CampgroundsFilterDto): ApiResponse<CampgroundLocation[]> => {
   try {
+    const locale = await getLocale();
     const searchParamsString = getSearchParamsString<CampgroundsFilterDto>(filter);
 
     const response = await fetch(
       `${API_ROUTES.CAMPGROUNDS}/locations${searchParamsString ? `?${searchParamsString}` : ''}`,
       {
+        headers: { 'Accept-Language': locale },
         next: { tags: [NEXT_TAGS.CAMPGROUND_LOCATIONS] },
       }
     );
@@ -59,7 +64,12 @@ export const fetchCampground = async (slugOrUrl: string): ApiResponse<Campground
     const apiBaseUrl = API_ROUTES.CAMPGROUNDS;
     const url = slugOrUrl.startsWith(apiBaseUrl) ? slugOrUrl : `${apiBaseUrl}/${slugOrUrl}`;
 
-    const response = await fetch(url);
+    const locale = await getLocale();
+
+    const response = await fetch(url, {
+      headers: { 'Accept-Language': locale },
+    });
+
     if (!response.ok) {
       return { error: 'Failed to fetch a campground' };
     }
@@ -80,9 +90,15 @@ export const createCampground = async (campgroundData: CreateCampgroundDTO): Pro
       throw new Error('Failed to create campground - access token is missing');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(API_ROUTES.CAMPGROUNDS, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
       body: JSON.stringify(campgroundData),
     });
 
@@ -111,9 +127,15 @@ export const updateCampground = async (
       throw new Error('Failed to update campground - access token is missing');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${campgroundId}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
       body: JSON.stringify(campgroundData),
     });
 
@@ -139,9 +161,15 @@ export const deleteCampground = async (campgroundId: string): Promise<Campground
       throw new Error('Failed to delete campground - access token is missing');
     }
 
+    const locale = await getLocale();
+
     const response = await fetch(`${API_ROUTES.CAMPGROUNDS}/${campgroundId}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': locale,
+      },
     });
 
     if (!response.ok) {

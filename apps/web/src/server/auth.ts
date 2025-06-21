@@ -3,6 +3,7 @@
 import { AuthFormFields } from '@/modules/auth/schemas/form.schema';
 import { API_ROUTES } from '@/utils/constants/misc';
 import { ApiError, UserTokens } from '@repo/types';
+import { getLocale } from 'next-intl/server';
 
 import { decryptToken, deleteSessionCookies, getAccessToken, setSessionCookies } from './session';
 
@@ -11,9 +12,11 @@ type LogoutResponse = {
 };
 
 export const signIn = async (userData: AuthFormFields): Promise<UserTokens> => {
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.AUTH}/sign-in`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Accept-Language': locale },
     body: JSON.stringify(userData),
   });
 
@@ -29,9 +32,11 @@ export const signIn = async (userData: AuthFormFields): Promise<UserTokens> => {
 };
 
 export const signUp = async (userData: AuthFormFields): Promise<UserTokens> => {
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.AUTH}/sign-up`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Accept-Language': locale },
     body: JSON.stringify(userData),
   });
 
@@ -54,9 +59,11 @@ export const logout = async (): Promise<LogoutResponse> => {
 
   const { userId } = await decryptToken(accessToken);
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.AUTH}/log-out`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}`, 'Accept-Language': locale },
     body: JSON.stringify({ userId }),
   });
 
@@ -76,9 +83,11 @@ export const refreshTokens = async (refreshToken?: string): Promise<UserTokens> 
     throw new Error('Refresh token is missing');
   }
 
+  const locale = await getLocale();
+
   const response = await fetch(`${API_ROUTES.AUTH}/refresh`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Accept-Language': locale },
     body: JSON.stringify({ refreshToken }),
   });
 
