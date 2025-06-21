@@ -1,6 +1,9 @@
+import { DEFAULT_LOCALE } from '@repo/constants';
+
 export default () => ({
   port: parseInt(process.env.PORT || '3001', 10),
   environment: process.env.NODE_ENV || 'development',
+  defaultLanguage: DEFAULT_LOCALE,
   database: {
     url: {
       dev: process.env.DATABASE_URL_DEV,

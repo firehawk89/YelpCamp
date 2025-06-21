@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ACCESS_TOKEN_EXPIRATION_SECONDS } from '@repo/constants';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
+import { join } from 'path';
 
 import config from './config';
 import { AuthModule } from './modules/auth/auth.module';
@@ -19,7 +21,7 @@ import { UsersModule } from './modules/users/users.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => {
-        const environment = config.get<string>('environment');
+        const environment = config.getOrThrow<string>('environment');
         const uri =
           environment === 'production'
             ? config.get<string>('database.url.prod')
@@ -28,10 +30,22 @@ import { UsersModule } from './modules/users/users.module';
       },
       inject: [ConfigService],
     }),
+    I18nModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        fallbackLanguage: configService.getOrThrow<string>('defaultLanguage'),
+        loaderOptions: {
+          path: join(__dirname, '/i18n/'),
+          watch: true,
+        },
+        typesOutputPath: join(__dirname, '/types/i18n.ts'),
+      }),
+      resolvers: [AcceptLanguageResolver],
+      inject: [ConfigService],
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('jwt.secret'),
+        secret: config.getOrThrow<string>('jwt.secret'),
         signOptions: { expiresIn: ACCESS_TOKEN_EXPIRATION_SECONDS },
       }),
       inject: [ConfigService],
