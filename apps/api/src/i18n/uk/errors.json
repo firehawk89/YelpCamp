@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "tokens": {
+      "accessTokenMissing": "Відсутній access token",
+      "accessTokenVerificationFailed": "Не вдалося верифікувати access token",
+      "refreshTokenMissing": "Відсутній refresh token",
+      "refreshTokenExpiredOrInvalid": "Refresh token застарів або недійсний"
+    },
+    "users": {
+      "userDoesNotExist": "Користувача не знайдено",
+      "userAlreadyExists": "Користувач вже існує",
+      "loggedOut": "Успішний вихід з системи"
+    }
+  }
+}

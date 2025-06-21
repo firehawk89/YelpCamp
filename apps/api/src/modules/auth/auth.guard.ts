@@ -2,18 +2,22 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '@repo/types';
 import { Request } from 'express';
+import { I18nContext } from 'nestjs-i18n';
 import { handleError } from 'src/helpers/misc';
+import { I18nTranslations } from 'src/types/i18n';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const { t } = I18nContext.current<I18nTranslations>();
+
     const request: Request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException('Access token is missing');
+      throw new UnauthorizedException(t('errors.auth.tokens.accessTokenMissing'));
     }
 
     try {
@@ -22,7 +26,7 @@ export class AuthGuard implements CanActivate {
       return true;
     } catch (error) {
       handleError(error, AuthGuard.name, false);
-      throw new UnauthorizedException('Failed to verify access token');
+      throw new UnauthorizedException(t('errors.auth.tokens.accessTokenVerificationFailed'));
     }
   }
 
