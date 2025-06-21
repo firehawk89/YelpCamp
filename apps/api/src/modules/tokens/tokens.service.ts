@@ -47,7 +47,7 @@ export class TokenService {
     try {
       if (!refreshToken) {
         throw new UnauthorizedException(
-          this.i18n.t('errors.auth.tokens.refreshTokenMissing', { lang: I18nContext.current().lang })
+          this.i18n.t('errors.tokens.refreshTokenMissing', { lang: I18nContext.current().lang })
         );
       }
 
@@ -58,7 +58,7 @@ export class TokenService {
 
       if (!foundRefreshToken) {
         throw new UnauthorizedException(
-          this.i18n.t('errors.auth.tokens.refreshTokenExpiredOrInvalid', { lang: I18nContext.current().lang })
+          this.i18n.t('errors.tokens.refreshTokenExpiredOrInvalid', { lang: I18nContext.current().lang })
         );
       }
 
