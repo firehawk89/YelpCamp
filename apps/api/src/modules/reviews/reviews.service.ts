@@ -5,18 +5,21 @@ import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER } from '@rep
 import { POSITIVE_RATING_THRESHOLD } from '@repo/constants';
 import { PaginatedResponse, ReviewsMetadata } from '@repo/types';
 import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
 import { handleError } from 'src/helpers/misc';
 import { getUpdatedRating } from 'src/helpers/rating';
 import { Campground } from 'src/schemas/campground.schema';
 import { Review, ReviewDocument } from 'src/schemas/review.schema';
+import { I18nTranslations } from 'src/types/i18n';
 
 @Injectable()
 export class ReviewsService {
   constructor(
     @InjectModel(Review.name) private reviewModel: Model<Review>,
-    @InjectModel(Campground.name) private campgroundModel: Model<Campground>
+    @InjectModel(Campground.name) private campgroundModel: Model<Campground>,
+    private readonly i18n: I18nService<I18nTranslations>
   ) {}
 
   async getAll(): Promise<Review[]> {
@@ -31,7 +34,9 @@ export class ReviewsService {
     try {
       const isValidId = isValidObjectId(campgroundId);
       if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.reviews.invalidCampgroundId', { lang: I18nContext.current().lang })
+        );
       }
 
       const page = Number(filter?.page) || DEFAULT_PAGE;
@@ -113,7 +118,9 @@ export class ReviewsService {
     try {
       const isValidId = isValidObjectId(userId);
       if (!isValidId) {
-        throw new BadRequestException('Invalid user ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.reviews.invalidUserId', { lang: I18nContext.current().lang })
+        );
       }
 
       const page = Number(filter?.page) || DEFAULT_PAGE;
@@ -184,13 +191,15 @@ export class ReviewsService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid review ID');
+        throw new BadRequestException(this.i18n.t('errors.reviews.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const review = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
 
       if (!review) {
-        throw new NotFoundException("Review doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.reviews.reviewDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       return review;
@@ -199,33 +208,27 @@ export class ReviewsService {
     }
   }
 
-  // TODO: Use this method only for admin users
-  //   async update(id: string, updateReviewDto: UpdateReviewDTO): Promise<Review> {
-  //     const foundReview = await this.reviewModel.findById(id).exec();
-  //     if (!campground) {
-  //       throw new NotFoundException("Review doesn't exist");
-  //     }
-
-  //     return this.reviewModel
-  //       .findByIdAndUpdate(id, { ...updateCampgroundDto }, { new: true })
-  //       .exec();
-  //   }
-
   async create(campgroundId: string, userId: string, createReviewDto: CreateReviewDTO): Promise<ReviewDocument> {
     try {
       const isValidCampgroundId = isValidObjectId(campgroundId);
       if (!isValidCampgroundId) {
-        throw new BadRequestException('Invalid campground ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.reviews.invalidCampgroundId', { lang: I18nContext.current().lang })
+        );
       }
 
       const campground = await this.campgroundModel.findOne({ _id: { $eq: campgroundId } }).exec();
       if (!campground) {
-        throw new NotFoundException("Campground doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.reviews.campgroundDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       const isValidUserId = isValidObjectId(userId);
       if (!isValidUserId) {
-        throw new BadRequestException('Invalid user ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.reviews.invalidUserId', { lang: I18nContext.current().lang })
+        );
       }
 
       const newReview = new this.reviewModel({ ...createReviewDto, campground: campgroundId, author: userId });
@@ -244,7 +247,9 @@ export class ReviewsService {
 
       const foundReview = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundReview) {
-        throw new NotFoundException("Review doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.reviews.reviewDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       const userObjectId = new mongoose.Types.ObjectId(userId);
@@ -272,7 +277,9 @@ export class ReviewsService {
 
       const foundReview = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundReview) {
-        throw new NotFoundException("Review doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.reviews.reviewDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       const userObjectId = new mongoose.Types.ObjectId(userId);
@@ -294,12 +301,14 @@ export class ReviewsService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid review ID');
+        throw new BadRequestException(this.i18n.t('errors.reviews.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const foundReview = await this.reviewModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundReview) {
-        throw new NotFoundException("Review doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.reviews.reviewDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       await this.decreaseCampgroundRating(foundReview.campground, foundReview.rating);
@@ -326,7 +335,9 @@ export class ReviewsService {
         .exec();
     } catch (error) {
       handleError(error, ReviewsService.name, false);
-      throw new InternalServerErrorException('Failed to update campground rating');
+      throw new InternalServerErrorException(
+        this.i18n.t('errors.reviews.campgroundRatingUpdateFailed', { lang: I18nContext.current().lang })
+      );
     }
   }
 
@@ -334,7 +345,9 @@ export class ReviewsService {
     try {
       const isValidId = isValidObjectId(campgroundId);
       if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.reviews.invalidCampgroundId', { lang: I18nContext.current().lang })
+        );
       }
 
       const reviewCampground = await this.campgroundModel.findOne({ _id: { $eq: campgroundId } });
@@ -353,17 +366,19 @@ export class ReviewsService {
         .exec();
     } catch (error) {
       handleError(error, ReviewsService.name, false);
-      throw new InternalServerErrorException('Failed to update campground rating');
+      throw new InternalServerErrorException(
+        this.i18n.t('errors.reviews.campgroundRatingUpdateFailed', { lang: I18nContext.current().lang })
+      );
     }
   }
 
   private validateReviewAndUserIDs(reviewId: string, userId: string): void {
     if (!isValidObjectId(reviewId)) {
-      throw new BadRequestException('Invalid review ID');
+      throw new BadRequestException(this.i18n.t('errors.reviews.invalidId', { lang: I18nContext.current().lang }));
     }
 
     if (!isValidObjectId(userId)) {
-      throw new BadRequestException('Invalid user ID');
+      throw new BadRequestException(this.i18n.t('errors.reviews.invalidUserId', { lang: I18nContext.current().lang }));
     }
   }
 }

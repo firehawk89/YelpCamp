@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { destinationFolderMap, IMAGE_FOLDER_BASE } from '@repo/constants';
 import { ImageType } from '@repo/types';
 import mongoose, { isValidObjectId, Model } from 'mongoose';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
 import { SIMILAR_IMAGES_CANDIDATES_LIMIT } from 'src/helpers/constants/misc';
 import { SIMILAR_IMAGES_SEARCH_LIMIT } from 'src/helpers/constants/misc';
@@ -10,6 +11,7 @@ import { getCosineSimilarity, getImageEmbedding } from 'src/helpers/embeddings';
 import { handleError } from 'src/helpers/misc';
 import { validateBase64Image } from 'src/helpers/validation';
 import { Image, ImageDocument, ImageWithSimilarity } from 'src/schemas/image.schema';
+import { I18nTranslations } from 'src/types/i18n';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
@@ -17,14 +19,15 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 export class ImagesService {
   constructor(
     @InjectModel(Image.name) private imageModel: Model<Image>,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly i18n: I18nService<I18nTranslations>
   ) {}
 
   async getById(id: string) {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid image ID');
+        throw new BadRequestException(this.i18n.t('errors.images.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const image = await this.imageModel
@@ -32,7 +35,9 @@ export class ImagesService {
         .select('+embedding')
         .exec();
       if (!image) {
-        throw new NotFoundException("Image doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.images.imageDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       return image;
@@ -44,7 +49,7 @@ export class ImagesService {
   async create(uploadImageDto: UploadImageDTO, userId?: string) {
     try {
       const base64Image = uploadImageDto.image;
-      validateBase64Image(base64Image);
+      validateBase64Image(base64Image, this.i18n);
 
       const imageId = new mongoose.Types.ObjectId();
 
@@ -124,7 +129,9 @@ export class ImagesService {
     try {
       const image = await this.getById(imageId);
       if (!image) {
-        throw new NotFoundException("Image doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.images.imageDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       await this.cloudinaryService.deleteImage(image.fileName);
@@ -139,7 +146,9 @@ export class ImagesService {
     try {
       const isValidId = isValidObjectId(campgroundId);
       if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.images.invalidCampgroundId', { lang: I18nContext.current().lang })
+        );
       }
 
       const deletedImages = await this.imageModel.deleteMany({ campgroundId: { $eq: campgroundId } }).exec();

@@ -10,6 +10,7 @@ import {
 } from '@repo/constants';
 import { ImageType, PaginatedResponse } from '@repo/types';
 import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { CampgroundsFilterDTO } from 'src/dto/campground/campgrounds-filter.dto';
 import { CreateCampgroundDTO } from 'src/dto/campground/create-campground.dto';
 import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
@@ -17,6 +18,7 @@ import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
 import { generateSlug, handleError, isValidSlug, validateField } from 'src/helpers/misc';
 import { Campground, CampgroundDocument, CampgroundWithSimilarity } from 'src/schemas/campground.schema';
 import { CampgroundLocation } from 'src/schemas/location.schema';
+import { I18nTranslations } from 'src/types/i18n';
 
 import { ImagesService } from '../images/images.service';
 
@@ -24,7 +26,8 @@ import { ImagesService } from '../images/images.service';
 export class CampgroundsService {
   constructor(
     @InjectModel(Campground.name) private campgroundModel: Model<Campground>,
-    private readonly imagesService: ImagesService
+    private readonly imagesService: ImagesService,
+    private readonly i18n: I18nService<I18nTranslations>
   ) {}
 
   async create(createCampgroundDto: CreateCampgroundDTO): Promise<CampgroundDocument> {
@@ -32,12 +35,16 @@ export class CampgroundsService {
       const { title, images } = createCampgroundDto;
 
       if (typeof title !== 'string') {
-        throw new BadRequestException('Invalid title format');
+        throw new BadRequestException(
+          this.i18n.t('errors.campgrounds.invalidTitle', { lang: I18nContext.current().lang })
+        );
       }
 
       const foundCampground = await this.campgroundModel.findOne({ title: { $eq: title } }).exec();
       if (foundCampground) {
-        throw new ConflictException('Campground already exists');
+        throw new ConflictException(
+          this.i18n.t('errors.campgrounds.campgroundAlreadyExists', { lang: I18nContext.current().lang })
+        );
       }
 
       if (!createCampgroundDto.slug) {
@@ -225,7 +232,9 @@ export class CampgroundsService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.campgrounds.invalidId', { lang: I18nContext.current().lang })
+        );
       }
 
       const campground = await this.campgroundModel
@@ -234,7 +243,9 @@ export class CampgroundsService {
         .exec();
 
       if (!campground) {
-        throw new NotFoundException("Campground doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.campgrounds.campgroundDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       return campground;
@@ -246,7 +257,9 @@ export class CampgroundsService {
   async getBySlug(slug: string): Promise<CampgroundDocument> {
     try {
       if (!isValidSlug(slug)) {
-        throw new BadRequestException('Invalid slug format');
+        throw new BadRequestException(
+          this.i18n.t('errors.campgrounds.invalidSlug', { lang: I18nContext.current().lang })
+        );
       }
 
       const campground = await this.campgroundModel
@@ -255,7 +268,9 @@ export class CampgroundsService {
         .exec();
 
       if (!campground) {
-        throw new NotFoundException("Campground with given slug doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.campgrounds.campgroundDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       return campground;
@@ -268,12 +283,16 @@ export class CampgroundsService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.campgrounds.invalidId', { lang: I18nContext.current().lang })
+        );
       }
 
       const campground = await this.campgroundModel.findOne({ _id: { $eq: id } }).exec();
       if (!campground) {
-        throw new NotFoundException("Campground with given ID doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.campgrounds.campgroundDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       if (!updateCampgroundDto.slug) {
@@ -334,12 +353,16 @@ export class CampgroundsService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid campground ID');
+        throw new BadRequestException(
+          this.i18n.t('errors.campgrounds.invalidId', { lang: I18nContext.current().lang })
+        );
       }
 
       const campground = await this.campgroundModel.findOne({ _id: { $eq: id } }).exec();
       if (!campground) {
-        throw new NotFoundException("Campground doesn't exist");
+        throw new NotFoundException(
+          this.i18n.t('errors.campgrounds.campgroundDoesNotExist', { lang: I18nContext.current().lang })
+        );
       }
 
       const updatedCampground = await this.campgroundModel.findByIdAndDelete(id).exec();

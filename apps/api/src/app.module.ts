@@ -34,10 +34,10 @@ import { UsersModule } from './modules/users/users.module';
       useFactory: (configService: ConfigService) => ({
         fallbackLanguage: configService.getOrThrow<string>('defaultLanguage'),
         loaderOptions: {
-          path: join(__dirname, '/i18n/'),
+          path: join(__dirname, '../src/i18n/'),
           watch: true,
         },
-        typesOutputPath: join(__dirname, '/types/i18n.ts'),
+        typesOutputPath: join(__dirname, '../src/types/i18n.ts'),
       }),
       resolvers: [AcceptLanguageResolver],
       inject: [ConfigService],

@@ -1,15 +1,43 @@
 {
-  "auth": {
-    "tokens": {
-      "accessTokenMissing": "Відсутній access token",
-      "accessTokenVerificationFailed": "Не вдалося верифікувати access token",
-      "refreshTokenMissing": "Відсутній refresh token",
-      "refreshTokenExpiredOrInvalid": "Refresh token застарів або недійсний"
-    },
-    "users": {
-      "userDoesNotExist": "Користувача не знайдено",
-      "userAlreadyExists": "Користувач вже існує",
-      "loggedOut": "Успішний вихід з системи"
-    }
+  "tokens": {
+    "accessTokenMissing": "Відсутній access token",
+    "accessTokenVerificationFailed": "Не вдалося верифікувати access token",
+    "refreshTokenMissing": "Відсутній refresh token",
+    "refreshTokenExpiredOrInvalid": "Refresh token застарів або недійсний"
+  },
+  "users": {
+    "userDoesNotExist": "Користувача не знайдено",
+    "userAlreadyExists": "Користувач вже існує",
+    "loggedOut": "Успішний вихід з системи",
+    "invalidEmail": "Невірний email",
+    "invalidId": "Невірний ID користувача",
+    "invalidUserOrCampgroundId": "Невірний ID користувача або ID кемпінгу",
+    "invalidPassword": "Невірний пароль",
+    "newAndConfirmedPasswordsDoNotMatch": "Новий пароль і підтверджений новий пароль не збігаються"
+  },
+  "reviews": {
+    "reviewDoesNotExist": "Відгук не знайдено",
+    "invalidReviewOrUserId": "Невірний ID відгуку або ID користувача",
+    "invalidCampgroundId": "Невірний ID кемпінгу",
+    "campgroundDoesNotExist": "Кемпінг не знайдено",
+    "invalidUserId": "Невірний ID користувача",
+    "invalidId": "Невірний ID відгуку",
+    "campgroundRatingUpdateFailed": "Не вдалося оновити рейтинг кемпінгу"
+  },
+  "images": {
+    "imageDoesNotExist": "Зображення не знайдено",
+    "invalidImageOrUserId": "Невірний ID зображення або ID користувача",
+    "invalidId": "Невірний ID зображення",
+    "invalidCampgroundId": "Невірний ID кемпінгу",
+    "invalidImageFormat": "Надане зображення не є валідним Base64-закодованим",
+    "notAllowedImageFormat": "Наданий формат зображення не дозволений. Дозволені формати: {allowedFormatsString}.",
+    "imageSizeExceedsLimit": "Розмір зображення перевищує ліміт у {maxImageSizeMB} MB."
+  },
+  "campgrounds": {
+    "campgroundDoesNotExist": "Кемпінг не знайдено",
+    "invalidId": "Невірний ID кемпінгу",
+    "invalidTitle": "Невірний формат заголовка",
+    "invalidSlug": "Невірний формат slug",
+    "campgroundAlreadyExists": "Кемпінг вже існує"
   }
 }

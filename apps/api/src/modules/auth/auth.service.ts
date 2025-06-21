@@ -24,14 +24,14 @@ export class AuthService {
     try {
       const foundUser = await this.usersService.getByEmail(signInDto.email, false);
       if (!foundUser) {
-        throw new ConflictException(
-          this.i18n.t('errors.auth.users.userDoesNotExist', { lang: I18nContext.current().lang })
-        );
+        throw new ConflictException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       const isPasswordCorrect = await comparePassword(signInDto.password, foundUser.password);
       if (!isPasswordCorrect) {
-        throw new BadRequestException('Invalid password');
+        throw new BadRequestException(
+          this.i18n.t('errors.users.invalidPassword', { lang: I18nContext.current().lang })
+        );
       }
 
       const userTokens = await this.generateUserTokens(foundUser._id.toString());
@@ -47,7 +47,7 @@ export class AuthService {
       const existingUser = await this.usersService.getByEmail(signUpDto.email, false);
       if (existingUser) {
         throw new ConflictException(
-          this.i18n.t('errors.auth.users.userAlreadyExists', { lang: I18nContext.current().lang })
+          this.i18n.t('errors.users.userAlreadyExists', { lang: I18nContext.current().lang })
         );
       }
 
@@ -69,7 +69,7 @@ export class AuthService {
   async logout(userId: string): Promise<{ message: string }> {
     try {
       await this.tokenService.invalidateUserTokens(userId);
-      return { message: this.i18n.t('errors.auth.users.loggedOut', { lang: I18nContext.current().lang }) };
+      return { message: this.i18n.t('errors.users.loggedOut', { lang: I18nContext.current().lang }) };
     } catch (error) {
       handleError(error, AuthService.name);
     }

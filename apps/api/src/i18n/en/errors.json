@@ -1,15 +1,43 @@
 {
-  "auth": {
-    "tokens": {
-      "accessTokenMissing": "Access token is missing",
-      "accessTokenVerificationFailed": "Failed to verify access token",
-      "refreshTokenMissing": "Refresh token is missing",
-      "refreshTokenExpiredOrInvalid": "Refresh token is expired or invalid"
-    },
-    "users": {
-      "userDoesNotExist": "User does not exist",
-      "userAlreadyExists": "User already exists",
-      "loggedOut": "Successfully logged out"
-    }
+  "tokens": {
+    "accessTokenMissing": "Access token is missing",
+    "accessTokenVerificationFailed": "Failed to verify access token",
+    "refreshTokenMissing": "Refresh token is missing",
+    "refreshTokenExpiredOrInvalid": "Refresh token is expired or invalid"
+  },
+  "users": {
+    "userDoesNotExist": "User does not exist",
+    "userAlreadyExists": "User already exists",
+    "loggedOut": "Successfully logged out",
+    "invalidEmail": "Invalid email",
+    "invalidId": "Invalid user ID",
+    "invalidUserOrCampgroundId": "Invalid user or campground ID",
+    "invalidPassword": "Invalid password",
+    "newAndConfirmedPasswordsDoNotMatch": "New password and confirmed new password do not match"
+  },
+  "reviews": {
+    "reviewDoesNotExist": "Review does not exist",
+    "invalidReviewOrUserId": "Invalid review or user ID",
+    "invalidCampgroundId": "Invalid campground ID",
+    "campgroundDoesNotExist": "Campground does not exist",
+    "invalidUserId": "Invalid user ID",
+    "invalidId": "Invalid review ID",
+    "campgroundRatingUpdateFailed": "Failed to update campground rating"
+  },
+  "images": {
+    "imageDoesNotExist": "Image does not exist",
+    "invalidImageOrUserId": "Invalid image or user ID",
+    "invalidId": "Invalid image ID",
+    "invalidCampgroundId": "Invalid campground ID",
+    "invalidImageFormat": "The provided image is not a valid Base64-encoded.",
+    "notAllowedImageFormat": "The provided image format is not allowed. Allowed formats are: {allowedFormatsString}.",
+    "imageSizeExceedsLimit": "Image size exceeds the limit of {maxImageSizeMB} MB."
+  },
+  "campgrounds": {
+    "campgroundDoesNotExist": "Campground does not exist",
+    "invalidId": "Invalid campground ID",
+    "invalidTitle": "Invalid title format",
+    "invalidSlug": "Invalid slug format",
+    "campgroundAlreadyExists": "Campground already exists"
   }
 }

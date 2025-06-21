@@ -2,12 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ALLOWED_IMAGE_FORMATS } from '@repo/constants';
 import { v2 as cloudinaryV2, UploadApiOptions } from 'cloudinary';
+import { I18nService } from 'nestjs-i18n';
 import { handleError } from 'src/helpers/misc';
 import { validateBase64Image } from 'src/helpers/validation';
+import { I18nTranslations } from 'src/types/i18n';
 
 @Injectable()
 export class CloudinaryService {
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly config: ConfigService,
+    private readonly i18n: I18nService<I18nTranslations>
+  ) {
     cloudinaryV2.config({
       cloud_name: this.config.get<string>('cloudinary.cloudName'),
       api_key: this.config.get<string>('cloudinary.apiKey'),
@@ -17,7 +22,7 @@ export class CloudinaryService {
 
   async uploadImage(base64Image: string, options?: UploadApiOptions): Promise<string> {
     try {
-      validateBase64Image(base64Image);
+      validateBase64Image(base64Image, this.i18n);
 
       const uploadOptions: UploadApiOptions = {
         resource_type: 'image',

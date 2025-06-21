@@ -5,6 +5,7 @@ import { DEFAULT_PAGE_LIMIT, DEFAULT_SORT_ORDER, DEFAULT_SORT_FIELD } from '@rep
 import { PaginatedResponse } from '@repo/types';
 import { isEmail } from 'class-validator';
 import mongoose, { isValidObjectId, Model, PipelineStage } from 'mongoose';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { CreateUserDTO } from 'src/dto/user/create-user.dto';
 import { FavoriteCampgroundsFilterDTO } from 'src/dto/user/favorite-campgrounds-filter.dto';
 import { UpdateUserPasswordDTO } from 'src/dto/user/update-user-password.dto';
@@ -13,6 +14,7 @@ import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError, validateField } from 'src/helpers/misc';
 import { Campground, CampgroundDocument } from 'src/schemas/campground.schema';
 import { User, UserDocument } from 'src/schemas/user.schema';
+import { I18nTranslations } from 'src/types/i18n';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { TokenService } from '../tokens/tokens.service';
@@ -22,7 +24,8 @@ export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly cloudinaryService: CloudinaryService,
-    private readonly tokenService: TokenService
+    private readonly tokenService: TokenService,
+    private readonly i18n: I18nService<I18nTranslations>
   ) {}
 
   async create(createUserDto: CreateUserDTO): Promise<UserDocument> {
@@ -31,12 +34,14 @@ export class UsersService {
 
       const isValidEmail = isEmail(email);
       if (!isValidEmail) {
-        throw new BadRequestException('Invalid email');
+        throw new BadRequestException(this.i18n.t('errors.users.invalidEmail', { lang: I18nContext.current().lang }));
       }
 
       const foundUser = await this.userModel.findOne({ email: { $eq: email } }).exec();
       if (foundUser) {
-        throw new ConflictException('User already exists');
+        throw new ConflictException(
+          this.i18n.t('errors.users.userAlreadyExists', { lang: I18nContext.current().lang })
+        );
       }
 
       const newUser = new this.userModel(createUserDto);
@@ -54,12 +59,12 @@ export class UsersService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid user ID');
+        throw new BadRequestException(this.i18n.t('errors.users.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const user = await this.userModel.findOne({ _id: { $eq: id } }).exec();
       if (!user) {
-        throw new NotFoundException("User doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       return user;
@@ -72,12 +77,12 @@ export class UsersService {
     try {
       const isValidEmail = isEmail(email);
       if (!isValidEmail) {
-        throw new BadRequestException('Invalid email');
+        throw new BadRequestException(this.i18n.t('errors.users.invalidEmail', { lang: I18nContext.current().lang }));
       }
 
       const user = await this.userModel.findOne({ email: { $eq: email } }).exec();
       if (!user && throwError) {
-        throw new NotFoundException("User doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       return user;
@@ -90,12 +95,12 @@ export class UsersService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid user ID');
+        throw new BadRequestException(this.i18n.t('errors.users.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const user = await this.userModel.findOne({ _id: { $eq: id } }).exec();
       if (!user) {
-        throw new NotFoundException("User with given ID doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       if (updateUserDto.avatar) {
@@ -123,23 +128,27 @@ export class UsersService {
     try {
       const isValidId = isValidObjectId(userId);
       if (!isValidId) {
-        throw new BadRequestException('Invalid user ID');
+        throw new BadRequestException(this.i18n.t('errors.users.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
-        throw new NotFoundException("User doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       const { oldPassword, newPassword, confirmedNewPassword } = updateUserPasswordDto;
 
       const isPasswordCorrect = await comparePassword(oldPassword, user.password);
       if (!isPasswordCorrect) {
-        throw new BadRequestException('Old password is invalid');
+        throw new BadRequestException(
+          this.i18n.t('errors.users.invalidPassword', { lang: I18nContext.current().lang })
+        );
       }
 
       if (newPassword !== confirmedNewPassword) {
-        throw new BadRequestException('New password and confirmed new password do not match');
+        throw new BadRequestException(
+          this.i18n.t('errors.users.newAndConfirmedPasswordsDoNotMatch', { lang: I18nContext.current().lang })
+        );
       }
 
       const hashedNewPassword = await hashPassword(newPassword);
@@ -173,12 +182,12 @@ export class UsersService {
     try {
       const isValidId = isValidObjectId(id);
       if (!isValidId) {
-        throw new BadRequestException('Invalid user ID');
+        throw new BadRequestException(this.i18n.t('errors.users.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const foundUser = await this.userModel.findOne({ _id: { $eq: id } }).exec();
       if (!foundUser) {
-        throw new NotFoundException("User doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       return this.userModel.findByIdAndDelete(id).exec();
@@ -194,12 +203,12 @@ export class UsersService {
     try {
       const isValidId = isValidObjectId(userId);
       if (!isValidId) {
-        throw new BadRequestException('Invalid user ID');
+        throw new BadRequestException(this.i18n.t('errors.users.invalidId', { lang: I18nContext.current().lang }));
       }
 
       const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
-        throw new NotFoundException("User doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       const page = Number(filter?.page) || DEFAULT_PAGE;
@@ -274,12 +283,14 @@ export class UsersService {
   async addFavoriteCampground(userId: string, campgroundId: string): Promise<UserDocument> {
     try {
       if (!isValidObjectId(userId) || !isValidObjectId(campgroundId)) {
-        throw new BadRequestException('Invalid user or campground ID format');
+        throw new BadRequestException(
+          this.i18n.t('errors.users.invalidUserOrCampgroundId', { lang: I18nContext.current().lang })
+        );
       }
 
       const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
-        throw new NotFoundException("User doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       const alreadyFavorite = user.favoriteCampgrounds.some((id) => id.toString() === campgroundId);
@@ -298,12 +309,14 @@ export class UsersService {
   async removeFavoriteCampground(userId: string, campgroundId: string): Promise<UserDocument> {
     try {
       if (!isValidObjectId(userId) || !isValidObjectId(campgroundId)) {
-        throw new BadRequestException('Invalid user or campground ID format');
+        throw new BadRequestException(
+          this.i18n.t('errors.users.invalidUserOrCampgroundId', { lang: I18nContext.current().lang })
+        );
       }
 
       const user = await this.userModel.findOne({ _id: { $eq: userId } }).exec();
       if (!user) {
-        throw new NotFoundException("User doesn't exist");
+        throw new NotFoundException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
       return this.userModel

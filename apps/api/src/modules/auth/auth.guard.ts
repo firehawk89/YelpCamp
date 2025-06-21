@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException(t('errors.auth.tokens.accessTokenMissing'));
+      throw new UnauthorizedException(t('errors.tokens.accessTokenMissing'));
     }
 
     try {
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
       return true;
     } catch (error) {
       handleError(error, AuthGuard.name, false);
-      throw new UnauthorizedException(t('errors.auth.tokens.accessTokenVerificationFailed'));
+      throw new UnauthorizedException(t('errors.tokens.accessTokenVerificationFailed'));
     }
   }
 
