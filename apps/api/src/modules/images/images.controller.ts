@@ -3,10 +3,9 @@ import { type JwtPayload } from '@repo/types';
 import { User } from 'src/decorators/user.decorator';
 import { UploadImageDTO } from 'src/dto/image/upload-image.dto';
 
-import { AuthGuard } from '../auth/auth.guard';
+import { JwtAuthGuard } from '../auth/auth.guard';
 import { ImagesService } from './images.service';
 
-@UseGuards(AuthGuard)
 @Controller('images')
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
@@ -16,6 +15,7 @@ export class ImagesController {
     return this.imagesService.getById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   createImage(@User() user: JwtPayload, @Body() uploadImageDto: UploadImageDTO) {
     return this.imagesService.create(uploadImageDto, user.userId);

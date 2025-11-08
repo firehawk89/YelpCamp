@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Campground, CampgroundSchema } from 'src/schemas/campground.schema';
 import { Review, ReviewSchema } from 'src/schemas/review.schema';
 
+import { AuthModule } from '../auth/auth.module';
 import { ImagesModule } from '../images/images.module';
 import { ReviewsService } from '../reviews/reviews.service';
 import { CampgroundsController } from './campgrounds.controller';
@@ -15,6 +16,7 @@ import { CampgroundsService } from './campgrounds.service';
       { name: Review.name, schema: ReviewSchema },
     ]),
     ImagesModule,
+    AuthModule,
   ],
   providers: [CampgroundsService, ReviewsService],
   controllers: [CampgroundsController],

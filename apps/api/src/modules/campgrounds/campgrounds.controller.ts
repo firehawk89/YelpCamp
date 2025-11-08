@@ -7,7 +7,7 @@ import { UpdateCampgroundDTO } from 'src/dto/campground/update-campground.dto';
 import { CreateReviewDTO } from 'src/dto/review/create-review.dto';
 import { ReviewsFilterDTO } from 'src/dto/review/reviews-filter.dto';
 
-import { AuthGuard } from '../auth/auth.guard';
+import { JwtAuthGuard } from '../auth/auth.guard';
 import { ReviewsService } from '../reviews/reviews.service';
 import { CampgroundsService } from './campgrounds.service';
 
@@ -23,7 +23,7 @@ export class CampgroundsController {
     return this.campgroundsService.getAll(filter);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   createCampground(@Body() createCampgroundDto: CreateCampgroundDTO) {
     return this.campgroundsService.create(createCampgroundDto);
@@ -39,13 +39,13 @@ export class CampgroundsController {
     return this.campgroundsService.getBySlug(slug);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   updateCampground(@Param('id') id: string, @Body() updateCampgroundDto: UpdateCampgroundDTO) {
     return this.campgroundsService.update(id, updateCampgroundDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   deleteCampground(@Param('id') id: string) {
     return this.campgroundsService.delete(id);
@@ -56,7 +56,7 @@ export class CampgroundsController {
     return this.reviewsService.getAllByCampgroundId(campgroundId, filter);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post(':id/reviews')
   createReview(@Param('id') campgroundId: string, @User() user: JwtPayload, @Body() createReviewDto: CreateReviewDTO) {
     return this.reviewsService.create(campgroundId, user.userId, createReviewDto);
