@@ -2,22 +2,25 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '@repo/types';
 import { Request } from 'express';
-import { I18nContext } from 'nestjs-i18n';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { handleError } from 'src/helpers/misc';
 import { I18nTranslations } from 'src/types/i18n';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+export class JwtAuthGuard implements CanActivate {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly i18n: I18nService<I18nTranslations>
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const { t } = I18nContext.current<I18nTranslations>();
-
     const request: Request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException(t('errors.tokens.accessTokenMissing'));
+      throw new UnauthorizedException(
+        this.i18n.t('errors.tokens.accessTokenMissing', { lang: I18nContext.current().lang })
+      );
     }
 
     try {
@@ -25,8 +28,10 @@ export class AuthGuard implements CanActivate {
       request['user'] = payload;
       return true;
     } catch (error) {
-      handleError(error, AuthGuard.name, false);
-      throw new UnauthorizedException(t('errors.tokens.accessTokenVerificationFailed'));
+      handleError(error, JwtAuthGuard.name, false);
+      throw new UnauthorizedException(
+        this.i18n.t('errors.tokens.accessTokenVerificationFailed', { lang: I18nContext.current().lang })
+      );
     }
   }
 

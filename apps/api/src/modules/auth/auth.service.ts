@@ -2,7 +2,6 @@ import { BadRequestException, ConflictException, Injectable } from '@nestjs/comm
 import { JwtService } from '@nestjs/jwt';
 import { UserTokens } from '@repo/types';
 import { I18nContext, I18nService } from 'nestjs-i18n';
-import { SignInDTO } from 'src/dto/auth/sign-in.dto';
 import { SignUpDTO } from 'src/dto/auth/sign-up.dto';
 import { comparePassword, hashPassword } from 'src/helpers/crypto';
 import { handleError } from 'src/helpers/misc';
@@ -20,23 +19,23 @@ export class AuthService {
     private readonly i18n: I18nService<I18nTranslations>
   ) {}
 
-  async signIn(signInDto: SignInDTO): Promise<UserTokens> {
+  async signIn(email: string, password: string): Promise<UserTokens> {
     try {
-      const foundUser = await this.usersService.getByEmail(signInDto.email, false);
+      const foundUser = await this.usersService.getByEmail(email, false);
+
       if (!foundUser) {
         throw new ConflictException(this.i18n.t('errors.users.userDoesNotExist', { lang: I18nContext.current().lang }));
       }
 
-      const isPasswordCorrect = await comparePassword(signInDto.password, foundUser.password);
+      const isPasswordCorrect = await comparePassword(password, foundUser.password);
+
       if (!isPasswordCorrect) {
         throw new BadRequestException(
           this.i18n.t('errors.users.invalidPassword', { lang: I18nContext.current().lang })
         );
       }
 
-      const userTokens = await this.generateUserTokens(foundUser._id.toString());
-
-      return userTokens;
+      return this.generateUserTokens(foundUser._id.toString());
     } catch (error) {
       handleError(error, AuthService.name);
     }
@@ -58,10 +57,8 @@ export class AuthService {
         email: signUpDto.email,
         password: hashedPassword,
       });
-      const userTokens = await this.generateUserTokens(newUser._id.toString());
 
-      await newUser.save();
-      return userTokens;
+      return this.generateUserTokens(newUser._id.toString());
     } catch (error) {
       handleError(error, AuthService.name);
     }
@@ -79,9 +76,7 @@ export class AuthService {
   async validateRefreshToken(refreshToken: string): Promise<UserTokens> {
     try {
       const userId = await this.tokenService.validateRefreshToken(refreshToken);
-      const accessToken = this.jwtService.sign({ userId });
-      const newRefreshToken = await this.tokenService.generateRefreshToken(userId);
-      return { accessToken, refreshToken: newRefreshToken };
+      return this.generateUserTokens(userId);
     } catch (error) {
       handleError(error, AuthService.name);
     }
