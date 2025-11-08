@@ -6,6 +6,7 @@ import i18nMiddleware from './middlewares/i18n';
 export async function middleware(request: NextRequest) {
   const i18nResponse = i18nMiddleware(request);
   if (!i18nResponse?.ok) return i18nResponse;
+
   const authResponse = await authMiddleware(request, i18nResponse);
   return authResponse;
 }

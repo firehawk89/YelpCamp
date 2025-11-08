@@ -5,7 +5,7 @@ import { API_ROUTES } from '@/utils/constants/misc';
 import { ApiError, UserTokens } from '@repo/types';
 import { getLocale } from 'next-intl/server';
 
-import { decryptToken, deleteSessionCookies, getAccessToken, setSessionCookies } from './session';
+import { deleteSessionCookies, getAccessToken, setSessionCookies } from './session';
 
 type LogoutResponse = {
   message: string;
@@ -57,14 +57,11 @@ export const logout = async (): Promise<LogoutResponse> => {
     throw new Error('Failed to log out - access token is missing');
   }
 
-  const { userId } = await decryptToken(accessToken);
-
   const locale = await getLocale();
 
   const response = await fetch(`${API_ROUTES.AUTH}/log-out`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}`, 'Accept-Language': locale },
-    body: JSON.stringify({ userId }),
   });
 
   const data: LogoutResponse | ApiError = await response.json();

@@ -1,17 +1,16 @@
 import type { NextRequest } from 'next/server';
 
 import { routes } from '@/app/routes';
-import { refreshTokens } from '@/server/auth';
-import { decryptToken } from '@/server/session';
-import {
-  ACCESS_TOKEN_COOKIE_NAME,
-  ACCESS_TOKEN_EXPIRATION_DATE,
-  REFRESH_TOKEN_COOKIE_NAME,
-  REFRESH_TOKEN_EXPIRATION_DATE,
-} from '@/utils/constants/auth';
+import { ACCESS_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME } from '@/utils/constants/auth';
+import { API_ROUTES } from '@/utils/constants/misc';
 import { RETURN_TO_PARAM } from '@/utils/constants/params';
+import { ACCESS_TOKEN_EXPIRATION_MILLISECONDS, REFRESH_TOKEN_EXPIRATION_MILLISECONDS } from '@repo/constants';
+import { UserTokens } from '@repo/types';
+import { getLocale } from 'next-intl/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+
+import { decryptToken, deleteSessionCookies } from '../server/session';
 
 const publicRoutes = [routes.signIn(), routes.signUp];
 const protectedRoutes = [routes.profile(), routes.campgrounds.new()];
@@ -25,6 +24,28 @@ const getBasePathname = (path: string) => {
   return `/${pathSegments.slice(2).join('/')}`;
 };
 
+const refreshTokensInMiddleware = async (refreshToken: string): Promise<UserTokens | null> => {
+  try {
+    const locale = await getLocale();
+
+    const response = await fetch(`${API_ROUTES.AUTH}/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept-Language': locale },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = (await response.json()) as UserTokens;
+
+    return data;
+  } catch {
+    return null;
+  }
+};
+
 export async function authMiddleware(request: NextRequest, response: NextResponse) {
   const path = request.nextUrl.pathname;
   const basePathname = getBasePathname(path);
@@ -34,6 +55,7 @@ export async function authMiddleware(request: NextRequest, response: NextRespons
     protectedRoutes.includes(basePathname) || protectedRoutePatterns.some((pattern) => pattern.test(basePathname));
 
   const cookieStore = await cookies();
+
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
   const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
 
@@ -59,23 +81,47 @@ export async function authMiddleware(request: NextRequest, response: NextRespons
   }
 
   if (!accessTokenData?.userId && refreshToken) {
-    const newTokens = await refreshTokens(refreshToken);
+    const newTokens = await refreshTokensInMiddleware(refreshToken);
 
-    response.cookies.set(ACCESS_TOKEN_COOKIE_NAME, newTokens.accessToken, {
+    if (!newTokens) {
+      await deleteSessionCookies();
+
+      if (isProtectedRoute) {
+        const url = new URL(routes.signIn(), request.nextUrl);
+        url.searchParams.set(RETURN_TO_PARAM, request.nextUrl.pathname);
+        return NextResponse.redirect(url);
+      }
+
+      return response;
+    }
+
+    const newResponse = NextResponse.next();
+    const now = Date.now();
+
+    newResponse.cookies.set(ACCESS_TOKEN_COOKIE_NAME, newTokens.accessToken, {
       path: '/',
       httpOnly: true,
-      secure: true,
-      expires: ACCESS_TOKEN_EXPIRATION_DATE,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: new Date(now + ACCESS_TOKEN_EXPIRATION_MILLISECONDS),
     });
 
-    response.cookies.set(REFRESH_TOKEN_COOKIE_NAME, newTokens.refreshToken, {
+    newResponse.cookies.set(REFRESH_TOKEN_COOKIE_NAME, newTokens.refreshToken, {
       path: '/',
       httpOnly: true,
-      secure: true,
-      expires: REFRESH_TOKEN_EXPIRATION_DATE,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: new Date(now + REFRESH_TOKEN_EXPIRATION_MILLISECONDS),
     });
 
-    return response;
+    const newAccessTokenData = await decryptToken(newTokens.accessToken);
+
+    if (newAccessTokenData?.userId && isPublicRoute) {
+      const url = new URL(routes.campgrounds.all(), request.nextUrl);
+      return NextResponse.redirect(url);
+    }
+
+    return newResponse;
   }
 
   return response;
