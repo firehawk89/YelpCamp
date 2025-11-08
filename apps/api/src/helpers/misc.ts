@@ -18,6 +18,9 @@ export const handleError = (error: unknown, context: string, throwError: boolean
   }
 
   if (throwError) {
+    if (error instanceof Error) {
+      throw new BadRequestException(error.message);
+    }
     throw error;
   }
 };

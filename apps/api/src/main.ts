@@ -14,8 +14,6 @@ function setupSwagger(app: INestApplication) {
     )
     .setVersion('1.0')
     .setContact('Camp Zone', 'https://camp-zone-web.vercel.app', 'campzone@gmail.com')
-    .addServer('https://campzone-bvhe.onrender.com/', 'Production')
-    .addServer('http://localhost:3001', 'Development')
     .setBasePath('/api')
     .addBearerAuth({
       type: 'http',
