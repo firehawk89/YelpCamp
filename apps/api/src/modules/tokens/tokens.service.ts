@@ -17,9 +17,10 @@ export class TokenService {
 
   async invalidateUserTokens(userId: string): Promise<void> {
     try {
-      const isValidId = isValidObjectId(userId);
-      if (!isValidId) {
-        throw new BadRequestException('Invalid user ID');
+      const isValidUserId = isValidObjectId(userId);
+
+      if (!isValidUserId) {
+        throw new BadRequestException(this.i18n.t('errors.users.invalidId', { lang: I18nContext.current().lang }));
       }
 
       await this.refreshTokenModel.deleteMany({ userId: { $eq: userId } }).exec();
@@ -31,7 +32,7 @@ export class TokenService {
   async generateRefreshToken(userId: string): Promise<string> {
     try {
       const refreshToken = crypto.randomUUID();
-      const expiryDate = new Date(Date.now() + REFRESH_TOKEN_EXPIRATION_MILLISECONDS); // 7 days from now
+      const expiryDate = new Date(Date.now() + REFRESH_TOKEN_EXPIRATION_MILLISECONDS);
 
       await this.refreshTokenModel
         .updateOne({ userId }, { $set: { token: refreshToken, expiryDate } }, { upsert: true })
@@ -64,8 +65,8 @@ export class TokenService {
 
       const userId = foundRefreshToken.userId.toString();
 
-      await this.generateRefreshToken(userId);
       await this.refreshTokenModel.deleteOne({ _id: foundRefreshToken._id });
+      await this.generateRefreshToken(userId);
 
       return userId;
     } catch (error) {
