@@ -10,11 +10,10 @@ import { UpdateUserPasswordDTO } from 'src/dto/user/update-user-password.dto';
 import { UpdateUserDTO } from 'src/dto/user/update-user.dto';
 import { UsersFilterDTO } from 'src/dto/user/users-filter.dto';
 
-import { AuthGuard } from '../auth/auth.guard';
+import { JwtAuthGuard } from '../auth/auth.guard';
 import { ReviewsService } from '../reviews/reviews.service';
 import { UsersService } from './users.service';
 
-@UseGuards(AuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(
@@ -35,16 +34,19 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('favorites/campgrounds')
   getFavoriteCampgrounds(@User() user: JwtPayload, @Query() filter?: FavoriteCampgroundsFilterDTO) {
     return this.usersService.getFavoriteCampgrounds(user.userId, filter);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('favorites/campgrounds')
   addFavoriteCampground(@User() user: JwtPayload, @Body() addFavoriteCampgroundDto: AddFavoriteCampgroundDTO) {
     return this.usersService.addFavoriteCampground(user.userId, addFavoriteCampgroundDto.campgroundId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('favorites/campgrounds')
   removeFavoriteCampground(@User() user: JwtPayload, @Body() removeFavoriteCampgroundDto: RemoveFavoriteCampgroundDTO) {
     return this.usersService.removeFavoriteCampground(user.userId, removeFavoriteCampgroundDto.campgroundId);
@@ -55,16 +57,19 @@ export class UsersController {
     return this.reviewsService.getAllByUserId(id, filter);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDTO) {
     return this.usersService.update(id, updateUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id/password')
   updateUserPassword(@Param('id') id: string, @Body() updateUserPasswordDto: UpdateUserPasswordDTO) {
     return this.usersService.updatePassword(id, updateUserPasswordDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   deleteUser(@Param('id') id: string) {
     return this.usersService.delete(id);
