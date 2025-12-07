@@ -1,6 +1,7 @@
 import { cn } from '@/utils/misc';
-import { ImageIcon } from '@repo/ui/icons';
 import { HTMLAttributes, ReactNode } from 'react';
+
+import { ImageIcon } from '../icons';
 
 interface ImagePlaceholderProps extends HTMLAttributes<HTMLDivElement> {
   icon?: ReactNode;
@@ -8,10 +9,10 @@ interface ImagePlaceholderProps extends HTMLAttributes<HTMLDivElement> {
 
 const ImagePlaceholder = ({ icon, className, ...props }: ImagePlaceholderProps) => (
   <div
-    className={cn('relative flex aspect-square items-center justify-center bg-neutral-200 text-neutral-400', className)}
+    className={cn('bg-primary-50 text-shades-black relative flex aspect-square items-center justify-center', className)}
     {...props}
   >
-    {icon ?? <ImageIcon className="h-fit w-[25%] min-w-6 max-w-14" />}
+    {icon ?? <ImageIcon className="h-fit w-1/4 min-w-6 max-w-14" />}
   </div>
 );
 

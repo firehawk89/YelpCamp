@@ -9,19 +9,20 @@ export const avatarVariants = tv({
   base: 'shrink-0 rounded-full object-cover object-center',
   variants: {
     size: {
-      default: 'h-12 w-12',
-      sm: 'h-10 w-10',
-      lg: 'h-14 w-14',
+      xs: 'size-6',
+      sm: 'size-8',
+      md: 'size-10',
+      lg: 'size-12',
+      xl: 'size-14',
+      xxl: 'size-16',
     },
   },
   defaultVariants: {
-    size: 'default',
+    size: 'md',
   },
 });
 
-interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'>, VariantProps<typeof avatarVariants> {
-  src?: string | null;
-}
+export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement>, VariantProps<typeof avatarVariants> {}
 
 const Avatar = ({ src, alt, size, className, ...props }: AvatarProps) =>
   src ? (
@@ -29,7 +30,7 @@ const Avatar = ({ src, alt, size, className, ...props }: AvatarProps) =>
   ) : (
     <ImagePlaceholder
       className={cn(avatarVariants({ size }), className)}
-      icon={<UserIcon className="size-[50%]" />}
+      icon={<UserIcon className="size-1/2" />}
       {...props}
     />
   );
