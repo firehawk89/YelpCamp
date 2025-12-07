@@ -8,6 +8,23 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        'display-lg': ['56px', { lineHeight: '100%', letterSpacing: '-0.04em' }],
+        'display-sm': ['48px', { lineHeight: '100%', letterSpacing: '-0.04em' }],
+        h1: ['40px', { lineHeight: '100%', letterSpacing: '-0.04em' }],
+        h2: ['36px', { lineHeight: '100%', letterSpacing: '-0.04em' }],
+        h3: ['32px', { lineHeight: '120%', letterSpacing: '-0.02em' }],
+        h4: ['28px', { lineHeight: '120%', letterSpacing: '-0.02em' }],
+        h5: ['24px', { lineHeight: '120%', letterSpacing: '-0.02em' }],
+        h6: ['20px', { lineHeight: '120%', letterSpacing: '-0.02em' }],
+        'paragraph-lg': ['18px', { lineHeight: '145%', letterSpacing: '0' }],
+        'paragraph-md': ['16px', { lineHeight: '145%', letterSpacing: '0' }],
+        'paragraph-sm': ['14px', { lineHeight: '145%', letterSpacing: '0' }],
+        'paragraph-xs': ['12px', { lineHeight: '145%', letterSpacing: '0' }],
+        'caption-lg': ['14px', { lineHeight: '120%', letterSpacing: '0.12em', fontWeight: '600' }],
+        'caption-sm': ['12px', { lineHeight: '120%', letterSpacing: '0.12em', fontWeight: '600' }],
+        'caption-xs': ['10px', { lineHeight: '120%', letterSpacing: '0.16em', fontWeight: '600' }],
+      },
       fontFamily: {
         primary: ['var(--font-primary)'],
       },
