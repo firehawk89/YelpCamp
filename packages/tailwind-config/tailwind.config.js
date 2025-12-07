@@ -46,6 +46,24 @@ export default {
         large: '12px',
         xlarge: '16px',
       },
+      spacing: {
+        1: '4px',
+        2: '8px',
+        3: '12px',
+        4: '16px',
+        5: '20px',
+        6: '24px',
+        7: '28px',
+        8: '32px',
+        10: '40px',
+        12: '48px',
+        16: '64px',
+        20: '80px',
+        24: '96px',
+        32: '128px',
+        40: '160px',
+        48: '192px',
+      },
       fontFamily: {
         primary: ['var(--font-primary)'],
       },
@@ -54,7 +72,7 @@ export default {
         info: '#3b82f6',
       },
       primary: {
-        base: '#F97316',
+        DEFAULT: '#F97316',
         50: '#FFECE5',
         75: '#FCD2C2',
         100: '#FCB59A',
@@ -68,7 +86,7 @@ export default {
         900: '#711E00',
       },
       secondary: {
-        base: '#1671D9',
+        DEFAULT: '#1671D9',
         50: '#E3EFFC',
         75: '#C6DDF7',
         100: '#B6D8FF',
@@ -82,7 +100,7 @@ export default {
         900: '#001633',
       },
       neutral: {
-        base: '#98A2B3',
+        DEFAULT: '#98A2B3',
         50: '#F9FAFB',
         75: '#F7F9FC',
         100: '#F0F2F5',
@@ -96,7 +114,7 @@ export default {
         900: '#101928',
       },
       brown: {
-        base: '#A29999',
+        DEFAULT: '#A29999',
         50: '#FBF1F1',
         75: '#F0E6E6',
         100: '#E4DBDB',
@@ -114,7 +132,7 @@ export default {
         black: '#000000',
       },
       success: {
-        base: '#0F973D',
+        DEFAULT: '#0F973D',
         50: '#E7F6EC',
         75: '#B5E3C4',
         100: '#91D6A8',
@@ -128,7 +146,7 @@ export default {
         900: '#04172B',
       },
       warning: {
-        base: '#F3A218',
+        DEFAULT: '#F3A218',
         50: '#FEF6E7',
         75: '#FBE2B7',
         100: '#F7D394',
@@ -142,7 +160,7 @@ export default {
         900: '#523300',
       },
       error: {
-        base: '#D42620',
+        DEFAULT: '#D42620',
         50: '#FBEAE9',
         75: '#F2BCBA',
         100: '#EB9B98',
@@ -156,7 +174,7 @@ export default {
         900: '#591000',
       },
       danger: {
-        base: '#D42620',
+        DEFAULT: '#D42620',
         50: '#FBEAE9',
         75: '#F2BCBA',
         100: '#EB9B98',
