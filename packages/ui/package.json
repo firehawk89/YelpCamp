@@ -5,25 +5,27 @@
   "private": true,
   "exports": {
     "./icons": "./src/icons/index.tsx",
-    "./button": "./src/Button.tsx",
-    "./card": "./src/Card.tsx",
-    "./input": "./src/Input/index.tsx",
-    "./password-input": "./src/Input/PasswordInput.tsx",
-    "./input-wrapper": "./src/InputWrapper.tsx",
-    "./alert": "./src/Alert.tsx",
-    "./select": "./src/Select/index.tsx",
-    "./divider": "./src/Divider.tsx",
-    "./tooltip": "./src/Tooltip.tsx",
-    "./avatar": "./src/Avatar.tsx",
-    "./image-placeholder": "./src/ImagePlaceholder.tsx",
-    "./tabs": "./src/Tabs/index.tsx",
-    "./tabs/helpers": "./src/Tabs/helpers.ts",
-    "./tab": "./src/Tabs/Tab.tsx"
+    "./button": "./src/components/Button.tsx",
+    "./card": "./src/components/Card.tsx",
+    "./input": "./src/components/Input/index.tsx",
+    "./password-input": "./src/components/Input/PasswordInput.tsx",
+    "./input-wrapper": "./src/components/InputWrapper.tsx",
+    "./alert": "./src/components/Alert.tsx",
+    "./select": "./src/components/Select/index.tsx",
+    "./divider": "./src/components/Divider.tsx",
+    "./tooltip": "./src/components/Tooltip.tsx",
+    "./avatar": "./src/components/Avatar.tsx",
+    "./image-placeholder": "./src/components/ImagePlaceholder.tsx",
+    "./tabs": "./src/components/Tabs/index.tsx",
+    "./tabs/helpers": "./src/components/Tabs/helpers.ts",
+    "./tab": "./src/components/Tabs/Tab.tsx"
   },
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -43,6 +45,18 @@
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.3.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "storybook": "^10.1.4",
+    "@storybook/react-vite": "^10.1.4",
+    "@chromatic-com/storybook": "^4.1.3",
+    "@storybook/addon-vitest": "^10.1.4",
+    "@storybook/addon-a11y": "^10.1.4",
+    "@storybook/addon-docs": "^10.1.4",
+    "@storybook/addon-onboarding": "^10.1.4",
+    "eslint-plugin-storybook": "^10.1.4",
+    "vitest": "^4.0.15",
+    "playwright": "^1.57.0",
+    "@vitest/browser-playwright": "^4.0.15",
+    "@vitest/coverage-v8": "^4.0.15"
   }
 }
