@@ -4,8 +4,8 @@ import { cn } from '@/utils/misc';
 import { InputHTMLAttributes, useState } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
+import { EyeIcon } from '../../icons';
 import Button from '../Button';
-import { EyeIcon } from '../icons';
 
 export const inputVariants = tv({
   base: 'w-full rounded-lg outline-none transition-all bg-white',

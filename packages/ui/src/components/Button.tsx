@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { VariantProps } from 'tailwind-variants';
 import { tv } from 'tailwind-variants';
 
-import { LoadingIcon } from './icons';
+import { LoadingIcon } from '../icons';
 
 export const buttonVariants = tv({
   base: 'flex items-center justify-center text-center rounded-lg active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none transition-all',

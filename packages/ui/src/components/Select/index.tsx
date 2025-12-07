@@ -1,8 +1,8 @@
 import { cn } from '@/utils/misc';
 import { HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 
+import { ChevronIcon } from '../../icons';
 import Card from '../Card';
-import { ChevronIcon } from '../icons';
 import { SelectButtonProps, SelectOptionProps, DropdownPosition, dropdownPositionClasses } from './helpers';
 
 export type SelectOption<T = string> = {

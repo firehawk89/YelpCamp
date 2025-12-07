@@ -4,8 +4,8 @@ import { cn } from '@/utils/misc';
 import { useState } from 'react';
 
 import { InputProps, inputVariants } from '.';
+import { EyeIcon } from '../../icons';
 import Button from '../Button';
-import { EyeIcon } from '../icons';
 
 interface PasswordInputProps extends Omit<InputProps, 'type'> {
   containerClassName?: string;

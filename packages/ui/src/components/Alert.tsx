@@ -2,9 +2,9 @@ import { cn } from '@/utils/misc';
 import { HTMLAttributes, ReactElement } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
-import { DangerIcon } from './icons/DangerIcon';
-import { InfoIcon } from './icons/InfoIcon';
-import { WarningIcon } from './icons/WarningIcon';
+import { DangerIcon } from '../icons/DangerIcon';
+import { InfoIcon } from '../icons/InfoIcon';
+import { WarningIcon } from '../icons/WarningIcon';
 
 export const alertVariants = tv({
   base: 'w-fit h-fit flex items-center gap-4 rounded-lg border bg-white',

@@ -2,7 +2,7 @@ import { cn } from '@/utils/misc';
 import { ImgHTMLAttributes } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
-import { UserIcon } from './icons';
+import { UserIcon } from '../icons';
 import ImagePlaceholder from './ImagePlaceholder';
 
 export const avatarVariants = tv({
