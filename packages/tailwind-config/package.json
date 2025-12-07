@@ -6,7 +6,10 @@
   "author": "firehawk89",
   "license": "MIT",
   "exports": {
-    ".": "./tailwind.config.js",
+    ".": {
+      "types": "./tailwind.config.d.ts",
+      "default": "./tailwind.config.js"
+    },
     "./styles": "./globals.css"
   },
   "devDependencies": {
