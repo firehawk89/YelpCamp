@@ -190,7 +190,12 @@ export default {
     },
     container: {
       center: true,
-      padding: { DEFAULT: '1.25rem', md: '2rem' },
+      padding: {
+        DEFAULT: '24px',
+        sm: '16px',
+        md: '32px',
+        lg: '112px',
+      },
     },
   },
 };
