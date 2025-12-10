@@ -29,3 +29,7 @@ export { UserGroupIcon } from './UserGroupIcon';
 export { ChatIcon } from './ChatIcon';
 export { DeleteIcon } from './DeleteIcon';
 export { EllipsisVerticalIcon } from './ElipsisVerticalIcon';
+export { CheckCircleIcon } from './CheckCircleIcon';
+export { PlusIcon } from './PlusIcon';
+export { InfoTriangleIcon } from './InfoTriangleIcon';
+export { MinusCircleIcon } from './MinusCircleIcon';
