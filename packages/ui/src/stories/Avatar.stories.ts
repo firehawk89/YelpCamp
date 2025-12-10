@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import Avatar from '../components/Avatar';
+import Avatar, { avatarVariants } from '../components/Avatar';
 
 const meta = {
   title: 'Atoms/Avatar',
@@ -12,7 +12,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+      options: Object.keys(avatarVariants.variants.size),
       description: 'The size of the avatar',
       table: {
         defaultValue: { summary: 'md' },
@@ -38,7 +38,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    src: 'https://avatar.iran.liara.run/public/12',
+    src: '/mock-avatar.png',
   },
   parameters: {
     docs: {
