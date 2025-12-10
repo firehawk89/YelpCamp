@@ -6,23 +6,76 @@ import { tv } from 'tailwind-variants';
 import { IconProps, LoadingIcon } from '../icons';
 
 export const iconButtonVariants = tv({
-  base: 'flex items-center justify-center rounded-lg transition-colors',
+  base: 'cursor-pointer flex items-center justify-center rounded-lg border border-transparent transition-colors disabled:pointer-events-none',
   variants: {
     variant: {
-      primary: '',
-      outline: '',
-      transparent: '',
+      primary: 'text-shades-white',
+      outline: 'bg-transparent',
+      transparent: 'bg-transparent',
     },
     size: {
       default: 'p-2',
+      compact: 'p-0',
       lg: 'p-4',
     },
     color: {
-      primary: 'text-shades-white bg-primary-500 hover:bg-primary active:bg-primary-700 disabled:bg-gray-300',
-      secondary: 'text-shades-white bg-gray-500 hover:bg-gray-700 active:bg-gray-900 disabled:bg-gray-300',
-      destructive: 'text-shades-white bg-error-500 hover:bg-error-300 active:bg-error-700 disabled:bg-gray-300',
+      primary: '',
+      secondary: '',
+      destructive: '',
     },
   },
+  compoundVariants: [
+    {
+      variant: 'primary',
+      color: 'primary',
+      className: 'bg-primary-500 hover:bg-primary active:bg-primary-700 disabled:bg-gray-300',
+    },
+    {
+      variant: 'primary',
+      color: 'secondary',
+      className: 'bg-gray-500 hover:bg-gray-700 active:bg-gray-900 disabled:bg-gray-300',
+    },
+    {
+      variant: 'primary',
+      color: 'destructive',
+      className: 'bg-error-500 hover:bg-error-300 active:bg-error-700 disabled:bg-gray-300',
+    },
+
+    {
+      variant: 'outline',
+      color: 'primary',
+      className:
+        'border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-50 active:border-primary-700 active:text-primary-700 disabled:border-gray-100 disabled:text-gray-400',
+    },
+    {
+      variant: 'outline',
+      color: 'secondary',
+      className:
+        'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-100 active:bg-gray-100 active:border-gray-100 disabled:text-gray-400 disabled:border-gray-100',
+    },
+    {
+      variant: 'outline',
+      color: 'destructive',
+      className:
+        'border-error text-error hover:bg-error-50 hover:text-error-600 active:bg-error-50 active:border-error-700 active:text-error-700 disabled:text-gray-400 disabled:border-gray-100',
+    },
+
+    {
+      variant: 'transparent',
+      color: 'primary',
+      className: 'text-primary-500 hover:text-primary-600 active:text-primary-700 disabled:text-gray-300',
+    },
+    {
+      variant: 'transparent',
+      color: 'secondary',
+      className: 'text-gray-500 hover:text-gray-400 active:text-gray-700 disabled:text-gray-300',
+    },
+    {
+      variant: 'transparent',
+      color: 'destructive',
+      className: 'text-error hover:text-error-200 active:text-error-700 disabled:text-gray-300',
+    },
+  ],
   defaultVariants: {
     variant: 'primary',
     size: 'default',
