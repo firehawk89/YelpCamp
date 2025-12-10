@@ -8,7 +8,7 @@ interface DividerProps extends HTMLAttributes<HTMLDivElement> {
 const Divider = ({ orientation = 'horizontal', className, ...props }: DividerProps) => (
   <div
     className={cn(
-      'shrink-0 bg-neutral-300',
+      'shrink-0 bg-gray-100',
       { 'h-px w-full': orientation === 'horizontal', 'h-full w-px': orientation === 'vertical' },
       className
     )}
