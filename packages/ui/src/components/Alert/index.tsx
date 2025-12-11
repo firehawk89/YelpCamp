@@ -6,7 +6,7 @@ import { VariantProps } from 'tailwind-variants';
 import Button from '../Button';
 import Divider from '../Divider';
 import IconButton from '../IconButton';
-import { AlertIconMap } from './helpers';
+import { AlertIconMap, PrimaryCtaButtonColorMap } from './helpers';
 import { alertVariants } from './variants';
 
 export interface AlertProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {
@@ -43,6 +43,7 @@ const Alert = ({ title, description, cta, className, variant, size, ...props }: 
   const { text: secondaryCtaText, onClick: secondaryAction } = secondaryCta || {};
 
   const IconComponent = AlertIconMap[variant || 'default'];
+  const primaryCtaButtonColor = PrimaryCtaButtonColorMap[variant || 'default'];
 
   return (
     <div className={cn(container(), className)} {...props}>
@@ -68,7 +69,7 @@ const Alert = ({ title, description, cta, className, variant, size, ...props }: 
           {(primaryCtaText || secondaryCtaText) && (
             <div className={ctaButtons()}>
               {primaryCtaText && (
-                <Button variant="primary" color="primary" onClick={primaryAction}>
+                <Button variant="primary" color={primaryCtaButtonColor} onClick={primaryAction}>
                   {primaryCtaText}
                 </Button>
               )}
