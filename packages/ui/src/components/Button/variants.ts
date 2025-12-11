@@ -1,12 +1,7 @@
-import { cn } from '@/utils/misc';
-import { ButtonHTMLAttributes, ComponentType } from 'react';
-import { VariantProps } from 'tailwind-variants';
 import { tv } from 'tailwind-variants';
 
-import { IconProps, LoadingIcon } from '../icons';
-
 export const buttonVariants = tv({
-  base: 'cursor-pointer flex items-center justify-center gap-2 text-center rounded-lg border border-transparent transition-colors disabled:pointer-events-none',
+  base: 'cursor-pointer flex items-center justify-center gap-2 text-center font-semibold rounded-lg border border-transparent transition-colors disabled:pointer-events-none',
   variants: {
     variant: {
       primary: 'text-shades-white disabled:bg-gray-300',
@@ -14,9 +9,8 @@ export const buttonVariants = tv({
       transparent: 'bg-transparent disabled:text-gray-300',
     },
     size: {
-      default: 'p-2',
-      compact: 'p-0',
-      lg: 'p-4',
+      default: 'p-2 text-sm',
+      lg: 'p-4 text-base',
     },
     color: {
       primary: '',
@@ -133,46 +127,3 @@ export const buttonVariants = tv({
     color: 'primary',
   },
 });
-
-export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
-    VariantProps<typeof buttonVariants> {
-  icon?: ComponentType<IconProps>;
-  iconPosition?: 'left' | 'right';
-  isLoading?: boolean;
-}
-
-const Button = ({
-  type = 'button',
-  disabled,
-  variant,
-  size,
-  color,
-  icon: IconComponent,
-  iconPosition = 'left',
-  isLoading,
-  className,
-  children,
-  ...props
-}: ButtonProps) => {
-  const icon = isLoading ? (
-    <LoadingIcon />
-  ) : (
-    IconComponent && <IconComponent className={cn(size === 'lg' ? 'size-6' : 'size-5')} />
-  );
-
-  return (
-    <button
-      className={cn(buttonVariants({ variant, size, color }), className)}
-      type={type}
-      disabled={isLoading || disabled}
-      {...props}
-    >
-      {iconPosition === 'left' && icon}
-      {children}
-      {iconPosition === 'right' && icon}
-    </button>
-  );
-};
-
-export default Button;
