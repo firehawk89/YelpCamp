@@ -21,7 +21,7 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-onboarding'),
   ],
   framework: getAbsolutePath('@storybook/react-vite'),
-  staticDirs: ['../public', '../static'],
+  staticDirs: ['../public'],
 };
 
 export default config;
