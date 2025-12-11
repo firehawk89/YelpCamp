@@ -9,9 +9,9 @@ export const iconButtonVariants = tv({
   base: 'cursor-pointer flex items-center justify-center rounded-lg border border-transparent transition-colors disabled:pointer-events-none',
   variants: {
     variant: {
-      primary: 'text-shades-white',
-      outline: 'bg-transparent',
-      transparent: 'bg-transparent',
+      primary: 'text-shades-white disabled:bg-gray-300',
+      outline: 'bg-transparent disabled:border-gray-100 disabled:text-gray-400',
+      transparent: 'bg-transparent disabled:text-gray-300',
     },
     size: {
       default: 'p-2',
@@ -28,52 +28,52 @@ export const iconButtonVariants = tv({
     {
       variant: 'primary',
       color: 'primary',
-      className: 'bg-primary-500 hover:bg-primary active:bg-primary-700 disabled:bg-gray-300',
+      className: 'bg-primary-500 hover:bg-primary active:bg-primary-700',
     },
     {
       variant: 'primary',
       color: 'secondary',
-      className: 'bg-gray-500 hover:bg-gray-700 active:bg-gray-900 disabled:bg-gray-300',
+      className: 'bg-gray-500 hover:bg-gray-700 active:bg-gray-900',
     },
     {
       variant: 'primary',
       color: 'destructive',
-      className: 'bg-error-500 hover:bg-error-300 active:bg-error-700 disabled:bg-gray-300',
+      className: 'bg-error-500 hover:bg-error-300 active:bg-error-700',
     },
 
     {
       variant: 'outline',
       color: 'primary',
       className:
-        'border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-50 active:border-primary-700 active:text-primary-700 disabled:border-gray-100 disabled:text-gray-400',
+        'border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-50 active:border-primary-700 active:text-primary-700',
     },
     {
       variant: 'outline',
       color: 'secondary',
       className:
-        'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-100 active:bg-gray-100 active:border-gray-100 disabled:text-gray-400 disabled:border-gray-100',
+        'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-100 active:bg-gray-100 active:border-gray-100',
     },
     {
       variant: 'outline',
       color: 'destructive',
       className:
-        'border-error text-error hover:bg-error-50 hover:text-error-600 active:bg-error-50 active:border-error-700 active:text-error-700 disabled:text-gray-400 disabled:border-gray-100',
+        'border-error text-error hover:bg-error-50 hover:text-error-600 active:bg-error-50 active:border-error-700 active:text-error-700',
     },
 
     {
       variant: 'transparent',
       color: 'primary',
-      className: 'text-primary-500 hover:text-primary-600 active:text-primary-700 disabled:text-gray-300',
+      className: 'text-primary-500 hover:text-primary-600 active:text-primary-700',
     },
     {
       variant: 'transparent',
       color: 'secondary',
-      className: 'text-gray-500 hover:text-gray-400 active:text-gray-700 disabled:text-gray-300',
+      className: 'text-gray-500 hover:text-gray-400 active:text-gray-700',
     },
     {
       variant: 'transparent',
       color: 'destructive',
-      className: 'text-error hover:text-error-200 active:text-error-700 disabled:text-gray-300',
+      className: 'text-error hover:text-error-200 active:text-error-700',
     },
   ],
   defaultVariants: {
@@ -107,7 +107,7 @@ const IconButton = ({
     disabled={isLoading || disabled}
     {...props}
   >
-    {isLoading ? <LoadingIcon /> : <IconComponent className={cn(size === 'lg' && 'size-6')} />}
+    {isLoading ? <LoadingIcon /> : <IconComponent className={cn(size === 'lg' ? 'size-6' : 'size-5')} />}
   </button>
 );
 
