@@ -108,7 +108,7 @@ export const Large: Story = {
   args: {
     icon: PlusIcon,
     variant: 'primary',
-    color: 'primary',
+    color: 'info',
     size: 'lg',
   },
   parameters: {

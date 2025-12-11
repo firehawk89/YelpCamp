@@ -22,6 +22,9 @@ export const iconButtonVariants = tv({
       primary: '',
       secondary: '',
       destructive: '',
+      success: '',
+      warning: '',
+      info: '',
     },
   },
   compoundVariants: [
@@ -39,6 +42,21 @@ export const iconButtonVariants = tv({
       variant: 'primary',
       color: 'destructive',
       className: 'bg-error-500 hover:bg-error-300 active:bg-error-700',
+    },
+    {
+      variant: 'primary',
+      color: 'success',
+      className: 'bg-success-600 hover:bg-success active:bg-success-700',
+    },
+    {
+      variant: 'primary',
+      color: 'warning',
+      className: 'text-shades-black bg-warning hover:bg-warning-200 active:bg-warning-500',
+    },
+    {
+      variant: 'primary',
+      color: 'info',
+      className: 'bg-secondary-500 hover:bg-secondary-300 active:bg-secondary-600',
     },
 
     {
@@ -59,6 +77,24 @@ export const iconButtonVariants = tv({
       className:
         'border-error text-error hover:bg-error-50 hover:text-error-600 active:bg-error-50 active:border-error-700 active:text-error-700',
     },
+    {
+      variant: 'outline',
+      color: 'success',
+      className:
+        'border-success text-success hover:bg-success-50 hover:text-success-600 active:bg-success-50 active:border-success-700 active:text-success-700',
+    },
+    {
+      variant: 'outline',
+      color: 'warning',
+      className:
+        'border-warning text-warning hover:bg-warning-50 hover:text-warning-600 active:bg-warning-50 active:border-warning-700 active:text-warning-700',
+    },
+    {
+      variant: 'outline',
+      color: 'info',
+      className:
+        'border-secondary text-secondary hover:bg-secondary-50 hover:text-secondary-600 active:bg-secondary-50 active:border-secondary-700 active:text-secondary-700',
+    },
 
     {
       variant: 'transparent',
@@ -74,6 +110,21 @@ export const iconButtonVariants = tv({
       variant: 'transparent',
       color: 'destructive',
       className: 'text-error hover:text-error-200 active:text-error-700',
+    },
+    {
+      variant: 'transparent',
+      color: 'success',
+      className: 'text-success hover:text-success-200 active:text-success-700',
+    },
+    {
+      variant: 'transparent',
+      color: 'warning',
+      className: 'text-warning hover:text-warning-200 active:text-warning-700',
+    },
+    {
+      variant: 'transparent',
+      color: 'info',
+      className: 'text-secondary hover:text-secondary-200 active:text-secondary-700',
     },
   ],
   defaultVariants: {
