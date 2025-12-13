@@ -7,7 +7,7 @@ import { ButtonProps } from './Button';
 export const buttonGroupVariants = tv({
   slots: {
     base: 'inline-flex rounded-lg',
-    item: 'cursor-pointer',
+    item: 'cursor-pointer disabled:bg-shades-white disabled:text-gray-300 disabled:border-gray-300',
   },
   variants: {
     orientation: {
@@ -20,7 +20,7 @@ export const buttonGroupVariants = tv({
     },
     state: {
       default: {
-        item: 'bg-shades-white border-gray-300 text-gray-600 hover:bg-gray-100 active:bg-primary active:border-primary active:text-shades-white disabled:bg-shades-white disabled:text-gray-300 disabled:border-gray-300',
+        item: 'bg-shades-white border-gray-300 text-gray-600 hover:bg-gray-100 active:bg-primary active:border-primary active:text-shades-white',
       },
       active: {
         item: 'bg-primary border-primary text-shades-white',
@@ -37,7 +37,7 @@ export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement>, Varian
   children: ReactElement[];
 }
 
-interface GroupChildProps extends ButtonProps {
+export interface GroupChildProps extends ButtonProps {
   isActive?: boolean;
 }
 
