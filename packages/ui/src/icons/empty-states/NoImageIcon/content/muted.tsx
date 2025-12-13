@@ -1,15 +1,5 @@
-import { cn } from '@/utils/misc';
-
-import { IconProps } from '..';
-
-export const NoImageIcon = ({ className, ...props }: IconProps) => (
-  <svg
-    viewBox="0 0 150 150"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={cn('size-36', className)}
-    {...props}
-  >
+const MutedContent = () => (
+  <>
     <path
       d="M75 122.697C103.319 122.697 126.276 113.691 126.276 102.582C126.276 91.4726 103.319 82.4667 75 82.4667C46.6808 82.4667 23.7236 91.4726 23.7236 102.582C23.7236 113.691 46.6808 122.697 75 122.697Z"
       fill="#F9FAFB"
@@ -359,5 +349,7 @@ export const NoImageIcon = ({ className, ...props }: IconProps) => (
       d="M31.0333 94.6138L31.15 95.3458C31.2208 95.7847 31.5222 96.1277 31.9555 96.2624L32.6778 96.4874L31.8833 96.7124C31.4069 96.8486 30.9958 97.1916 30.7847 97.6305L30.4347 98.3624L30.318 97.6305C30.2486 97.1916 29.9472 96.8486 29.5139 96.7124L28.7917 96.4874L29.5861 96.2624C30.0625 96.1277 30.4736 95.7847 30.6833 95.3458L31.0333 94.6138Z"
       fill="#98A2B3"
     />
-  </svg>
+  </>
 );
+
+export default MutedContent;

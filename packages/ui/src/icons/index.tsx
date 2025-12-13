@@ -34,5 +34,8 @@ export { PlusIcon } from './PlusIcon';
 export { InfoTriangleIcon } from './InfoTriangleIcon';
 export { MinusCircleIcon } from './MinusCircleIcon';
 export { NoImageIcon } from './empty-states/NoImageIcon';
+export { NoSearchResultsIcon } from './empty-states/NoSearchResultsIcon';
+export { NoFavoritesIcon } from './empty-states/NoFavoritesIcon';
+export { NoReviewsIcon } from './empty-states/NoReviewsIcon';
 export { ArrowLeftIcon } from './arrows/ArrowLeft';
 export { ArrowRightIcon } from './arrows/ArrowRight';
