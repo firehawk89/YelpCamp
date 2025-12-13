@@ -33,3 +33,4 @@ export { CheckCircleIcon } from './CheckCircleIcon';
 export { PlusIcon } from './PlusIcon';
 export { InfoTriangleIcon } from './InfoTriangleIcon';
 export { MinusCircleIcon } from './MinusCircleIcon';
+export { NoImageIcon } from './empty-states/NoImageIcon';
