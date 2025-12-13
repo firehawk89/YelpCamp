@@ -34,3 +34,5 @@ export { PlusIcon } from './PlusIcon';
 export { InfoTriangleIcon } from './InfoTriangleIcon';
 export { MinusCircleIcon } from './MinusCircleIcon';
 export { NoImageIcon } from './empty-states/NoImageIcon';
+export { ArrowLeftIcon } from './arrows/ArrowLeft';
+export { ArrowRightIcon } from './arrows/ArrowRight';
