@@ -1,18 +1,21 @@
+import { IconProps } from '@/icons';
+import { NoImageIcon } from '@/icons/empty-states/NoImageIcon';
 import { cn } from '@/utils/misc';
-import { HTMLAttributes, ReactNode } from 'react';
+import { ComponentType, HTMLAttributes } from 'react';
 
-import { ImageIcon } from '../icons';
-
-interface ImagePlaceholderProps extends HTMLAttributes<HTMLDivElement> {
-  icon?: ReactNode;
+export interface ImagePlaceholderProps extends HTMLAttributes<HTMLDivElement> {
+  icon?: ComponentType<IconProps>;
 }
 
-const ImagePlaceholder = ({ icon, className, ...props }: ImagePlaceholderProps) => (
+const ImagePlaceholder = ({ icon: IconComponent, className, ...props }: ImagePlaceholderProps) => (
   <div
-    className={cn('bg-primary-50 text-shades-black relative flex aspect-square items-center justify-center', className)}
+    className={cn(
+      'text-shades-black relative flex aspect-square items-center justify-center bg-neutral-100',
+      className
+    )}
     {...props}
   >
-    {icon ?? <ImageIcon className="h-fit w-1/4 min-w-6 max-w-14" />}
+    {IconComponent ? <IconComponent className="text-neutral size-1/2" /> : <NoImageIcon className="size-1/2" />}
   </div>
 );
 

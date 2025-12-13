@@ -28,11 +28,7 @@ const Avatar = ({ src, alt, size, className, ...props }: AvatarProps) =>
   src ? (
     <img src={src} alt={alt ?? 'Avatar'} className={cn(avatarVariants({ size }), className)} {...props} />
   ) : (
-    <ImagePlaceholder
-      className={cn(avatarVariants({ size }), className)}
-      icon={<UserIcon className="size-1/2" />}
-      {...props}
-    />
+    <ImagePlaceholder className={cn(avatarVariants({ size }), className)} icon={UserIcon} {...props} />
   );
 
 export default Avatar;
