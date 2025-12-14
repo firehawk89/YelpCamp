@@ -39,3 +39,5 @@ export { NoFavoritesIcon } from './empty-states/NoFavoritesIcon';
 export { NoReviewsIcon } from './empty-states/NoReviewsIcon';
 export { ArrowLeftIcon } from './arrows/ArrowLeft';
 export { ArrowRightIcon } from './arrows/ArrowRight';
+export { MailIcon } from './MailIcon';
+export { CloseCircleIcon } from './CloseCircleIcon';

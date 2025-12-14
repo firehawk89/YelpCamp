@@ -4,18 +4,17 @@ import { IconProps } from '.';
 
 export const SearchIcon = ({ className, ...props }: IconProps) => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
     fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className={cn('size-5', className)}
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn('size-6', className)}
     {...props}
   >
     <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M9.16675 1.66667C5.02461 1.66667 1.66675 5.02453 1.66675 9.16667C1.66675 13.3088 5.02461 16.6667 9.16675 16.6667C10.9376 16.6667 12.5651 16.0529 13.8482 15.0266L16.9108 18.0893C17.2363 18.4147 17.7639 18.4147 18.0893 18.0893C18.4148 17.7638 18.4148 17.2362 18.0893 16.9107L15.0267 13.8481C16.053 12.565 16.6667 10.9375 16.6667 9.16667C16.6667 5.02453 13.3089 1.66667 9.16675 1.66667ZM3.33341 9.16667C3.33341 5.94501 5.94509 3.33333 9.16675 3.33333C12.3884 3.33333 15.0001 5.94501 15.0001 9.16667C15.0001 12.3883 12.3884 15 9.16675 15C5.94509 15 3.33341 12.3883 3.33341 9.16667Z"
+      fill="currentColor"
     />
   </svg>
 );
