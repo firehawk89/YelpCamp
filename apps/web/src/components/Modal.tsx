@@ -30,7 +30,7 @@ const Modal = ({
   const modalRef = useClickOutside<HTMLDivElement>(() => onClose());
 
   const titleSlot = <h3 className="mt-1 text-xl font-semibold">{title}</h3>;
-  const closeButtonSlot = <Button className="shrink-0" onClick={onClose} icon={<CloseIcon />} />;
+  const closeButtonSlot = <Button className="shrink-0" onClick={onClose} icon={CloseIcon} />;
 
   return (
     <Overlay className={overlayClassName} isHidden={isHidden} placement="center">

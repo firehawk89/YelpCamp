@@ -155,8 +155,8 @@ const SearchForm = ({
 
         <Button
           className="aspect-square w-10 shrink-0"
-          variant="accent"
-          icon={<SearchIcon />}
+          variant="primary"
+          icon={SearchIcon}
           type="submit"
           isLoading={isLoading}
         />

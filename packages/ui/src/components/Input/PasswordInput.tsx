@@ -27,7 +27,7 @@ const PasswordInput = ({ containerClassName, className, variant, size, ...props 
         className="absolute right-2 top-1/2 -translate-y-1/2"
         onClick={togglePasswordVisibility}
         type="button"
-        icon={<EyeIcon closed={isPasswordVisible} />}
+        icon={() => <EyeIcon closed={isPasswordVisible} />}
       />
     </div>
   );

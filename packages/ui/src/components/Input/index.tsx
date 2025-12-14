@@ -1,64 +1,77 @@
-'use client';
-
 import { cn } from '@/utils/misc';
-import { InputHTMLAttributes, useState } from 'react';
-import { tv, VariantProps } from 'tailwind-variants';
+import { ComponentType, InputHTMLAttributes } from 'react';
+import { VariantProps } from 'tailwind-variants';
 
-import { EyeIcon } from '../../icons';
-import Button from '../Button';
-
-export const inputVariants = tv({
-  base: 'w-full rounded-lg outline-none transition-all bg-white',
-  variants: {
-    variant: {
-      default: 'border border-neutral-300 focus:shadow',
-    },
-    size: {
-      default: 'px-3 py-1.5',
-      lg: 'px-4 py-2',
-      sm: 'px-2 py-1 text-sm',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'default',
-  },
-});
+import { CheckCircleIcon, CloseCircleIcon, IconProps } from '../../icons';
+import { inputVariants } from './variants';
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
-    VariantProps<typeof inputVariants> {}
+    VariantProps<typeof inputVariants> {
+  label?: string;
+  helperText?: string;
+  leadingIcon?: ComponentType<IconProps>;
+  trailingIcon?: ComponentType<IconProps>;
+  rootContainerClassName?: string;
+  inputContainerClassName?: string;
+}
 
-const Input = ({ type, className, variant, size, ...props }: InputProps) => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+const Input = ({
+  label,
+  helperText,
+  variant,
+  size,
+  leadingIcon: LeadingIcon,
+  trailingIcon: TrailingIcon,
+  className,
+  rootContainerClassName,
+  inputContainerClassName,
+  ...props
+}: InputProps) => {
+  const { label: labelClass, base, icon: iconClass, helperText: helperTextClass } = inputVariants({ variant, size });
 
-  const isPassword = type === 'password';
+  const isSuccess = variant === 'success';
+  const isError = variant === 'error';
 
-  const inputElement = (
-    <input
-      className={cn(inputVariants({ variant, size }), { 'pr-12': isPassword }, className)}
-      type={isPasswordVisible ? 'text' : type}
-      {...props}
-    />
+  const trailingIcon = isSuccess ? (
+    <CheckCircleIcon className={cn(iconClass(), 'right-3')} variant="outline" />
+  ) : isError ? (
+    <CloseCircleIcon className={cn(iconClass(), 'right-3')} variant="outline" />
+  ) : (
+    TrailingIcon && <TrailingIcon className={cn(iconClass(), 'right-3')} />
   );
 
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible((prev) => !prev);
-  };
+  return (
+    <div className={cn(rootContainerClassName)}>
+      {label && (
+        <label className={cn(labelClass(), 'mb-1')} htmlFor={props.id}>
+          {label}
+        </label>
+      )}
 
-  return isPassword ? (
-    <div className="relative">
-      {inputElement}
-      <Button
-        className="absolute right-2 top-1/2 -translate-y-1/2"
-        onClick={togglePasswordVisibility}
-        type="button"
-        icon={<EyeIcon closed={isPasswordVisible} />}
-      />
+      <div className={cn('relative', inputContainerClassName)}>
+        {LeadingIcon && <LeadingIcon className={cn(iconClass(), 'left-3')} />}
+
+        <input
+          className={cn(
+            base(),
+            {
+              'pl-10': !!LeadingIcon,
+              'pr-10': !!TrailingIcon || isError || isSuccess,
+            },
+            className
+          )}
+          {...props}
+        />
+
+        {trailingIcon}
+      </div>
+
+      {helperText && <p className={cn(helperTextClass(), 'mt-2')}>{helperText}</p>}
     </div>
-  ) : (
-    inputElement
   );
 };
 
 export default Input;
+
+export { inputVariants };
