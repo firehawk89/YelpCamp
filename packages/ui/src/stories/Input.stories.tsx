@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Input, { inputVariants } from '@/components/Input';
+import PasswordInput from '@/components/Input/password';
 import { MailIcon, SearchIcon } from '@/icons';
 
 const meta = {
@@ -151,6 +152,21 @@ export const WithLeadingAndTrailingIcons: Story = {
     docs: {
       description: {
         story: 'The input component displaying a text input with both leading and trailing icons.',
+      },
+    },
+  },
+};
+
+export const Password: Story = {
+  render: (props) => <PasswordInput {...props} />,
+  args: {
+    type: 'password',
+    placeholder: 'Placeholder',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'The input component displaying a password input.',
       },
     },
   },
