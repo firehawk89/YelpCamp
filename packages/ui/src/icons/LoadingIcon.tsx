@@ -3,24 +3,23 @@ import { cn } from '@/utils/misc';
 import { IconProps } from '.';
 
 export const LoadingIcon = ({ className, ...props }: IconProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" className={cn('w-6', className)} {...props}>
-    <path
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="15"
-      strokeLinecap="round"
-      strokeDasharray="300 385"
-      strokeDashoffset="0"
-      d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"
-    >
-      <animate
-        attributeName="stroke-dashoffset"
-        calcMode="spline"
-        dur="2.5"
-        values="685;-685"
-        keySplines="0 0 1 1"
+  <svg
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn('size-12', className)}
+    {...props}
+  >
+    <circle cx="24" cy="24" r="16" stroke="#F56630" strokeWidth="4" strokeLinecap="round" fill="none">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from="0 24 24"
+        to="360 24 24"
+        dur="1s"
         repeatCount="indefinite"
       />
-    </path>
+      <animate attributeName="stroke-dasharray" values="0 100; 75 25; 0 100" dur="1.5s" repeatCount="indefinite" />
+    </circle>
   </svg>
 );
