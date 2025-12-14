@@ -47,7 +47,7 @@ export const Default: Story = {
 export const WithLabel: Story = {
   args: {
     label: 'Progress Bar',
-    percentage: 30,
+    percentage: 33,
   },
   parameters: {
     docs: {
