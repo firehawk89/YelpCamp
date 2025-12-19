@@ -41,3 +41,4 @@ export { ArrowLeftIcon } from './arrows/ArrowLeft';
 export { ArrowRightIcon } from './arrows/ArrowRight';
 export { MailIcon } from './MailIcon';
 export { CloseCircleIcon } from './CloseCircleIcon';
+export { HomeAltIcon } from './HomeAltIcon';
