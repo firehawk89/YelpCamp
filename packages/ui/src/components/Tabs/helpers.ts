@@ -1,11 +1,23 @@
-import { ReactNode } from 'react';
+import { IconProps } from '@/icons';
+import { ComponentType } from 'react';
+import { VariantProps } from 'tailwind-variants';
 
-export interface TabItem {
+import { tabVariants } from './variants';
+
+type TabConfigBase = VariantProps<typeof tabVariants> & {
   key: string;
-  label: string | ReactNode;
-  isActive?: boolean;
-  onClick?: () => void;
-  href?: string;
-  icon?: ReactNode;
+  label: string;
+  icon?: ComponentType<IconProps>;
+  count?: number;
   className?: string;
-}
+};
+
+export type TabConfig = TabConfigBase &
+  (
+    | {
+        href: string;
+      }
+    | {
+        onClick: () => void;
+      }
+  );

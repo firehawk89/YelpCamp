@@ -1,22 +1,25 @@
 import { cn } from '@/utils/misc';
 import { HTMLAttributes } from 'react';
+import { VariantProps } from 'tailwind-variants';
 
-import { TabItem } from './helpers';
-import Tab from './Tab';
+import { TabConfig } from './helpers';
+import Tab from './tab';
+import { tabVariants } from './variants';
 
-interface TabsProps extends HTMLAttributes<HTMLDivElement> {
-  items: TabItem[];
-  selectedTab?: TabItem['key'];
+export interface TabsProps extends HTMLAttributes<HTMLDivElement>, Pick<VariantProps<typeof tabVariants>, 'variant'> {
+  items: TabConfig[];
 }
 
-const Tabs = ({ items, className, ...props }: TabsProps) => (
-  <div className={cn('no-scrollbar flex items-center overflow-x-auto', className)} {...props}>
-    {items.map(({ key, ...tab }) => (
-      <Tab key={key} {...tab}>
-        {tab.label}
-      </Tab>
-    ))}
-  </div>
-);
+const Tabs = ({ items, className, variant, ...props }: TabsProps) => {
+  const { list } = tabVariants({ variant });
+
+  return (
+    <div className={cn(list(), className)} {...props}>
+      {items.map((tabConfig) => (
+        <Tab key={tabConfig.key} tabConfig={{ ...tabConfig, variant }} />
+      ))}
+    </div>
+  );
+};
 
 export default Tabs;

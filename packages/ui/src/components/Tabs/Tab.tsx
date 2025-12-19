@@ -1,57 +1,45 @@
 import { cn } from '@/utils/misc';
 import { PropsWithChildren } from 'react';
 
-import { TabItem } from './helpers';
-
-// TODO: Apply or remove variants
-// export const tabVariants = tv({
-//   base: 'relative w-full flex items-center justify-center gap-2 px-2 py-1 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full transition-colors after:transition-colors',
-//   variants: {
-//     color: {
-//       default: 'text-inherit after:bg-neutral-200 hover:text-neutral-600 hover:after:bg-neutral-300',
-//       info: 'text-inherit after:bg-neutral-200 hover:text-info hover:after:bg-info',
-//       warning: 'text-inherit after:bg-neutral-200 hover:text-warning hover:after:bg-warning',
-//       success: 'text-inherit after:bg-neutral-200 hover:text-success hover:after:bg-success',
-//       destructive: 'text-inherit after:bg-neutral-200 hover:text-danger hover:after:bg-danger',
-//     },
-//     activeColor: {
-//       default: 'text-accent after:bg-accent',
-//       info: 'text-info after:bg-info',
-//       warning: 'text-warning after:bg-warning',
-//       success: 'text-success after:bg-success',
-//       destructive: 'text-danger after:bg-danger',
-//     },
-//   },
-//   defaultVariants: {
-//     color: 'default',
-//     activeColor: 'default',
-//   },
-// });
+import { TabConfig } from './helpers';
+import { tabVariants } from './variants';
 
 interface TabProps extends PropsWithChildren {
-  isActive?: boolean;
-  onClick?: () => void;
-  href?: TabItem['href'];
-  icon?: TabItem['icon'];
-  className?: string;
+  tabConfig: TabConfig;
 }
 
-const Tab = ({ isActive, onClick, href, icon, className, children }: TabProps) => {
-  const tabClassName = cn(
-    'relative w-full flex items-center justify-center gap-2 px-2 py-1 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full transition-colors after:transition-colors after:bg-neutral-200 hover:text-accent',
-    { 'text-accent after:bg-accent': isActive },
-    className
+const Tab = ({ tabConfig, ...props }: TabProps) => {
+  const { label, icon: Icon, count = 0, variant, active, disabled, className } = tabConfig;
+
+  const { base, icon: iconClass, text, badge: badgeClass } = tabVariants({ variant, active, disabled });
+
+  const content = (
+    <>
+      {Icon && <Icon className={iconClass()} />}
+      <span className={text()}>{label}</span>
+      <span className={badgeClass()}>{count}</span>
+    </>
   );
 
-  return href ? (
-    <a href={href} className={tabClassName}>
-      {icon} {children}
-    </a>
-  ) : (
-    <button className={tabClassName} onClick={onClick}>
-      {icon} {children}
-    </button>
-  );
+  if ('href' in tabConfig) {
+    return (
+      <a className={cn(base(), className)} href={tabConfig.href} aria-disabled={disabled} {...props}>
+        {content}
+      </a>
+    );
+  } else {
+    return (
+      <button
+        className={cn(base(), className)}
+        onClick={tabConfig.onClick}
+        type="button"
+        disabled={disabled}
+        {...props}
+      >
+        {content}
+      </button>
+    );
+  }
 };
 
 export default Tab;
